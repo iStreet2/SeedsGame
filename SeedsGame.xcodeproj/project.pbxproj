@@ -11,6 +11,13 @@
 		3BB1AF9F2B59B15F00E61276 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB1AF9E2B59B15F00E61276 /* ContentView.swift */; };
 		3BB1AFA12B59B16000E61276 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BB1AFA02B59B16000E61276 /* Assets.xcassets */; };
 		3BB1AFA42B59B16000E61276 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BB1AFA32B59B16000E61276 /* Preview Assets.xcassets */; };
+		E9E2212C2B59B596001FE22A /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E2212B2B59B596001FE22A /* GameEngine.swift */; };
+		E9E2212E2B59B5C6001FE22A /* ActionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E2212D2B59B5C6001FE22A /* ActionModel.swift */; };
+		E9E221302B59B5DD001FE22A /* SoundActionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E2212F2B59B5DD001FE22A /* SoundActionModel.swift */; };
+		E9E221322B59B6B0001FE22A /* HapticActionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E221312B59B6B0001FE22A /* HapticActionModel.swift */; };
+		E9E221352B59B8D9001FE22A /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E221342B59B8D9001FE22A /* GameScene.swift */; };
+		E9E221372B59B975001FE22A /* OperationActionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E221362B59B975001FE22A /* OperationActionModel.swift */; };
+		E9E2213A2B59BDFC001FE22A /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E221392B59BDFC001FE22A /* Component.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +26,13 @@
 		3BB1AF9E2B59B15F00E61276 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		3BB1AFA02B59B16000E61276 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3BB1AFA32B59B16000E61276 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		E9E2212B2B59B596001FE22A /* GameEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
+		E9E2212D2B59B5C6001FE22A /* ActionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionModel.swift; sourceTree = "<group>"; };
+		E9E2212F2B59B5DD001FE22A /* SoundActionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundActionModel.swift; sourceTree = "<group>"; };
+		E9E221312B59B6B0001FE22A /* HapticActionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticActionModel.swift; sourceTree = "<group>"; };
+		E9E221342B59B8D9001FE22A /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		E9E221362B59B975001FE22A /* OperationActionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationActionModel.swift; sourceTree = "<group>"; };
+		E9E221392B59BDFC001FE22A /* Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +67,10 @@
 			children = (
 				3BB1AF9C2B59B15F00E61276 /* SeedsGameApp.swift */,
 				3BB1AF9E2B59B15F00E61276 /* ContentView.swift */,
+				E9E2213C2B59BE24001FE22A /* Engines */,
+				E9E2213B2B59BDFF001FE22A /* Components */,
+				E9E221382B59BDAE001FE22A /* Scenes */,
+				E9E221332B59B879001FE22A /* Models */,
 				3BB1AFA02B59B16000E61276 /* Assets.xcassets */,
 				3BB1AFA22B59B16000E61276 /* Preview Content */,
 			);
@@ -65,6 +83,41 @@
 				3BB1AFA32B59B16000E61276 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		E9E221332B59B879001FE22A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E9E2212D2B59B5C6001FE22A /* ActionModel.swift */,
+				E9E2212F2B59B5DD001FE22A /* SoundActionModel.swift */,
+				E9E221312B59B6B0001FE22A /* HapticActionModel.swift */,
+				E9E221362B59B975001FE22A /* OperationActionModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E9E221382B59BDAE001FE22A /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				E9E221342B59B8D9001FE22A /* GameScene.swift */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		E9E2213B2B59BDFF001FE22A /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				E9E221392B59BDFC001FE22A /* Component.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		E9E2213C2B59BE24001FE22A /* Engines */ = {
+			isa = PBXGroup;
+			children = (
+				E9E2212B2B59B596001FE22A /* GameEngine.swift */,
+			);
+			path = Engines;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,8 +190,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9E221322B59B6B0001FE22A /* HapticActionModel.swift in Sources */,
+				E9E2213A2B59BDFC001FE22A /* Component.swift in Sources */,
+				E9E221302B59B5DD001FE22A /* SoundActionModel.swift in Sources */,
 				3BB1AF9F2B59B15F00E61276 /* ContentView.swift in Sources */,
+				E9E2212C2B59B596001FE22A /* GameEngine.swift in Sources */,
 				3BB1AF9D2B59B15F00E61276 /* SeedsGameApp.swift in Sources */,
+				E9E221372B59B975001FE22A /* OperationActionModel.swift in Sources */,
+				E9E221352B59B8D9001FE22A /* GameScene.swift in Sources */,
+				E9E2212E2B59B5C6001FE22A /* ActionModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
