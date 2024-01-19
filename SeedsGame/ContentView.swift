@@ -10,9 +10,13 @@ import SpriteKit
 
 struct ContentView: View {
 	
+	let width = UIScreen.main.bounds.width
+	let height = UIScreen.main.bounds.height
+	
+	var gameEngine = GameEngine.shared
+	
 	var scene: SKScene {
-		let scene = GameScene()
-		scene.size = CGSize(width: 300, height: 400)
+		let scene = gameEngine.phases[gameEngine.currentPhase]
 		scene.scaleMode = .fill
 		return scene
 	}
@@ -20,10 +24,8 @@ struct ContentView: View {
 	var body: some View {
 		VStack {
 			SpriteView(scene: scene)
-				.frame(width: 300, height: 400)
-				.ignoresSafeArea()
 		}
-		.padding()
+		.ignoresSafeArea()
 	}
 }
 

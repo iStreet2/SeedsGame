@@ -18,6 +18,8 @@
 		E9E221352B59B8D9001FE22A /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E221342B59B8D9001FE22A /* GameScene.swift */; };
 		E9E221372B59B975001FE22A /* OperationActionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E221362B59B975001FE22A /* OperationActionModel.swift */; };
 		E9E2213A2B59BDFC001FE22A /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E221392B59BDFC001FE22A /* Component.swift */; };
+		E9E2213E2B5AE5C4001FE22A /* PhaseScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E2213D2B5AE5C4001FE22A /* PhaseScene.swift */; };
+		E9E221402B5AE7B9001FE22A /* ClientModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E2213F2B5AE7B9001FE22A /* ClientModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +35,8 @@
 		E9E221342B59B8D9001FE22A /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		E9E221362B59B975001FE22A /* OperationActionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationActionModel.swift; sourceTree = "<group>"; };
 		E9E221392B59BDFC001FE22A /* Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
+		E9E2213D2B5AE5C4001FE22A /* PhaseScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhaseScene.swift; sourceTree = "<group>"; };
+		E9E2213F2B5AE7B9001FE22A /* ClientModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				E9E2212D2B59B5C6001FE22A /* ActionModel.swift */,
+				E9E2213F2B5AE7B9001FE22A /* ClientModel.swift */,
 				E9E2212F2B59B5DD001FE22A /* SoundActionModel.swift */,
 				E9E221312B59B6B0001FE22A /* HapticActionModel.swift */,
 				E9E221362B59B975001FE22A /* OperationActionModel.swift */,
@@ -100,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				E9E221342B59B8D9001FE22A /* GameScene.swift */,
+				E9E2213D2B5AE5C4001FE22A /* PhaseScene.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -190,6 +196,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9E221402B5AE7B9001FE22A /* ClientModel.swift in Sources */,
+				E9E2213E2B5AE5C4001FE22A /* PhaseScene.swift in Sources */,
 				E9E221322B59B6B0001FE22A /* HapticActionModel.swift in Sources */,
 				E9E2213A2B59BDFC001FE22A /* Component.swift in Sources */,
 				E9E221302B59B5DD001FE22A /* SoundActionModel.swift in Sources */,
