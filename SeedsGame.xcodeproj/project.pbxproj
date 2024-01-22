@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B5F47C92B5B085600B09FBE /* SeedBagModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5F47C82B5B085500B09FBE /* SeedBagModel.swift */; };
 		3BB1AF9D2B59B15F00E61276 /* SeedsGameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB1AF9C2B59B15F00E61276 /* SeedsGameApp.swift */; };
 		3BB1AF9F2B59B15F00E61276 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB1AF9E2B59B15F00E61276 /* ContentView.swift */; };
 		3BB1AFA12B59B16000E61276 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BB1AFA02B59B16000E61276 /* Assets.xcassets */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3B5F47C82B5B085500B09FBE /* SeedBagModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedBagModel.swift; sourceTree = "<group>"; };
 		3BB1AF992B59B15F00E61276 /* SeedsGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeedsGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BB1AF9C2B59B15F00E61276 /* SeedsGameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedsGameApp.swift; sourceTree = "<group>"; };
 		3BB1AF9E2B59B15F00E61276 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 				E9E2212F2B59B5DD001FE22A /* SoundActionModel.swift */,
 				E9E221312B59B6B0001FE22A /* HapticActionModel.swift */,
 				E9E221362B59B975001FE22A /* OperationActionModel.swift */,
+				3B5F47C82B5B085500B09FBE /* SeedBagModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -203,6 +206,7 @@
 				E9E221302B59B5DD001FE22A /* SoundActionModel.swift in Sources */,
 				3BB1AF9F2B59B15F00E61276 /* ContentView.swift in Sources */,
 				E9E2212C2B59B596001FE22A /* GameEngine.swift in Sources */,
+				3B5F47C92B5B085600B09FBE /* SeedBagModel.swift in Sources */,
 				3BB1AF9D2B59B15F00E61276 /* SeedsGameApp.swift in Sources */,
 				E9E221372B59B975001FE22A /* OperationActionModel.swift in Sources */,
 				E9E221352B59B8D9001FE22A /* GameScene.swift in Sources */,

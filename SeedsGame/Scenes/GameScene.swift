@@ -9,7 +9,7 @@ import Foundation
 import SpriteKit
 
 class GameScene: SKScene {
-	
+
 	var phaseMap: [Int : [String]] = [
 		1: ["x+3=2", "4-4=x-2", "3x+2*8=0"],
 		2: ["lara", "eh", "legal", "4", "5"],
@@ -30,7 +30,6 @@ class GameScene: SKScene {
 		addChild(nextPhaseButton)
 		addChild(nextQuestionButton)
 	}
-	
-	
+
 }
 
