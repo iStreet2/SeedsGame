@@ -105,6 +105,10 @@ import SpriteKit
 		}
 		
 		scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)"
+        
+        //Remover e readicionar as hitBoxes da equação
+        addHitBoxes(scene: scene)
+        addSeedBags(scene: scene)
 	}
 	
 	
@@ -128,11 +132,70 @@ import SpriteKit
 			if let touch = touches.first {
 				if scene.movableNode != nil{
 					scene.movableNode!.position = touch.location(in: scene.self)
+                    //Antes de deixar o movableNode em nil, eu chamo o grabNode, para que se o nó que o usuário estiver movendo, se prenda ao quadrado, se esse nó estive em cima do quadrado
+                    grabNode(node: node, touches: touches, scene: scene)
 					scene.movableNode = nil
 				}
 			}
 		}
 	}
+    
+    func addHitBoxes(scene: PhaseScene){
+        //Remover as hitBoxes da questão anterior
+        if scene.hitBoxes.count != 0{
+            for hitBox in scene.hitBoxes{
+                scene.removeChildren(in: [hitBox])
+                scene.hitBoxes.removeAll()
+            }
+        }
+        
+        //Adicionar no vetor novamente os nos dos quadrados
+        for _ in scene.clients[scene.currentClientNumber].eq{
+            let node = SKShapeNode(rectOf: CGSize(width: 50, height: 50))
+            scene.hitBoxes.append(node)
+        }
+        //Adicionar na cena as hitBoxes
+        for (index,hitBox) in scene.hitBoxes.enumerated(){
+            hitBox.position = CGPoint(x: 100+(50*index), y: 200)
+            hitBox.strokeColor = .red
+            scene.addChild(hitBox)
+        }
+    }
+    
+    func addSeedBags(scene: PhaseScene){
+        
+        if scene.currentSeedBags.count != 0{
+            scene.currentSeedBags.removeAll()
+        }
+        //eu to armazenando em dois vetores diferentes valores e operandos, nao sabendo como eu vou ter controle sobre isso para adicionar nos quadrados que eu mostro na tela!
+        
+        //O for faz isso:
+        //3x+2*9=0 (exemplo de equação de cliente)
+        // [3] [x] [2] [9] [0]
+        // [+] [*] [=]
+        for (index,char) in scene.clients[scene.currentClientNumber].eq.enumerated(){
+            if char.isNumber{
+                scene.currentSeedBags.append(SeedBagModel(numero: Int(String(char)) ?? 0, incognita: false, imageNamed: "seedbag", color: .clear, width: 50, height: 70))
+            }else if char == "x"{
+                scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: true, imageNamed: "seedbag", color: .clear, width: 50, height: 70))
+            }else{
+                scene.operators.append(String(char))
+            }
+        }
+    }
 	
+    
+    func grabNode(node: SKSpriteNode, touches: Set<UITouch>, scene: PhaseScene){
+        if let touch = touches.first{
+            if scene.movableNode != nil{
+                let location = touch.location(in: scene.self)
+                for hitBox in scene.hitBoxes{
+                    if hitBox.contains(location){
+                        node.position = hitBox.position
+                    }
+                }
+            }
+        }
+    }
 	
 }
