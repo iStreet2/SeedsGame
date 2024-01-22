@@ -61,4 +61,32 @@ import SpriteKit
 		scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)"
 	}
 	
+	
+	//Função para mexer algum nó
+	func moveNode(_ node: SKSpriteNode, _ touches: Set<UITouch>, stage: Int, scene: PhaseScene){
+		if stage == 0{
+			if let touch = touches.first{
+				let location = touch.location(in: scene.self)
+				if node.contains(location){
+					scene.movableNode = node
+					scene.movableNode!.position = location
+				}
+			}
+		}else if stage == 1{
+			if let touch = touches.first {
+				if scene.movableNode != nil{
+					scene.movableNode!.position = touch.location(in: scene.self)
+				}
+			}
+		}else if stage == 2{
+			if let touch = touches.first {
+				if scene.movableNode != nil{
+					scene.movableNode!.position = touch.location(in: scene.self)
+					scene.movableNode = nil
+				}
+			}
+		}
+	}
+	
+	
 }
