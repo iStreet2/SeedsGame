@@ -59,6 +59,26 @@ import SpriteKit
 		
 		scene.currentClientNumber += 1
 		scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)"
+        
+        
+        //Remover as hitBoxes da questão anterior
+        for hitBox in scene.hitBoxes{
+            scene.removeChildren(in: [hitBox])
+            scene.hitBoxes.removeAll()
+        }
+        
+        //Adicionar no vetor novamente os nos dos quadrados
+        for _ in scene.clients[scene.currentClientNumber].eq{
+            let node = SKShapeNode(rectOf: CGSize(width: 10, height: 10))
+            scene.hitBoxes.append(node)
+        }
+        //Adicionar na cena as hitBoxes
+        for (index,hitBox) in scene.hitBoxes.enumerated(){
+            hitBox.position = CGPoint(x: 100+(15*index), y: 200)
+            hitBox.strokeColor = .red
+            scene.addChild(hitBox)
+        }
+        
 	}
 	
 	
