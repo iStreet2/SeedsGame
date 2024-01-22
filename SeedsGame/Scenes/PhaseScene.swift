@@ -11,7 +11,8 @@ import SpriteKit
 class PhaseScene: GameScene {
 	
 	var clients: [ClientModel] = []
-	
+	var currentEqLabel: SKLabelNode = SKLabelNode(text: "nil")
+	var currentClientNumber = 0
 	
 	
 	//Vetor que vai armazenar todos os as hitboxes invisiveis
@@ -20,10 +21,6 @@ class PhaseScene: GameScene {
 	//Teste para mexer 1 saco de semente, instancio um saco e um movableNode, que vai ser usado para mexer o saco
 	let seedBag = SeedBagModel(numero: 3, incognita: false, imageNamed: "seedbag", color: .clear, width: 50, height: 70)
 	var movableNode: SKNode?
-	
-	var currentEqLabel: SKLabelNode = SKLabelNode(text: "nil")
-	var currentClientNumber = 0
-	
 	
 	
 	init(phase: Int, width: Double, height: Double) {
@@ -38,19 +35,16 @@ class PhaseScene: GameScene {
 		//Para cada cliente no mapa
 		for n in 0..<clientMap[phase]! {
 			
-			
-			
 			//Para cada caracter na string da equação, eu crio um quadrado que ira receber sacos dentro dele
-			for _ in eqs![n]{
+			for _ in eqs![n].0 {
 				let node = SKShapeNode(rectOf: CGSize(width: 10, height: 10))
 				hitBoxes.append(node)
 			}
 			//PROXIMO PASSO: DIMINUIR O TAMANHO DOS QUADRADOS E CRIAR FUNCAO PARA O SACO GRUDAR NELES! E TAMBEM SEMPRE ACOMPANHAR A QUANTIDADE DE ELEMENTOS DA EQUACAO!!! ACHO QUE TA MOSTRANDO A QUANTIDADE DE QUADRADOS A QUANTIDADE DE CARACTERES DA FASE, NAO DA EQUACAO ATUAL
-			let client = ClientModel(eqs![n], imageNamed: "ClientSprite", color: .clear, size: CGSize(width: 135, height: 274))
+			let client = ClientModel(eqs![n].0, imageNamed: "ClientSprite", color: .clear, size: CGSize(width: 135, height: 274))
 			clients.append(client)
 			
 		}
-		
 		
 		self.isUserInteractionEnabled = true
 	}
@@ -71,17 +65,11 @@ class PhaseScene: GameScene {
 		}
 		
 		currentEqLabel.position = CGPoint(x: 250, y: 250)
+		currentEqLabel.fontName = "Chalkduster"
 		addChild(currentEqLabel)
 		
-		for (index, client) in clients.enumerated() {
-			client.position = CGPoint(x: 564+(75*index), y: 235-(25*index))
-			
-			if index<3 {
-				addChild(client)
-			}
-		}
-		
-		currentEqLabel.text = "\(clients[currentClientNumber].eq)"
+		// MARK: Renderiza os 3 clientes
+		GameEngine.shared.renderClients(scene: self)
 	}
 	
 	
