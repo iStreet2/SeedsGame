@@ -60,15 +60,10 @@ class PhaseScene: GameScene {
         currentEqLabel.position = CGPoint(x: 250, y: 250)
         addChild(currentEqLabel)
         
-        for (index, client) in clients.enumerated() {
-            client.position = CGPoint(x: 564+(75*index), y: 235-(25*index))
-            
-            if index<3 {
-                addChild(client)
-            }
-        }
-        
         currentEqLabel.text = "\(clients[currentClientNumber].eq)"
+      
+        // MARK: Renderiza os 3 clientes
+		    GameEngine.shared.renderClients(scene: self)
     }
     
     
@@ -98,5 +93,5 @@ class PhaseScene: GameScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         GameEngine.shared.moveNode(seedBag, touches, stage: 2, scene: self)
     }
-    
+
 }

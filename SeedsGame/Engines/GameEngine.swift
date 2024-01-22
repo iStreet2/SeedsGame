@@ -43,21 +43,67 @@ import SpriteKit
 	}
 	
 	
-	func nextPhase(scene: SKScene) {
-		currentPhase += 1
+	func nextPhase(scene: PhaseScene) {
 		let reveal = SKTransition.reveal(with: .left, duration: 1)
-		scene.scene?.view?.presentScene(GameEngine.shared.phases[GameEngine.shared.currentPhase], transition: reveal)
+		
+		if currentPhase != phases.count - 1 {
+			currentPhase += 1
+			
+			scene.scene?.view?.presentScene(GameEngine.shared.phases[GameEngine.shared.currentPhase], transition: reveal)
+		}
+		else {
+			// cena após as 3 fases
+			scene.currentEqLabel.text = "All phases done!"
+		}
 	}
 	
 	func nextQuestion(scene: PhaseScene) {
+		
+		let nQuestions = scene.clients.count
+		
 		for client in scene.clients {
+			
+			let scaleAction = SKAction.scale(by: 1.15, duration: 0.5)
+			client.run(scaleAction)
+			
+			let moveAction = SKAction.moveTo(x: client.position.x - 75, duration: 0.5)
+			client.run(moveAction)
+			
 			if client.eq == scene.clients[scene.currentClientNumber].eq {
 				// Cliente da pergunta atual é despachado
 				scene.removeChildren(in: [client])
 			}
 		}
 		
-		scene.currentClientNumber += 1
+		// renderiza o sprite do próximo cliente no final da fila
+		if (scene.currentClientNumber + 3) <= (nQuestions - 1) {
+			scene.addChild(scene.clients[scene.currentClientNumber + 3])
+		}
+		
+		// não deixa o número do cliente atual ser maior do que o número de clientes
+		if scene.currentClientNumber != nQuestions - 1 {
+			scene.currentClientNumber += 1
+			scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)"
+		}
+		
+		// se todos os clientes tiverem as suas perguntas resolvidas
+		else {
+			scene.currentEqLabel.text = "All questions done!"
+		}
+	}
+	
+	
+	func renderClients(scene: PhaseScene) {
+		for (index, client) in scene.clients.enumerated() {
+			client.position = CGPoint(x: 564+(75*index), y: 235)
+			client.size = CGSize(width: client.size.width - CGFloat(index*(15)), height: client.size.height - CGFloat(index*(30)))
+			client.zPosition = CGFloat(scene.clients.count - index)
+			
+			if index<3 {
+				scene.addChild(client)
+			}
+		}
+		
 		scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)"
         
         //Remover e readicionar as hitBoxes da equação
@@ -66,7 +112,7 @@ import SpriteKit
 	}
 	
 	
-	//Função para mexer algum nó
+	// Função para mexer algum nó
 	func moveNode(_ node: SKSpriteNode, _ touches: Set<UITouch>, stage: Int, scene: PhaseScene){
 		if stage == 0{
 			if let touch = touches.first{
