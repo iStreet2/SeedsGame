@@ -11,20 +11,21 @@ import SpriteKit
 class PhaseScene: GameScene {
 	
 	var clients: [ClientModel] = []
+	var currentEqLabel: SKLabelNode = SKLabelNode(text: "nil")
+	var currentClientNumber = 0
 	
 	
 	init(phase: Int, width: Double, height: Double) {
 		
 		super.init(size: CGSize(width: width, height: height))
 		
-		let clientMap: [Int: Int] = [1: map[1]!.count, 2: map[2]!.count, 3: map[3]!.count]
-		let eqs = map[phase]
+		let clientMap: [Int: Int] = [1: phaseMap[1]!.count, 2: phaseMap[2]!.count, 3: phaseMap[3]!.count]
+		let eqs = phaseMap[phase]
 			
 		for n in 0..<clientMap[phase]! {
 			
-			let client = ClientModel(eqs![n], imageNamed: "Client", color: .blue, size: CGSize(width: 100, height: 100))
+			let client = ClientModel(eqs![n], imageNamed: "ClientSprite", color: .clear, size: CGSize(width: 135, height: 274))
 			clients.append(client)
-			addChild(client)
 		}
 		
 		self.isUserInteractionEnabled = true
@@ -35,15 +36,31 @@ class PhaseScene: GameScene {
 		
 		startup()
 		
+		currentEqLabel.position = CGPoint(x: 250, y: 250)
+		addChild(currentEqLabel)
+		
 		for (index, client) in clients.enumerated() {
-			client.position = CGPoint(x: 100, y: 100+(150*index))
+			client.position = CGPoint(x: 564+(75*index), y: 235-(25*index))
 			
-			let label = SKLabelNode(text: client.eq)
-			label.position.x = client.position.x
-			label.position.y = client.position.y + 50
-			addChild(label)
+			if index<3 {
+				addChild(client)
+			}
 		}
 		
+		currentEqLabel.text = "\(clients[currentClientNumber].eq)"
+	}
+	
+	
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+		guard let touch = touches.first else { return }
+		
+		if nextQuestionButton.contains(touch.location(in: self)) {
+			GameEngine.shared.nextQuestion(scene: self)
+		}
+		
+		if nextPhaseButton.contains(touch.location(in: self)) {
+			GameEngine.shared.nextPhase(scene: self)
+		}
 	}
 	
 	
