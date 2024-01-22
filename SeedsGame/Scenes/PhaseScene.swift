@@ -12,14 +12,14 @@ class PhaseScene: GameScene {
     
     var clients: [ClientModel] = []
     
-    
-    
     //Vetor que vai armazenar todos os as hitboxes invisiveis
     var hitBoxes: [SKShapeNode] = []
     
     //Teste para mexer 1 saco de semente, instancio um saco e um movableNode, que vai ser usado para mexer o saco
     let seedBag = SeedBagModel(numero: 3, incognita: false, imageNamed: "seedbag", color: .clear, width: 50, height: 70)
     var movableNode: SKNode?
+    var currentSeedBags: [SeedBagModel] = []
+    var operators: [String] = []
     
     var currentEqLabel: SKLabelNode = SKLabelNode(text: "nil")
     var currentClientNumber = 0
@@ -49,19 +49,13 @@ class PhaseScene: GameScene {
         
         startup()
         
+        GameEngine.shared.addSeedBags(scene: self)
+        //Adiciono o pacote de sementes na cena
         seedBag.position = CGPoint(x: 500, y: 100)
         addChild(seedBag)
         
         //Para cada caracter na string da equação, eu crio um quadrado que ira receber sacos dentro dele
-        for _ in clients[currentClientNumber].eq{
-            let node = SKShapeNode(rectOf: CGSize(width: 10, height: 10))
-            hitBoxes.append(node)
-        }
-        for (index,hitBox) in hitBoxes.enumerated(){
-            hitBox.position = CGPoint(x: 100+(15*index), y: 200)
-            hitBox.strokeColor = .red
-            addChild(hitBox)
-        }
+        GameEngine.shared.addHitBoxes(scene: self)
         
         currentEqLabel.position = CGPoint(x: 250, y: 250)
         addChild(currentEqLabel)
