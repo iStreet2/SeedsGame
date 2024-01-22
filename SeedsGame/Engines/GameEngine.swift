@@ -18,14 +18,12 @@ import SpriteKit
 	
 	var actions: [Action] = []
 	var phases: [PhaseScene] = []
-//	var scene: SKScene
 	var currentPhase = 0
 	
 	
 	init() {
 		let phases = [PhaseScene(phase: 1, width: width, height: height), PhaseScene(phase: 2, width: width, height: height)]
 		self.phases = phases
-//		self.scene = phases[0]
 	}
 	
 	
@@ -45,6 +43,22 @@ import SpriteKit
 	}
 	
 	
+	func nextPhase(scene: SKScene) {
+		currentPhase += 1
+		let reveal = SKTransition.reveal(with: .left, duration: 1)
+		scene.scene?.view?.presentScene(GameEngine.shared.phases[GameEngine.shared.currentPhase], transition: reveal)
+	}
 	
+	func nextQuestion(scene: PhaseScene) {
+		for client in scene.clients {
+			if client.eq == scene.clients[scene.currentClientNumber].eq {
+				// Cliente da pergunta atual é despachado
+				scene.removeChildren(in: [client])
+			}
+		}
+		
+		scene.currentClientNumber += 1
+		scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)"
+	}
 	
 }
