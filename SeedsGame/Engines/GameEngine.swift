@@ -30,6 +30,7 @@ import SpriteKit
 	func receiveAction(_ action: Action) {
 		actions.append(action)
 		action.execute()
+		print("ação recebida!")
 	}
 	
 	

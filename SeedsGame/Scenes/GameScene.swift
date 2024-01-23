@@ -19,6 +19,7 @@ class GameScene: SKScene {
 	
 	let nextPhaseButton = SKSpriteNode(color: .red, size: CGSize(width: 50, height: 50))
 	let nextQuestionButton = SKSpriteNode(color: .green, size: CGSize(width: 50, height: 50))
+	let joinSideButton = SKSpriteNode(color: .yellow, size: CGSize(width: 50, height: 50))
 	
 	override func didMove(to view: SKView) {
 		startup()
@@ -28,9 +29,24 @@ class GameScene: SKScene {
 	func startup() {
 		nextPhaseButton.position = CGPoint(x: 200, y: 100)
 		nextQuestionButton.position = CGPoint(x: 300, y: 100)
+		joinSideButton.position = CGPoint(x: 400, y: 100)
 		addChild(nextPhaseButton)
 		addChild(nextQuestionButton)
+		addChild(joinSideButton)
 	}
 
 }
+
+// [2x]
+
+// ["..", +, 5]
+// [.., +, .....]
+// "\(eq[].count)x"
+
+// [.., - , 4, =, -, ....., +, 10] -> Joga
+// [.., +, ..... =, +, 10, +, 4] -> Botao
+// [......., =, 14] -> Joga
+// [., = 14, /, 7] -> Botao
+// [., =, 2] -> Joga o saco no buraco negro pro pássaro
+
 
