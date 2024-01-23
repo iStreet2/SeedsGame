@@ -11,6 +11,7 @@ import SpriteKit
 
 
 @Observable class GameEngine {
+
     static let shared = GameEngine()
     
     let width = UIScreen.main.bounds.width

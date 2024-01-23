@@ -12,6 +12,7 @@
 		3BB1AF9F2B59B15F00E61276 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB1AF9E2B59B15F00E61276 /* ContentView.swift */; };
 		3BB1AFA12B59B16000E61276 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BB1AFA02B59B16000E61276 /* Assets.xcassets */; };
 		3BB1AFA42B59B16000E61276 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BB1AFA32B59B16000E61276 /* Preview Assets.xcassets */; };
+		E92A6F1A2B60354B003A4C1E /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92A6F192B60354B003A4C1E /* Stack.swift */; };
 		E9E2212C2B59B596001FE22A /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E2212B2B59B596001FE22A /* GameEngine.swift */; };
 		E9E2212E2B59B5C6001FE22A /* ActionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E2212D2B59B5C6001FE22A /* ActionModel.swift */; };
 		E9E221302B59B5DD001FE22A /* SoundActionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E2212F2B59B5DD001FE22A /* SoundActionModel.swift */; };
@@ -30,6 +31,7 @@
 		3BB1AF9E2B59B15F00E61276 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		3BB1AFA02B59B16000E61276 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3BB1AFA32B59B16000E61276 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		E92A6F192B60354B003A4C1E /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		E9E2212B2B59B596001FE22A /* GameEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
 		E9E2212D2B59B5C6001FE22A /* ActionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionModel.swift; sourceTree = "<group>"; };
 		E9E2212F2B59B5DD001FE22A /* SoundActionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundActionModel.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 				E9E2212F2B59B5DD001FE22A /* SoundActionModel.swift */,
 				E9E221312B59B6B0001FE22A /* HapticActionModel.swift */,
 				E9E221362B59B975001FE22A /* OperationActionModel.swift */,
+				E92A6F192B60354B003A4C1E /* Stack.swift */,
 				3B5F47C82B5B085500B09FBE /* SeedBagModel.swift */,
 			);
 			path = Models;
@@ -200,6 +203,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E9E221402B5AE7B9001FE22A /* ClientModel.swift in Sources */,
+				E92A6F1A2B60354B003A4C1E /* Stack.swift in Sources */,
 				E9E2213E2B5AE5C4001FE22A /* PhaseScene.swift in Sources */,
 				E9E221322B59B6B0001FE22A /* HapticActionModel.swift in Sources */,
 				E9E2213A2B59BDFC001FE22A /* Component.swift in Sources */,

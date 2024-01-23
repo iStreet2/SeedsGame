@@ -70,18 +70,26 @@ class PhaseScene: GameScene {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touch = touches.first else { return }
-        
-        if nextQuestionButton.contains(touch.location(in: self)) {
-            GameEngine.shared.nextQuestion(scene: self)
-        }
-        if nextPhaseButton.contains(touch.location(in: self)) {
-            GameEngine.shared.nextPhase(scene: self)
-        }
-        //movimento do sprite de semente
-//        GameEngine.shared.moveNode(seedBag, touches, stage: 0, scene: self)
-        
-    }
+		guard let touch = touches.first else { return }
+		
+		if nextQuestionButton.contains(touch.location(in: self)) {
+			GameEngine.shared.nextQuestion(scene: self)
+		}
+		if nextPhaseButton.contains(touch.location(in: self)) {
+			GameEngine.shared.nextPhase(scene: self)
+		}
+		
+		if joinSideButton.contains(touch.location(in: self)) {
+			print("Creating action!")
+			let action = OperationAction(eq: currentEqLabel.text!)
+			print(action.eq)
+			GameEngine.shared.receiveAction(action)
+		}
+		
+		//movimento do sprite de semente
+		GameEngine.shared.moveNode(seedBag, touches, stage: 0, scene: self)
+				
+	}
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
 //        GameEngine.shared.moveNode(seedBag, touches, stage: 1, scene: self)
@@ -91,5 +99,6 @@ class PhaseScene: GameScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 //        GameEngine.shared.moveNode(seedBag, touches, stage: 2, scene: self)
     }
+
 
 }
