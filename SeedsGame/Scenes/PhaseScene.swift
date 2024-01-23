@@ -87,7 +87,7 @@ class PhaseScene: GameScene {
 		}
 		
 		//movimento do sprite de semente
-		GameEngine.shared.moveNode(seedBag, touches, stage: 0, scene: self)
+//		GameEngine.shared.moveNode(seedBag, touches, stage: 0, scene: self)
 				
 	}
     
