@@ -15,11 +15,10 @@ class PhaseScene: GameScene {
     //Vetor que vai armazenar todos os as hitboxes invisiveis
     var hitBoxes: [SKShapeNode] = []
     
-    //Teste para mexer 1 saco de semente, instancio um saco e um movableNode, que vai ser usado para mexer o saco
-    let seedBag = SeedBagModel(numero: 3, incognita: false, imageNamed: "seedbag", color: .clear, width: 50, height: 70)
+    //Instancio um saco e um movableNode, que vai ser usado para mexer o saco
     var movableNode: SKNode?
+    //Vetor que armazena a equação atual
     var currentSeedBags: [SeedBagModel] = []
-    var operators: [String] = []
     
     var currentEqLabel: SKLabelNode = SKLabelNode(text: "nil")
     var currentClientNumber = 0
@@ -49,11 +48,10 @@ class PhaseScene: GameScene {
         
         startup()
         
-        GameEngine.shared.addSeedBags(scene: self)
-        //Adiciono o pacote de sementes na cena
-        seedBag.position = CGPoint(x: 500, y: 100)
-        addChild(seedBag)
         
+        //Adiciono o pacote de sementes na cena
+        GameEngine.shared.addSeedBags(scene: self)
+                
         //Para cada caracter na string da equação, eu crio um quadrado que ira receber sacos dentro dele
         GameEngine.shared.addHitBoxes(scene: self)
         
@@ -81,17 +79,17 @@ class PhaseScene: GameScene {
             GameEngine.shared.nextPhase(scene: self)
         }
         //movimento do sprite de semente
-        GameEngine.shared.moveNode(seedBag, touches, stage: 0, scene: self)
+//        GameEngine.shared.moveNode(seedBag, touches, stage: 0, scene: self)
         
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        GameEngine.shared.moveNode(seedBag, touches, stage: 1, scene: self)
+//        GameEngine.shared.moveNode(seedBag, touches, stage: 1, scene: self)
     }
     
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        GameEngine.shared.moveNode(seedBag, touches, stage: 2, scene: self)
+//        GameEngine.shared.moveNode(seedBag, touches, stage: 2, scene: self)
     }
 
 }
