@@ -10,6 +10,7 @@ import SpriteKit
 
 class GameScene: SKScene {
 
+
 	var phaseMap: [Int : [(String, Float)]] = [
 		1: [("x+3=2", -1), ("4-4=x-2", 2), ("3x+2*9=0", -6)],
 		2: [("lara", 1.65), ("eh", 3.4), ("legal", 3.14), ("4", 4), ("5", 5)],
