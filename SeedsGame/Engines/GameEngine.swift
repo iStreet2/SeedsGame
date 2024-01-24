@@ -11,11 +11,19 @@ import SpriteKit
 
 
 @Observable class GameEngine {
-
+    
     static let shared = GameEngine()
     
     let width = UIScreen.main.bounds.width
     let height = UIScreen.main.bounds.height
+    
+    let seedBagWidth: Double = 50
+    let seedBagHeight: Double  = 70
+    
+    let hitBoxWidth: Double = 50
+    let hitBoxHeight: Double = 50
+    
+    var realocationPosition = 0
     
     var actions: [Action] = []
     var phases: [PhaseScene] = []
@@ -112,8 +120,8 @@ import SpriteKit
     }
     
     
-    // Função para mexer algum nó
-    func moveNode(_ node: SKSpriteNode, _ touches: Set<UITouch>, stage: Int, scene: PhaseScene){
+    // Função para mexer seeBagModels
+    func moveSeedBag(_ node: SeedBagModel, _ touches: Set<UITouch>, stage: Int, initialPosition: Int, scene: PhaseScene){
         if stage == 0{
             if let touch = touches.first{
                 let location = touch.location(in: scene.self)
@@ -133,13 +141,20 @@ import SpriteKit
                 if scene.movableNode != nil{
                     scene.movableNode!.position = touch.location(in: scene.self)
                     //Antes de deixar o movableNode em nil, eu chamo o grabNode, para que se o nó que o usuário estiver movendo, se prenda ao quadrado, se esse nó estive em cima do quadrado
-                    grabNode(node: node, touches: touches, scene: scene)
+                    grabNode(touches: touches, scene: scene)
+                    
+//                    realocateSeedBag(initialPosition, scene) COMENTADO POIS AINDA NAO FUNCIONA
+                    //Depois de realocar preciso atualizar as equações na tela
+//                    showEquation(scene: scene)
+                    
                     scene.movableNode = nil
                 }
             }
         }
     }
     
+    
+    //Adiciona hitBoxes com base no tamanho da equação dada pelo cliente!
     func addHitBoxes(scene: PhaseScene){
         //Remover as hitBoxes da questão anterior
         if scene.hitBoxes.count != 0{
@@ -151,60 +166,123 @@ import SpriteKit
         
         //Adicionar no vetor novamente os nos dos quadrados
         for _ in scene.clients[scene.currentClientNumber].eq{
-            let node = SKShapeNode(rectOf: CGSize(width: 50, height: 50))
+            let node = SKShapeNode(rectOf: CGSize(width: hitBoxWidth, height: hitBoxHeight))
             scene.hitBoxes.append(node)
         }
         //Adicionar na cena as hitBoxes
         for (index,hitBox) in scene.hitBoxes.enumerated(){
-            hitBox.position = CGPoint(x: 100+(50*index), y: 200)
+            hitBox.position = CGPoint(x: 50+(60*index), y: 40)
             hitBox.strokeColor = .red
             scene.addChild(hitBox)
         }
     }
     
+    //Adiciona uma hitBox a mais no final da equação
+    func addHitBoxOnTheFinal(scene: PhaseScene){
+        let node = SKShapeNode(rectOf: CGSize(width: hitBoxWidth, height: hitBoxHeight)) //Crio mais uma hitbox
+        node.position = CGPoint(x: 50+(60*scene.hitBoxes.count), y: 40) //Defino a posição dele com base na posição da ultima hitBox
+        node.strokeColor = .red //Defino a cor dele de vermelho
+        scene.hitBoxes.append(node) //Adiciono ela no vetor de hitBoxes
+        scene.addChild(node) //Adiciono ela na cena
+        
+    }
+    
     func addSeedBags(scene: PhaseScene){
         
         if scene.currentSeedBags.count != 0{
-            for seedBag in scene.currentSeedBags{
-                scene.removeChildren(in: [seedBag])
-                scene.removeChildren(in: [seedBag.label])
-            }
             scene.currentSeedBags.removeAll()
         }
-        for char in scene.clients[scene.currentClientNumber].eq{
+        
+        //Transformo a string da equação em um vetor de caracteres
+        let equation = Array(scene.clients[scene.currentClientNumber].eq)
+        
+        for (index,char) in equation.enumerated(){
             if char.isNumber{
-                scene.currentSeedBags.append(SeedBagModel(numero: Int(String(char)) ?? 0, incognita: false, isOperator: false, operatorr: "", imageNamed: "seedbag", color: .clear, width: 50, height: 70))
-                
+                scene.currentSeedBags.append(SeedBagModel(numero: Int(String(char)) ?? 300, incognita: false, isOperator: false, operatorr: "", imageNamed: "seedbag", color: .clear, width: seedBagWidth, height: seedBagHeight))
             }else if char == "x"{
-                scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: true, isOperator: false, operatorr: "", imageNamed: "seedbag", color: .clear, width: 50, height: 70))
+                //Se eu encontrar um X com um valor anterior a ele, eu adiciono um "*" entre a sacola do número e a sacola do x
+                if index != 0{
+                    if  equation[index-1].isNumber{
+                        scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "*", imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight))
+                        addHitBoxOnTheFinal(scene: scene)
+                    }
+                }
+                scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: true, isOperator: false, operatorr: "", imageNamed: "seedbag", color: .clear, width: seedBagWidth, height: seedBagHeight))
+                
             }else{
-                scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: String(char), imageNamed: "nothing", color: .clear, width: 50, height: 70))
+                scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: String(char), imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight))
             }
         }
+        //Depois de preparar o vetor, adiciono na cena
+        showEquation(scene: scene)
+//        for seedBags in scene.currentSeedBags{
+//            print(seedBags.label.text!)
+//        }
         
-        for (index,seedBag) in scene.currentSeedBags.enumerated(){
-            seedBag.position = CGPoint(x: 100+(50*index), y: 200) //Posicao da sacola com o numero, mexo com o index para colocar na posição certa da equação
-            seedBag.label.position.x = seedBag.position.x
-            seedBag.label.position.y = seedBag.position.y - 20
-            
-            scene.addChild(seedBag)
-            scene.addChild(seedBag.label)
-        }
         
     }
     
     
-    func grabNode(node: SKSpriteNode, touches: Set<UITouch>, scene: PhaseScene){
+    func grabNode(touches: Set<UITouch>, scene: PhaseScene){
         if let touch = touches.first{
             if scene.movableNode != nil{
                 let location = touch.location(in: scene.self)
-                for hitBox in scene.hitBoxes{
+                for (index,hitBox) in scene.hitBoxes.enumerated(){
                     if hitBox.contains(location){
-                        node.position = hitBox.position
+                        realocationPosition = index
+                        scene.movableNode!.position = hitBox.position
+                        
                     }
                 }
             }
         }
     }
     
+    func realocateSeedBag(_ initialPosition: Int, _ scene: PhaseScene){
+        
+        var fromLeft = false
+        
+        for i in initialPosition..<scene.currentSeedBags.count{ //Percorro o vetor da posicao que o nó esta sendo mexido até o final do vetor, se achar algum igual no caminho, ele esta trazendo da esquerda
+            if scene.currentSeedBags[i].label.text == "="{
+                fromLeft = true
+            }
+        }
+        if fromLeft{//se eu estiver arrastado o elemento da esquerda para a direita
+            let currentSeedBag = scene.currentSeedBags[initialPosition] //salvo o valor no qual estou pegando
+            
+            for i in (initialPosition+1..<realocationPosition){
+                scene.currentSeedBags[i-1] = scene.currentSeedBags[i] //aloco todos os outros um quadrado antes
+            }
+            scene.currentSeedBags[realocationPosition] = currentSeedBag //coloco na posição de realocação o valor que eu tinha salvo
+        }else{
+            //se eu estiver arrastando o elemento da direita para a esquerda
+            let currentSeedBag = scene.currentSeedBags[initialPosition]
+            
+            for i in (initialPosition-1..<realocationPosition).reversed(){ //Percorro o vetor desde a posição inicial -1 e vou ate a posicao de realocação, da esquerda para a direita
+                scene.currentSeedBags[i+1] = scene.currentSeedBags[i]
+            }
+            scene.currentSeedBags[realocationPosition] = currentSeedBag
+        }
+    }
+    
+    func showEquation(scene: PhaseScene){
+        if scene.currentSeedBags.count != 0{
+            for seedBag in scene.currentSeedBags{
+                scene.removeChildren(in: [seedBag])
+            }
+        }
+        for (index,seedBag) in scene.currentSeedBags.enumerated(){
+            seedBag.position = CGPoint(x: 50+(60*index), y: 40) //Posicao da sacola com o numero, mexo com o index para colocar na posição certa da equação
+//            seedBag.label.position.y -= 15
+            
+            scene.addChild(seedBag)
+        }
+    }
+    
 }
+    
+//Sempre que eu arrastar algo para outra hitbox, eu tenho que atualizar o meu vetor de sementes, mas isso soh pode ser feito depois que dua sementes nao puderem ficar na mesma hitbox, ou seja, tem que ter o sistema de realocação feito ja
+
+
+
+//so da para arrastar pra outro lado do igual
