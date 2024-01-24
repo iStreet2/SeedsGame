@@ -9,6 +9,6 @@ import Foundation
 
 protocol Action {
 	
-	func execute()
+	func execute() -> String
 	
 }

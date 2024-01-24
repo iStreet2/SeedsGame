@@ -18,9 +18,10 @@ class SoundAction: Action {
 	}
 	
 	
-	func execute() {
+	func execute() -> String {
 		let id = UInt32(systemSoundID)
 		AudioServicesPlaySystemSound(id)
+		return "200"
 	}
 	
 	
