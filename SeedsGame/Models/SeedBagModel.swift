@@ -25,10 +25,12 @@ class SeedBagModel: SKSpriteNode {
         }else{
             self.label = SKLabelNode(text: operatorr)
         }
+        
         let texture = SKTexture(imageNamed: imageNamed)
         let size = CGSize(width: width, height: height)
         
         super.init(texture: texture, color: color, size: size)
+        self.addChild(label)
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -17,6 +17,7 @@ class PhaseScene: GameScene {
     
     //Instancio um saco e um movableNode, que vai ser usado para mexer o saco
     var movableNode: SKNode?
+
     //Vetor que armazena a equação atual
     var currentSeedBags: [SeedBagModel] = []
     
@@ -87,17 +88,27 @@ class PhaseScene: GameScene {
 		}
 		
 		//movimento do sprite de semente
-//		GameEngine.shared.moveNode(seedBag, touches, stage: 0, scene: self)
+        for (index,seedBag) in currentSeedBags.enumerated(){
+            if seedBag.label.text! != "="{
+                GameEngine.shared.moveSeedBag(seedBag, touches, stage: 0,initialPosition: index, scene: self)
+            }
+        }
 				
 	}
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        GameEngine.shared.moveNode(seedBag, touches, stage: 1, scene: self)
+        for (index,seedBag) in currentSeedBags.enumerated(){
+            GameEngine.shared.moveSeedBag(seedBag, touches, stage: 1, initialPosition: index, scene: self)
+        }
+        
     }
     
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        GameEngine.shared.moveNode(seedBag, touches, stage: 2, scene: self)
+        for (index,seedBag) in currentSeedBags.enumerated(){
+            GameEngine.shared.moveSeedBag(seedBag, touches, stage: 2, initialPosition: index, scene: self)
+        }
+        
     }
 
 
