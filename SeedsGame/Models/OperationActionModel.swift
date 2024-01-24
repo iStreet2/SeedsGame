@@ -17,7 +17,7 @@ class OperationAction: Action {
 	
 	init(eq: String) {
 		print("initializing equation action!")
-		self.eq = ["0"]
+		self.eq = []
 		let exp = prepareEq(eq)
 		
 		self.eq = exp
@@ -27,28 +27,10 @@ class OperationAction: Action {
 	
 	func execute() {
 		print("executando ação!")
-//		let currentNum = eq[0]
-		
-//		var allIsSameType = true
-		
-		// Lado esquerdo da equação
-//		while currentNum != "=" {
-//			if currentNum.contains(".") {
-//				xStack.push(currentNum)
-//			} else {
-//				allIsSameType = false
-//				numStack.push(currentNum)
-//			}
-//			
-//		}
-		
-		// Lado direito da equação
-		
-		
 	}
 	
 	
-	// botao de juntar os valores
+	// devolve resultado de equação sem incógnita
 	func evaluate(eq: String) -> Double {
 		let expression: NSExpression = NSExpression(format: eq)
 		let result: Double = expression.expressionValue(with: nil, context: nil) as! Double
@@ -56,6 +38,7 @@ class OperationAction: Action {
 	}
 	
 	
+	// função principal pra preparar a equação pra ela conseguir ser "juntada" pelo botão de juntar
 	func prepareEq(_ equation: String) -> [String] {
 		print("Preparing Equation!")
 		if equation.isEmpty {
