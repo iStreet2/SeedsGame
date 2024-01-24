@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct SeedButtonStyle: ButtonStyle {
+    
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.title)
             .bold()
-        
             .padding()
             .padding(.horizontal, 20)
             .background(configuration.isPressed ? .black : .gray)

@@ -8,3 +8,62 @@
 import Foundation
 import SwiftUI
 
+struct MenuView: View {
+    
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 40) {
+                HStack(alignment: .top) {
+                    Spacer()
+                    Text("Título do Jogo")
+                        .padding()
+                        .padding(.horizontal, 30)
+                        .padding(.vertical, 20)
+                        .bold()
+                        .font(.title)
+                        .background(.gray)
+                        .padding(.trailing, 162)
+
+
+                    
+//                    Spacer()
+                    
+                    Button(action: {
+                        print("foii")
+                    }) {
+                        Image(systemName: "gear")
+                    }
+                    .buttonStyle(SquareButtonStyle())
+                }
+                
+                HStack(spacing: 40){
+//                    Image("client1")
+//                        .resizable()
+//                        .scaledToFit()
+//                        .frame(width: 110)
+//                        .padding()
+                    VStack(spacing: 20){
+                        Button("MODO HISTÓRIA"){
+                            print("a")
+                        }
+                        .buttonStyle(SeedButtonStyle())
+                        
+                        Button("INFINITO"){
+                            print("b")
+                        }
+                        .buttonStyle(SeedButtonStyle())
+                    }
+//                    Image("client1")
+//                        .resizable()
+//                        .scaledToFit()
+//                        .frame(width: 110)
+//                        .padding()
+                }
+            }
+        }
+        
+    }
+}
+#Preview {
+    MenuView()
+}
