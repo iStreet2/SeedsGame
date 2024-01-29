@@ -190,6 +190,10 @@ import SpriteKit
     func addSeedBags(scene: PhaseScene){
         
         if scene.currentSeedBags.count != 0{
+            for seedBag in scene.currentSeedBags{
+                scene.removeChildren(in: [seedBag])
+                print("tirou 1 filho")
+            }
             scene.currentSeedBags.removeAll()
         }
         
