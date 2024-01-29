@@ -279,6 +279,7 @@ import SpriteKit
         }
     }
     
+
 }
     
 //Sempre que eu arrastar algo para outra hitbox, eu tenho que atualizar o meu vetor de sementes, mas isso soh pode ser feito depois que dua sementes nao puderem ficar na mesma hitbox, ou seja, tem que ter o sistema de realocação feito ja

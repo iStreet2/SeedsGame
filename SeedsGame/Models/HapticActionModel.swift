@@ -41,7 +41,7 @@ class HapticAction: Action {
 	}
 	
 	
-	func execute() {
+	func execute() -> String {
 		prepareHaptics()
 		var events = [CHHapticEvent]()
 		
@@ -57,8 +57,9 @@ class HapticAction: Action {
 			let player = try engine?.makePlayer(with: pattern)
 			try player?.start(atTime: relativeTime)
 		} catch {
-			print("Failed to play pattern: \(error.localizedDescription)")
+			return "Failed to play pattern: \(error.localizedDescription)"
 		}
+		return "200"
 	}
 	
 	

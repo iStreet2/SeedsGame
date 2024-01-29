@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Stack {
+struct Queue {
 	var items: [String] = []
 	
 	
@@ -17,20 +17,25 @@ struct Stack {
 	}
 	
 	
-	mutating func pop() -> String {
+	mutating func dequeue() -> String {
 		return items.removeFirst()
 	}
 	
 	
-	mutating func push(_ element: String) {
-		items.insert(element, at: 0)
+	mutating func enqueue(_ element: String) {
+		items.append(element)
+	}
+	
+	
+	mutating func clear() {
+		items = []
 	}
 	
 	
 }
 
 
-extension Stack: CustomStringConvertible {
+extension Queue: CustomStringConvertible {
 	var description: String {
 		let topDivider = "---Stack---\n"
 		
