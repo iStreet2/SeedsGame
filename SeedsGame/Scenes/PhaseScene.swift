@@ -86,6 +86,11 @@ class PhaseScene: GameScene {
 			print(action.eq)
 			GameEngine.shared.receiveAction(action)
 		}
+		 
+		 if giveResponseButton.contains(touch.location(in: self)) {
+			 print("Equação deve ser avaliada!")
+			 GameEngine.shared.renderClientResponse(self)
+		 }
 		
 		//movimento do sprite de semente
         for (index,seedBag) in currentSeedBags.enumerated(){

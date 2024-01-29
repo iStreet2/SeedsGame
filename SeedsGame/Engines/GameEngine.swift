@@ -197,7 +197,6 @@ import SpriteKit
         if scene.currentSeedBags.count != 0{
             for seedBag in scene.currentSeedBags{
                 scene.removeChildren(in: [seedBag])
-                print("tirou 1 filho")
             }
             scene.currentSeedBags.removeAll()
         }
@@ -287,6 +286,44 @@ import SpriteKit
             scene.addChild(seedBag)
         }
     }
+	
+	
+	func renderClientResponse(_ scene: PhaseScene) {
+		
+		let client = scene.clients[scene.currentClientNumber]
+		let clientSprite = client.clientSprites[client.clientSpriteID] // String
+		let rose = client.clientSpriteID == 11
+		
+		// ACERTOU!
+		if scene.currentEqLabel.text! == String(scene.phaseMap[currentPhase+1]![scene.currentClientNumber].1) {
+			print("EEEEITA PENGA \(String(scene.phaseMap[currentPhase+1]![scene.currentClientNumber].1))")
+			
+			var resultSprite: String = ""
+			if rose {
+				resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo (acerto)")
+			}
+			else {
+				resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Feliz")
+			}
+			
+			client.texture = SKTexture(imageNamed: resultSprite)
+		}
+		// errou...
+		else {
+			print("vishh \(String(scene.phaseMap[currentPhase+1]![scene.currentClientNumber].1))")
+			
+			
+			var resultSprite: String = ""
+			if rose {
+				resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Feliz (erro)")
+			}
+			else {
+				resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo")
+			}
+			
+			client.texture = SKTexture(imageNamed: resultSprite)
+		}
+	}
     
 
 }
