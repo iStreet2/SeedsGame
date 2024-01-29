@@ -22,6 +22,7 @@ class PhaseScene: GameScene {
     var currentSeedBags: [SeedBagModel] = []
     
     var currentEqLabel: SKLabelNode = SKLabelNode(text: "nil")
+	 var eqLabelBackground = SKSpriteNode(color: .gray, size: CGSize(width: 400, height: 50))
     var currentClientNumber = 0
     
     
@@ -56,8 +57,14 @@ class PhaseScene: GameScene {
         //Para cada caracter na string da equação, eu crio um quadrado que ira receber sacos dentro dele
         GameEngine.shared.addHitBoxes(scene: self)
         
-        currentEqLabel.position = CGPoint(x: 250, y: 250)
+        currentEqLabel.position = CGPoint(x: 250, y: 320)
+		  currentEqLabel.zPosition = 1
+		  eqLabelBackground.position = currentEqLabel.position
+		  eqLabelBackground.position.y = currentEqLabel.position.y + 10
+		  eqLabelBackground.zPosition = 0
+		 
         addChild(currentEqLabel)
+		  addChild(eqLabelBackground)
         
         currentEqLabel.text = "\(clients[currentClientNumber].eq)"
       
@@ -81,10 +88,10 @@ class PhaseScene: GameScene {
 		}
 		
 		if joinSideButton.contains(touch.location(in: self)) {
-			print("Creating action!")
-			let action = OperationAction(eq: currentEqLabel.text!)
-			print(action.eq)
-			GameEngine.shared.receiveAction(action)
+			let opAction = OperationAction(eq: currentEqLabel.text!)
+			GameEngine.shared.receiveAction(opAction)
+			let hapticAction = HapticAction(1, 1)
+			GameEngine.shared.receiveAction(hapticAction)
 		}
 		 
 		 if giveResponseButton.contains(touch.location(in: self)) {

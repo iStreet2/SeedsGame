@@ -200,17 +200,62 @@ class OperationAction: Action {
         var xSecondResultString = checkPlus(Q: xQ)
         var numSecondResultString = checkPlus(Q: numQ)
         
-        if Int(numFirstResultString)! >= 0 {
+        if Int(numFirstResultString)! >= 0 && xFirstResultString != "0" {
             numFirstResultString = "+" + numFirstResultString
         }
         
-        if Int(numSecondResultString)! >= 0 {
+        if Int(numSecondResultString)! >= 0 && xSecondResultString != "0" {
             numSecondResultString = "+" + numSecondResultString
         }
-        resultString = xFirstResultString+"x" + numFirstResultString + "=" + xSecondResultString+"x" + numSecondResultString
+		 print("\n-----\nxFirst: \(xFirstResultString)\nnumFirst: \(numFirstResultString)\nxSecond: \(xSecondResultString)\nnumSecond: \(numSecondResultString)\n-----")
+        resultString = buildResultString(xFirst: xFirstResultString, numFirst: numFirstResultString, xSecond: xSecondResultString, numSecond: numSecondResultString)
         
         return resultString
     }
+	
+	func buildResultString(xFirst: String, numFirst: String, xSecond: String, numSecond: String) -> String {
+		var resultString = ""
+		
+		if xFirst != "0" {
+			switch xFirst {
+			case "1":
+				resultString += "x"
+			default:
+				resultString += xFirst + "x"
+			}
+		}
+		
+		if numFirst != "0" && numFirst != "" {
+			resultString += numFirst
+		}
+		
+		if xFirst == "0" && numFirst == "0" {
+			resultString += "0"
+		}
+		
+		// METADE
+		resultString += "="
+		
+		if xSecond != "0" {
+			switch xSecond {
+			case "1":
+				resultString += "x"
+			default:
+				resultString += xSecond + "x"
+			}
+		}
+		
+		if numSecond != "0" && numSecond != "+0" {
+			resultString += numSecond
+		}
+		
+		if xSecond == "0" && numSecond == "0" {
+			resultString += "0"
+		}
+		
+		print("BuildResultString() -> \(resultString)")
+		return resultString
+	}
     
     
     //MARK: Chama tudo e devolve

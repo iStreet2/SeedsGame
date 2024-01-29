@@ -14,7 +14,7 @@ class GameScene: SKScene {
 	var topBackground = SKSpriteNode(imageNamed: "topSceneBackground")
 
 	var phaseMap: [Int : [(String, Float)]] = [
-		1: [("-1.0", -1), ("4-4=x-2", 2), ("3x+2*9=0", -6)],
+		1: [("4-4=x", -1), ("4-4=x-2", 2), ("3x+2*9=0", -6)],
 		2: [("lara", 1.65), ("eh", 3.4), ("legal", 3.14), ("4", 4), ("5", 5)],
 		3: [("1", 1), ("2", 2), ("3", 3), ("4", 4), ("5", 5), ("6", 6), ("7", 7), ("8", 8), ("9", 9), ("10", 10)]
 	]
@@ -42,7 +42,8 @@ class GameScene: SKScene {
 		joinSideButton.position = CGPoint(x: frame.size.width - 100, y: frame.size.height / 3)
 		joinSideButton.zPosition = 11
 		
-		giveResponseButton.position = CGPoint(x: frame.size.width / 2, y: 25)
+		giveResponseButton.position = CGPoint(x: frame.size.width / 2, y: 38)
+		giveResponseButton.size = CGSize(width: 75, height: 75)
 		giveResponseButton.zPosition = 11
 		
 		addChild(nextPhaseButton)
