@@ -11,6 +11,8 @@ import SpriteKit
 class ClientModel: SKSpriteNode {
 	var eq: String
 	
+	let clientSprites = [1: "", 2: ""]
+	
 	init(_ eq: String, imageNamed: String, color: UIColor, size: CGSize) {
 		self.eq = eq
 		let texture = SKTexture(imageNamed: imageNamed)

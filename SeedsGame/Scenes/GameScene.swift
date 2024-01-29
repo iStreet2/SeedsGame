@@ -10,6 +10,7 @@ import SpriteKit
 
 class GameScene: SKScene {
 
+	var background = SKSpriteNode(imageNamed: "sceneBackground")
 
 	var phaseMap: [Int : [(String, Float)]] = [
 		1: [("4+3x-2-2x=2-2+3x-4x", -1), ("4-4=x-2", 2), ("3x+2*9=0", -6)],
@@ -34,6 +35,10 @@ class GameScene: SKScene {
 		addChild(nextPhaseButton)
 		addChild(nextQuestionButton)
 		addChild(joinSideButton)
+		
+		background.position = CGPoint(x: frame.size.width / 2, y: frame.size.height / 2)
+		background.zPosition = -1
+		addChild(background)
 	}
 
 }

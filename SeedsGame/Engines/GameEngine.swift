@@ -38,7 +38,12 @@ import SpriteKit
     
     func receiveAction(_ action: Action) {
         actions.append(action)
-        action.execute()
+        let res = action.execute()
+		 
+		 // recebeu uma equação de resposta -> OperationAction
+		 if res.contains("=") {
+			 self.phases[currentPhase].currentEqLabel.text = "\(res)"
+		 }
     }
     
     
