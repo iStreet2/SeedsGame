@@ -9,10 +9,10 @@ import Foundation
 import SpriteKit
 
 class GameScene: SKScene {
-
+	
 	var bottomBackground = SKSpriteNode(imageNamed: "bottomSceneBackground")
 	var topBackground = SKSpriteNode(imageNamed: "topSceneBackground")
-
+	
 	var phaseMap: [Int : [(String, Float)]] = [
 		1: [("4-4=x", 0), ("4-4=x-2", 2), ("3x+2*9=0", -6)],
 		2: [("17-2x=3", 7), ("30x-120=0", 4), ("2x+3x=15x-30", 3), ("14+2x=3+2", -4.5), ("5", 5)],
@@ -20,7 +20,7 @@ class GameScene: SKScene {
 	]
 	
 	// scene.phaseMap[clientNumber+1][]
-
+	
 	
 	let nextPhaseButton = SKSpriteNode(color: .red, size: CGSize(width: 50, height: 50))
 	let nextQuestionButton = SKSpriteNode(color: .green, size: CGSize(width: 50, height: 50))
@@ -59,7 +59,7 @@ class GameScene: SKScene {
 		topBackground.zPosition = -1
 		addChild(topBackground)
 	}
-
+	
 }
 
 // [2x]
