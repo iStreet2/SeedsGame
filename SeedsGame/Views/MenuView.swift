@@ -17,10 +17,10 @@ struct MenuView: View {
                     Spacer()
                     Text("Título do Jogo")
                         .padding()
-                        .padding(.horizontal, 30)
+                        .padding(.horizontal, 60)
                         .padding(.vertical, 20)
                         .bold()
-                        .font(.title)
+                        .font(.custom("Troika", size: 33))
                         .background(.gray)
                         .padding(.trailing, 162)
                     

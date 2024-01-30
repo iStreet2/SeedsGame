@@ -27,35 +27,7 @@ class OperationAction: Action {
 	}
 	
 	
-	// devolve resultado de equação sem incógnita
-	func evaluate(eq: String) -> String {
-		let expression: NSExpression = NSExpression(format: eq)
-		let result: Double = expression.expressionValue(with: nil, context: nil) as! Double
-		var sResult = String(Int(result))
-		
-		if Array(sResult)[0] == "+" {
-			return String(sResult.remove(at: sResult.startIndex))
-		}
-		return sResult
-	}
-	
-	
-	// função principal pra preparar a equação pra ela conseguir ser "juntada" pelo botão de juntar
-	func prepareEq(_ equation: String) -> String {
-		print("Preparing Equation!")
-		if equation.isEmpty {
-			return ""
-		}
-		
-		var joinedEquation = joinAllNumbers(equation)
-		var joinedXEquation = joinXwithNum(joinedEquation)
-		
-		var resultEquation = equationEvaluator(joinedXEquation)
-		
-		return resultEquation
-	}
-	
-	
+	//MARK: Junta números
 	func joinAllNumbers(_ equation: String) -> [String] {
 		print("Joining numbers!")
 		var resultEquation: [String] = []
@@ -94,6 +66,8 @@ class OperationAction: Action {
 	}
 	
 	
+	
+	//MARK: Junta X com números
 	func joinXwithNum(_ equation: [String]) -> [String] {
 		var i = 0
 		var resultEquation: [String] = []
@@ -122,16 +96,19 @@ class OperationAction: Action {
 			}
 			
 		}
+		
+		print("joinedResultEquation = \(resultEquation)")
+		
 		return resultEquation
 	}
 	
 	
-	func equationEvaluator(_ equation: [String]) -> String {
-		var i = 0
-		var resultString = ""
+	
+	//MARK: Separa em filas
+	//Separa a equação em duas filas, uma de valores da incognita e outra dos números
+	func equationSeparator(_ equation: [String], i: inout Int, dif: Int){
 		let operandos = ["+", "-", "/", "*"]
 		
-		// primeira metade
 		while i < equation.count && equation[i] != "=" {
 			var currentNum = ""
 			
@@ -142,7 +119,6 @@ class OperationAction: Action {
 						currentNum.append(equation[i-1])
 					}
 				}
-				
 				if equation[i].count == 1 {
 					currentNum.append("1")
 				} else {
@@ -169,108 +145,140 @@ class OperationAction: Action {
 			
 			i += 1
 		}
+		
+	}
+	
+	
+	// devolve resultado da equação
+	func evaluate(eq: String) -> String {
+		let expression: NSExpression = NSExpression(format: eq)
+		let result: Double = expression.expressionValue(with: nil, context: nil) as! Double
+		var sResult = String(Int(result))
+		
+		if Array(sResult)[0] == "+" {
+			return String(sResult.remove(at: sResult.startIndex))
+		}
+		return sResult
+	}
+	
+	
+	func checkPlus(Q: Queue) -> String {
+		if Q.items.isEmpty {
+			return "0"
+		}
+		var ResultEquation = ""
+		for item in Q.items {
+			ResultEquation += item
+		}
+		if Array(ResultEquation)[0] == "+" {
+			ResultEquation.remove(at: ResultEquation.startIndex)
+		}
+		var ResultString = evaluate(eq: ResultEquation) 
+		print("Resultado de \(ResultEquation) = \(ResultString)")
+		return ResultString
+	}
+	
+	
+	//MARK: faz resultado
+	func equationEvaluator(_ equation: [String]) -> String {
+		var i = 0
+		var resultString = ""
+		let operandos = ["+", "-", "/", "*"]
+		
+		// primeira metade
+		equationSeparator(equation, i: &i, dif: i)
 		// primeira metade da equação está feita e separada nas diferentes filas
 		
-		// MARK: Avaliando partes com X
-		var xFirstResultEquation = ""
-		for item in xQ.items {
-			xFirstResultEquation += item
-		}
-		if Array(xFirstResultEquation)[0] == "+" {
-			xFirstResultEquation.remove(at: xFirstResultEquation.startIndex)
-		}
-		var xFirstResultString = evaluate(eq: xFirstResultEquation)
-		print("Resultado de \(xFirstResultEquation) = \(xFirstResultString)")
+		//MARK: Parte 1
+		var xFirstResultString = checkPlus(Q: xQ)
+		var numFirstResultString = checkPlus(Q: numQ)
 		
-		
-		// MARK: Avaliando partes sem X
-		var numFirstResultEquation = ""
-		for item in numQ.items {
-			numFirstResultEquation += item
-		}
-		if Array(numFirstResultEquation)[0] == "+" {
-			numFirstResultEquation.remove(at: numFirstResultEquation.startIndex)
-		}
-		var numFirstResultString = evaluate(eq: numFirstResultEquation)
-		print("Resultado de \(numFirstResultEquation) = \(numFirstResultString)")
 		
 		// segunda metade da equação
 		var j = i + 1
 		xQ.clear()
 		numQ.clear()
 		
-		while j < equation.count {
-			var currentNum = ""
-			
-			if equation[j].contains("x") {
-				
-				if j - i > 0 {
-					if operandos.contains(equation[j-1]) {
-						currentNum.append(equation[j-1])
-					}
-				}
-				
-				if equation[j].count == 1 {
-					currentNum.append("1")
-				} else {
-					let number = equation[j].components(separatedBy: CharacterSet.decimalDigits.inverted).joined() // pegamos o número que estava com o X
-					currentNum.append(number)
-				}
-				
-				xQ.enqueue(currentNum)
-				print("\(xQ)")
-			}
-			
-			else if !operandos.contains(equation[j]) {
-				if j > 0 {
-					if operandos.contains(equation[j-1]) {
-						currentNum.append(equation[j-1])
-					}
-				}
-				
-				currentNum.append(equation[j])
-				
-				numQ.enqueue(currentNum)
-				print("\(numQ)")
-			}
-			
-			j += 1
-		}
 		
-		// MARK: Avaliando segunda parte com X
-		var xSecondResultEquation = ""
-		for item in xQ.items {
-			xSecondResultEquation += item
-		}
-		if Array(xSecondResultEquation)[0] == "+" {
-			xSecondResultEquation.remove(at: xSecondResultEquation.startIndex)
-		}
-		var xSecondResultString = evaluate(eq: xSecondResultEquation)
-		print("Resultado de \(xSecondResultEquation) = \(xSecondResultString)")
+		equationSeparator(equation, i: &j, dif: j-i)
 		
-		// MARK: Avaliando segunda parte sem X
-		var numSecondResultEquation = ""
-		for item in numQ.items {
-			numSecondResultEquation += item
-		}
-		if Array(numSecondResultEquation)[0] == "+" {
-			numSecondResultEquation.remove(at: numSecondResultEquation.startIndex)
-		}
-		var numSecondResultString = evaluate(eq: numSecondResultEquation)
-		print("Resultado de \(numSecondResultEquation) = \(numSecondResultString)")
+		//MARK: Parte 2
+		var xSecondResultString = checkPlus(Q: xQ)
+		var numSecondResultString = checkPlus(Q: numQ)
 		
-		if Int(numFirstResultString)! >= 0 {
+		if Int(numFirstResultString)! >= 0 && xFirstResultString != "0" {
 			numFirstResultString = "+" + numFirstResultString
 		}
 		
-		if Int(numSecondResultString)! >= 0 {
+		if Int(numSecondResultString)! >= 0 && xSecondResultString != "0" {
 			numSecondResultString = "+" + numSecondResultString
 		}
-		resultString = xFirstResultString+"x" + numFirstResultString + "=" + xSecondResultString+"x" + numSecondResultString
+		print("\n-----\nxFirst: \(xFirstResultString)\nnumFirst: \(numFirstResultString)\nxSecond: \(xSecondResultString)\nnumSecond: \(numSecondResultString)\n-----")
+		resultString = buildResultString(xFirst: xFirstResultString, numFirst: numFirstResultString, xSecond: xSecondResultString, numSecond: numSecondResultString)
 		
 		return resultString
 	}
 	
+	func buildResultString(xFirst: String, numFirst: String, xSecond: String, numSecond: String) -> String {
+		var resultString = ""
+		
+		if xFirst != "0" {
+			switch xFirst {
+			case "1":
+				resultString += "x"
+			default:
+				resultString += xFirst + "x"
+			}
+		}
+		
+		if numFirst != "0" && numFirst != "" {
+			resultString += numFirst
+		}
+		
+		if xFirst == "0" && numFirst == "0" {
+			resultString += "0"
+		}
+		
+		// METADE
+		resultString += "="
+		
+		if xSecond != "0" {
+			switch xSecond {
+			case "1":
+				resultString += "x"
+			default:
+				resultString += xSecond + "x"
+			}
+		}
+		
+		if numSecond != "0" && numSecond != "+0" {
+			resultString += numSecond
+		}
+		
+		if xSecond == "0" && numSecond == "0" {
+			resultString += "0"
+		}
+		
+		print("BuildResultString() -> \(resultString)")
+		return resultString
+	}
+	
+	
+	//MARK: Chama tudo e devolve
+	// função principal pra preparar a equação pra ela conseguir ser "juntada" pelo botão de juntar
+	func prepareEq(_ equation: String) -> String {
+		print("Preparing Equation!")
+		if equation.isEmpty {
+			return ""
+		}
+		
+		var joinedEquation = joinAllNumbers(equation)
+		var joinedXEquation = joinXwithNum(joinedEquation)
+		
+		var resultEquation = equationEvaluator(joinedXEquation)
+		
+		return resultEquation
+	}
 	
 }
 

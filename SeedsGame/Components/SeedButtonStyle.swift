@@ -11,7 +11,7 @@ struct SeedButtonStyle: ButtonStyle {
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.title)
+            .font(.custom("troika", size: 32))
             .bold()
             .padding()
             .padding(.horizontal, 20)

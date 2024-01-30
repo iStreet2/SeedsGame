@@ -19,6 +19,11 @@
 		3BB1AFA42B59B16000E61276 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BB1AFA32B59B16000E61276 /* Preview Assets.xcassets */; };
 		DC8208CC2B61993400A0172C /* SquareButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8208CB2B61993400A0172C /* SquareButtonStyle.swift */; };
 		DC8208CE2B61AB2800A0172C /* TopicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8208CD2B61AB2800A0172C /* TopicView.swift */; };
+		DC8208D02B68148700A0172C /* CheckToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8208CF2B68148700A0172C /* CheckToggleStyle.swift */; };
+		DC8208D22B682FCB00A0172C /* LifeScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8208D12B682FCB00A0172C /* LifeScore.swift */; };
+		DC8208D62B6965FE00A0172C /* AlegreyaSans-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DC8208D52B6965FE00A0172C /* AlegreyaSans-Black.ttf */; };
+		DC8208D82B69685A00A0172C /* AlegreyaSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DC8208D72B69685A00A0172C /* AlegreyaSans-Medium.ttf */; };
+		DC8208DA2B696B3C00A0172C /* troika.otf in Resources */ = {isa = PBXBuildFile; fileRef = DC8208D92B696B3C00A0172C /* troika.otf */; };
 		DCEB03092B6179D900025ABA /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCEB03082B6179D900025ABA /* MenuView.swift */; };
 		E92A6F1A2B60354B003A4C1E /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92A6F192B60354B003A4C1E /* Stack.swift */; };
 		E9E2212C2B59B596001FE22A /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E2212B2B59B596001FE22A /* GameEngine.swift */; };
@@ -46,6 +51,12 @@
 		3BB1AFA32B59B16000E61276 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DC8208CB2B61993400A0172C /* SquareButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareButtonStyle.swift; sourceTree = "<group>"; };
 		DC8208CD2B61AB2800A0172C /* TopicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicView.swift; sourceTree = "<group>"; };
+		DC8208CF2B68148700A0172C /* CheckToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckToggleStyle.swift; sourceTree = "<group>"; };
+		DC8208D12B682FCB00A0172C /* LifeScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifeScore.swift; sourceTree = "<group>"; };
+		DC8208D32B69654500A0172C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		DC8208D52B6965FE00A0172C /* AlegreyaSans-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AlegreyaSans-Black.ttf"; sourceTree = "<group>"; };
+		DC8208D72B69685A00A0172C /* AlegreyaSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AlegreyaSans-Medium.ttf"; sourceTree = "<group>"; };
+		DC8208D92B696B3C00A0172C /* troika.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = troika.otf; sourceTree = "<group>"; };
 		DCEB03082B6179D900025ABA /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		E92A6F192B60354B003A4C1E /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		E9E2212B2B59B596001FE22A /* GameEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
@@ -89,6 +100,8 @@
 		3BB1AF9B2B59B15F00E61276 /* SeedsGame */ = {
 			isa = PBXGroup;
 			children = (
+				DC8208D42B6965D200A0172C /* Fonts */,
+				DC8208D32B69654500A0172C /* Info.plist */,
 				3BB1AF9C2B59B15F00E61276 /* SeedsGameApp.swift */,
 				3BB1AF9E2B59B15F00E61276 /* ContentView.swift */,
 				DCEB03072B6179AA00025ABA /* Views */,
@@ -108,6 +121,16 @@
 				3BB1AFA32B59B16000E61276 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		DC8208D42B6965D200A0172C /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				DC8208D52B6965FE00A0172C /* AlegreyaSans-Black.ttf */,
+				DC8208D72B69685A00A0172C /* AlegreyaSans-Medium.ttf */,
+				DC8208D92B696B3C00A0172C /* troika.otf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		DCEB03072B6179AA00025ABA /* Views */ = {
@@ -152,6 +175,8 @@
 				1962B3092B683378007642F9 /* IndexStyle.swift */,
 				19A4ADD52B61865A00E3E9F5 /* SeedButtonStyle.swift */,
 				DC8208CB2B61993400A0172C /* SquareButtonStyle.swift */,
+				DC8208CF2B68148700A0172C /* CheckToggleStyle.swift */,
+				DC8208D12B682FCB00A0172C /* LifeScore.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -222,8 +247,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC8208D82B69685A00A0172C /* AlegreyaSans-Medium.ttf in Resources */,
+				DC8208DA2B696B3C00A0172C /* troika.otf in Resources */,
 				3BB1AFA42B59B16000E61276 /* Preview Assets.xcassets in Resources */,
 				3BB1AFA12B59B16000E61276 /* Assets.xcassets in Resources */,
+				DC8208D62B6965FE00A0172C /* AlegreyaSans-Black.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,10 +278,12 @@
 				3B5F47C92B5B085600B09FBE /* SeedBagModel.swift in Sources */,
 				3BB1AF9D2B59B15F00E61276 /* SeedsGameApp.swift in Sources */,
 				DC8208CC2B61993400A0172C /* SquareButtonStyle.swift in Sources */,
+				DC8208D22B682FCB00A0172C /* LifeScore.swift in Sources */,
 				E9E221372B59B975001FE22A /* OperationActionModel.swift in Sources */,
 				1962B3062B6814BB007642F9 /* +TupleView.swift in Sources */,
 				E9E221352B59B8D9001FE22A /* GameScene.swift in Sources */,
 				E9E2212E2B59B5C6001FE22A /* ActionModel.swift in Sources */,
+				DC8208D02B68148700A0172C /* CheckToggleStyle.swift in Sources */,
 				19A4ADD42B6183B200E3E9F5 /* PhaseSelectionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -391,6 +421,7 @@
 				DEVELOPMENT_TEAM = 8LW8TUQS66;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SeedsGame/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -424,6 +455,7 @@
 				DEVELOPMENT_TEAM = 8LW8TUQS66;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SeedsGame/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

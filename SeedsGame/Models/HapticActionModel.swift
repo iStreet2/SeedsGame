@@ -50,7 +50,7 @@ class HapticAction: Action {
 		let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: sharpness)
 		let event = CHHapticEvent(eventType: .hapticTransient, parameters: [intensity, sharpness], relativeTime: 0)
 		events.append(event)
-
+		
 		// convertes os eventos em padrões e tocá-los, por padrão, imediatamente
 		do {
 			let pattern = try CHHapticPattern(events: events, parameters: [])
