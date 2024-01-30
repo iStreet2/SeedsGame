@@ -9,29 +9,38 @@ import Foundation
 import SwiftUI
 
 struct TopicView: View {
+    @State var isButtonOn = false
+    @State var isSecondButtonOn = false
+    
     var body: some View {
         HStack(alignment: .firstTextBaseline) {
             Button(action: {
                 print("foii")
             }) {
-                Image(systemName: "triangle")
+                Image("Setaesquerda")
             }
             .buttonStyle(SquareButtonStyle())
+            
             Spacer()
-            VStack {
+            
+            VStack(alignment: .leading) {
                 Text("Escolha os Tópicos")
-                    .font(.title)
+                    .font(.custom("AlegreyaSans-Medium", size: 32))
                     .bold()
-                    .padding(60)
-                HStack {
-                    Circle()
-                        .frame(width: 20)
-                    Text("Equações de Primeiro Grau")
-                }
-                HStack {
-                    Circle()
-                        .frame(width: 25)
-                    Text("Equações de Segundo Grau")
+                    .padding(50)
+                    .padding(.trailing, 65)
+                
+                VStack {
+                    Toggle("Funções de Primeiro Grau", isOn: $isButtonOn)
+                        .toggleStyle(CheckToggleStyle())
+                        .padding()
+                        .font(.custom("AlegreyaSans-Medium", size: 24))
+                    
+                    Toggle("Funções de Segundo Grau", isOn: $isSecondButtonOn)
+                        .toggleStyle(CheckToggleStyle())
+                        .padding()
+                        .font(.custom("AlegreyaSans-Medium", size: 24))
+                      
                 }
             }
             Spacer()

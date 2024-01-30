@@ -55,7 +55,7 @@ class PhaseScene: GameScene {
         GameEngine.shared.addSeedBags(scene: self)
                 
         //Para cada caracter na string da equação, eu crio um quadrado que ira receber sacos dentro dele
-        GameEngine.shared.addHitBoxes(scene: self)
+        GameEngine.shared.addHitBoxesFromEquation(scene: self)
         
         currentEqLabel.position = CGPoint(x: 250, y: 320)
 		  currentEqLabel.zPosition = 1
@@ -101,8 +101,12 @@ class PhaseScene: GameScene {
 		
 		//movimento do sprite de semente
         for (index,seedBag) in currentSeedBags.enumerated(){
-            if seedBag.label.text! != "="{
-                GameEngine.shared.moveSeedBag(seedBag, touches, stage: 0,initialPosition: index, scene: self)
+            if !GameEngine.shared.operators.contains(seedBag.label.text!){
+                if seedBag.label.text! != "="{
+                    if seedBag.label.text! != "0"{
+                        GameEngine.shared.moveSeedBag(seedBag, touches, stage: 0,initialPosition: index, scene: self)
+                    }
+                }
             }
         }
 				

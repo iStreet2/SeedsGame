@@ -66,6 +66,7 @@ class OperationAction: Action {
     }
     
     
+
     //MARK: Junta X com números
     func joinXwithNum(_ equation: [String]) -> [String] {
         var i = 0
@@ -95,11 +96,14 @@ class OperationAction: Action {
             }
             
         }
+
         print("joinedResultEquation = \(resultEquation)")
+
         return resultEquation
     }
     
     
+
     //MARK: Separa em filas
     //Separa a equação em duas filas, uma de valores da incognita e outra dos números
     func equationSeparator(_ equation: [String], i: inout Int, dif: Int){
@@ -115,7 +119,6 @@ class OperationAction: Action {
                         currentNum.append(equation[i-1])
                     }
                 }
-
                 if equation[i].count == 1 {
                     currentNum.append("1")
                 } else {
@@ -142,6 +145,7 @@ class OperationAction: Action {
             
             i += 1
         }
+
     }
     
     
@@ -188,12 +192,14 @@ class OperationAction: Action {
         //MARK: Parte 1
         var xFirstResultString = checkPlus(Q: xQ)
         var numFirstResultString = checkPlus(Q: numQ)
+
         
         // segunda metade da equação
         var j = i + 1
         xQ.clear()
         numQ.clear()
         
+
         equationSeparator(equation, i: &j, dif: j-i)
         
         //MARK: Parte 2
@@ -273,6 +279,7 @@ class OperationAction: Action {
         
         return resultEquation
     }
+
 }
 
 
