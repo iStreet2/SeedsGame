@@ -10,17 +10,22 @@ import SpriteKit
 
 class GameScene: SKScene {
 
+	var bottomBackground = SKSpriteNode(imageNamed: "bottomSceneBackground")
+	var topBackground = SKSpriteNode(imageNamed: "topSceneBackground")
 
 	var phaseMap: [Int : [(String, Float)]] = [
-		1: [("4+3x-2-2x=2-2+3x-4x", -1), ("4-4=x-2", 2), ("3x+2*9=0", -6)],
-		2: [("lara", 1.65), ("eh", 3.4), ("legal", 3.14), ("4", 4), ("5", 5)],
+		1: [("4-4=x", 0), ("4-4=x-2", 2), ("3x+2*9=0", -6)],
+		2: [("17-2x=3", 7), ("30x-120=0", 4), ("2x+3x=15x-30", 3), ("14+2x=3+2", -4.5), ("5", 5)],
 		3: [("1", 1), ("2", 2), ("3", 3), ("4", 4), ("5", 5), ("6", 6), ("7", 7), ("8", 8), ("9", 9), ("10", 10)]
 	]
+	
+	// scene.phaseMap[clientNumber+1][]
 
 	
 	let nextPhaseButton = SKSpriteNode(color: .red, size: CGSize(width: 50, height: 50))
 	let nextQuestionButton = SKSpriteNode(color: .green, size: CGSize(width: 50, height: 50))
 	let joinSideButton = SKSpriteNode(color: .yellow, size: CGSize(width: 50, height: 50))
+	let giveResponseButton = SKSpriteNode(imageNamed: "blackhole")
 	
 	override func didMove(to view: SKView) {
 		startup()
@@ -29,11 +34,30 @@ class GameScene: SKScene {
 	
 	func startup() {
 		nextPhaseButton.position = CGPoint(x: 200, y: 100)
+		nextPhaseButton.zPosition = 11
+		
 		nextQuestionButton.position = CGPoint(x: 300, y: 100)
-		joinSideButton.position = CGPoint(x: 400, y: 100)
+		nextQuestionButton.zPosition = 11
+		
+		joinSideButton.position = CGPoint(x: frame.size.width - 100, y: frame.size.height / 3)
+		joinSideButton.zPosition = 11
+		
+		giveResponseButton.position = CGPoint(x: frame.size.width / 2, y: 38)
+		giveResponseButton.size = CGSize(width: 75, height: 75)
+		giveResponseButton.zPosition = 11
+		
 		addChild(nextPhaseButton)
 		addChild(nextQuestionButton)
 		addChild(joinSideButton)
+		addChild(giveResponseButton)
+		
+		bottomBackground.position = CGPoint(x: frame.size.width / 2, y: frame.size.height / 4)
+		bottomBackground.zPosition = 10
+		addChild(bottomBackground)
+		
+		topBackground.position = CGPoint(x: frame.size.width / 2, y: frame.size.height - frame.size.height / 4)
+		topBackground.zPosition = -1
+		addChild(topBackground)
 	}
 
 }

@@ -36,6 +36,14 @@ import SpriteKit
     var actions: [Action] = []
     var phases: [PhaseScene] = []
     var currentPhase = 0
+  
+  let darknessMap: [Int : SKAction] = [0: SKAction.colorize(with: .black, colorBlendFactor: 0, duration: 0),
+													 1: SKAction.colorize(with: .black, colorBlendFactor: 0.2, duration: 0),
+													 2: SKAction.colorize(with: .black, colorBlendFactor: 0.4, duration: 0)]
+	
+	let undarknessMap: [Int : SKAction] = [0: SKAction.colorize(with: .black, colorBlendFactor: 0, duration: 1),
+														1: SKAction.colorize(with: .black, colorBlendFactor: 0.2, duration: 1),
+														2: SKAction.colorize(with: .black, colorBlendFactor: 0.4, duration: 1)]
     
     
     init() {
@@ -74,58 +82,68 @@ import SpriteKit
         }
     }
     
-    func nextQuestion(scene: PhaseScene) {
-        
-        let nQuestions = scene.clients.count
-        
-        for client in scene.clients {
-            
-            let scaleAction = SKAction.scale(by: 1.15, duration: 0.5)
-            client.run(scaleAction)
-            
-            let moveAction = SKAction.moveTo(x: client.position.x - 75, duration: 0.5)
-            client.run(moveAction)
-            
-            if client.eq == scene.clients[scene.currentClientNumber].eq {
-                // Cliente da pergunta atual é despachado
-                scene.removeChildren(in: [client])
-            }
-        }
-        
-        // renderiza o sprite do próximo cliente no final da fila
-        if (scene.currentClientNumber + 3) <= (nQuestions - 1) {
-            scene.addChild(scene.clients[scene.currentClientNumber + 3])
-        }
-        
-        // não deixa o número do cliente atual ser maior do que o número de clientes
-        if scene.currentClientNumber != nQuestions - 1 {
-            scene.currentClientNumber += 1
-            scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)"
-        }
-        
-        // se todos os clientes tiverem as suas perguntas resolvidas
-        else {
-            scene.currentEqLabel.text = "All questions done!"
-        }
-        //Remover e readicionar as hitBoxes da equação
-        addHitBoxesFromEquation(scene: scene)
-        addSeedBags(scene: scene)
-    }
+
+  func nextQuestion(scene: PhaseScene) {
+		
+		let nQuestions = scene.clients.count
+				
+		for (index, client) in scene.clients.enumerated() {
+			
+			let scaleAction = SKAction.scale(by: 1.15, duration: 0.5)
+			client.run(scaleAction)
+			
+			let moveAction = SKAction.moveTo(x: client.position.x - 75, duration: 0.5)
+			client.run(moveAction)
+
+			for c in scene.currentClientNumber..<scene.clients.count {
+				scene.clients[c].run(undarknessMap[c - scene.currentClientNumber - 1] ?? SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 0.5))
+			}
+			
+			if client.eq == scene.clients[scene.currentClientNumber].eq {
+				// Cliente da pergunta atual é despachado
+				scene.removeChildren(in: [client])
+			}
+		}
+		
+		// renderiza o sprite do próximo cliente no final da fila
+		if (scene.currentClientNumber + 3) <= (nQuestions - 1) {
+			scene.addChild(scene.clients[scene.currentClientNumber + 3])
+		}
+		
+		// não deixa o número do cliente atual ser maior do que o número de clientes
+		if scene.currentClientNumber != nQuestions - 1 {
+			scene.currentClientNumber += 1
+			scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)"
+		}
+		
+		// se todos os clientes tiverem as suas perguntas resolvidas
+		else {
+			scene.currentEqLabel.text = "All questions done!"
+		}
+		//Remover e readicionar as hitBoxes da equação
+		addHitBoxesFromEquation(scene: scene)
+		addSeedBags(scene: scene)
+	}
     
     
-    func renderClients(scene: PhaseScene) {
-        for (index, client) in scene.clients.enumerated() {
-            client.position = CGPoint(x: 564+(75*index), y: 235)
-            client.size = CGSize(width: client.size.width - CGFloat(index*(15)), height: client.size.height - CGFloat(index*(30)))
-            client.zPosition = CGFloat(scene.clients.count - index)
-            
-            if index<3 {
-                scene.addChild(client)
-            }
-        }
-        
-        scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)"
-    }
+    
+	func renderClients(scene: PhaseScene) {
+		
+		for (index, client) in scene.clients.enumerated() {
+			client.position = CGPoint(x: 564+(75*index), y: 235)
+			client.size = CGSize(width: client.size.width - CGFloat(index*(15)), height: client.size.height - CGFloat(index*(30)))
+			client.zPosition = CGFloat(scene.clients.count - index)
+			
+			client.run(darknessMap[index] ?? SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 0))
+			
+			
+			if index<3 {
+				scene.addChild(client)
+			}
+		}
+		
+		scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)"
+	}
     
     
     // Função para mexer seeBagModels
@@ -458,7 +476,43 @@ import SpriteKit
         
         return possible
     }
-    
+  
+  func renderClientResponse(_ scene: PhaseScene) {
+		
+		let client = scene.clients[scene.currentClientNumber]
+		let clientSprite = client.clientSprites[client.clientSpriteID] // String
+		let rose = client.clientSpriteID == 11
+		
+		// ACERTOU!
+		if scene.currentEqLabel.text! == String(scene.phaseMap[currentPhase+1]![scene.currentClientNumber].1) {
+			print("EEEEITA PENGA \(String(scene.phaseMap[currentPhase+1]![scene.currentClientNumber].1))")
+			
+			var resultSprite: String = ""
+			if rose {
+				resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo (acerto)")
+			}
+			else {
+				resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Feliz")
+			}
+			
+			client.texture = SKTexture(imageNamed: resultSprite)
+		}
+		// errou...
+		else {
+			print("vishh \(String(scene.phaseMap[currentPhase+1]![scene.currentClientNumber].1))")
+			
+			
+			var resultSprite: String = ""
+			if rose {
+				resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Feliz (erro)")
+			}
+			else {
+				resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo")
+			}
+			
+			client.texture = SKTexture(imageNamed: resultSprite)
+		}
+	}
 }
 
 //Sempre que eu arrastar algo para outra hitbox, eu tenho que atualizar o meu vetor de sementes, mas isso soh pode ser feito depois que dua sementes nao puderem ficar na mesma hitbox, ou seja, tem que ter o sistema de realocação feito ja
