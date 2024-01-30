@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SpriteKit
 
 struct PhaseSelectionView: View {
     @State var index: Int = 0
@@ -16,7 +17,6 @@ struct PhaseSelectionView: View {
         GeometryReader { geometry in
             NavigationStack {
                 VStack{
-                    
                     Text("Selecione o capítulo")
                         .padding(.bottom)
                     

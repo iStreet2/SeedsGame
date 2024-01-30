@@ -47,24 +47,24 @@ struct Carousel: View {
                 self.nextGray = getX(min: 0, max: 180, slider: scale, min2: 1.0, max2: 0)
                 
             }
-//            .onEnded { value in
-//                withAnimation(Animation.spring()) {
-//                    if value.translation.width < -40 {
-//                        currentIndex = min(currentIndex + 1, views.count - 1)
-//                        
-//                    } else if value.translation.width > 40 {
-//                        currentIndex = max(currentIndex - 1, 0)
-//                        
-//                    }
-//                    self.dragOffset = 0.5
-//                    self.currentScale = 1.2
-//                    self.nextScale = 1.2
-//                    self.currentOpacity = 1.2
-//                    self.nextOpacity = 0.7
-//                    self.currentGray = 0.0
-//                    self.nextGray = 1.0
-//                }
-//            }
+            .onEnded { value in
+                withAnimation(Animation.spring()) {
+                    if value.translation.width < -40 {
+                        currentIndex = min(currentIndex + 1, views.count - 1)
+                        
+                    } else if value.translation.width > 40 {
+                        currentIndex = max(currentIndex - 1, 0)
+                        
+                    }
+                    self.dragOffset = 0.5
+                    self.currentScale = 1.2
+                    self.nextScale = 1.2
+                    self.currentOpacity = 1.2
+                    self.nextOpacity = 0.7
+                    self.currentGray = 0.0
+                    self.nextGray = 1.0
+                }
+            }
     }
     
     
@@ -83,7 +83,7 @@ struct Carousel: View {
                     ForEach(views.indices) { index in
                         self.views[index]
                             .frame(width:geometry.size.width/2, height: geometry.size.width/2)
-                            .scaleEffect(index == currentIndex ? gestureIsOn ? currentScale: 1 : index == currentIndex + 1 ? dragOffset < 0 ? nextScale: 1.2 : index == currentIndex - 1 ? dragOffset > 0 ? nextScale: 1.2 : 1.2)
+                            .scaleEffect(index == currentIndex ? currentScale : index == currentIndex + 1 ? dragOffset < 0 ? nextScale: 1.2 : index == currentIndex - 1 ? dragOffset > 0 ? nextScale: 1.2 : 1.2)
                             .offset(x: geometry.size.width)
                             .offset(x: CGFloat(index - currentIndex) * geometry.size.width/2 + dragOffset)
                         

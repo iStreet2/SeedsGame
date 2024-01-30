@@ -23,10 +23,6 @@ struct MenuView: View {
                         .font(.title)
                         .background(.gray)
                         .padding(.trailing, 162)
-
-
-                    
-//                    Spacer()
                     
                     Button(action: {
                         print("foii")
@@ -36,34 +32,20 @@ struct MenuView: View {
                     .buttonStyle(SquareButtonStyle())
                 }
                 
-                HStack(spacing: 40){
-//                    Image("client1")
-//                        .resizable()
-//                        .scaledToFit()
-//                        .frame(width: 110)
-//                        .padding()
+                HStack(spacing: 40){                    
                     VStack(spacing: 20){
-                        Button("MODO HISTÓRIA"){
-                            print("a")
-                        }
-                        .buttonStyle(SeedButtonStyle())
+                        NavigationLink("MODO HISTÓRIA", destination: PhaseSelectionView())
+                            .buttonStyle(SeedButtonStyle())
                         
-                        Button("INFINITO"){
-                            print("b")
-                        }
-                        .buttonStyle(SeedButtonStyle())
+                        NavigationLink("INFINITO", destination: TopicView())
+                            .buttonStyle(SeedButtonStyle())
                     }
-//                    Image("client1")
-//                        .resizable()
-//                        .scaledToFit()
-//                        .frame(width: 110)
-//                        .padding()
                 }
             }
         }
-        
     }
 }
+
 #Preview {
     MenuView()
 }
