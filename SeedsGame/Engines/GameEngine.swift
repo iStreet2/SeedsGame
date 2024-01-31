@@ -126,7 +126,7 @@ import SpriteKit
 		//Remover e readicionar as hitBoxes da equação
 		addHitBoxesFromEquation(scene: scene)
 		addSeedBags(scene: scene)
-	}}
+	}
     
     
     
