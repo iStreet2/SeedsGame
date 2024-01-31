@@ -28,7 +28,7 @@ class OperationAction: Action {
 	
 	
 	//MARK: Junta números
-	func joinAllNumbers(_ equation: String) -> [String] {
+	static public func joinAllNumbers(_ equation: String) -> [String] {
 		print("Joining numbers!")
 		var resultEquation: [String] = []
 		let eq = Array(equation)
@@ -231,7 +231,7 @@ class OperationAction: Action {
 			}
 		}
 		
-		if numFirst != "0" && numFirst != "" {
+		if numFirst != "0" && numFirst != "+0" {
 			resultString += numFirst
 		}
 		
@@ -272,7 +272,7 @@ class OperationAction: Action {
 			return ""
 		}
 		
-		var joinedEquation = joinAllNumbers(equation)
+		var joinedEquation = OperationAction.joinAllNumbers(equation)
 		var joinedXEquation = joinXwithNum(joinedEquation)
 		
 		var resultEquation = equationEvaluator(joinedXEquation)

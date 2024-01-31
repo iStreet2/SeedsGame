@@ -92,13 +92,26 @@ import SpriteKit
 		
 		let nQuestions = scene.clients.count
 		
-		for (index, client) in scene.clients.enumerated() {
+		for (_, client) in scene.clients.enumerated() {
 			
+			// Aumenta
 			let scaleAction = SKAction.scale(by: 1.2, duration: 0.5)
 			client.run(scaleAction)
 			
+			// Move
 			let moveAction = SKAction.moveTo(x: client.position.x - 75, duration: 0.5)
 			client.run(moveAction)
+			
+			// Animação Lara
+			let moveAction1 = SKAction.moveBy(x: 0, y: 100 * 0.02, duration: 0.5)
+		   let moveAction2 = SKAction.moveBy(x: 0, y: 100 * (-0.02), duration: 0.5)
+		   let moveSequence = SKAction.sequence([moveAction1, moveAction2])
+			client.run(moveSequence)
+			
+			let rotateAction1 = SKAction.rotate(byAngle: 0.1, duration: 0.3)
+		   let rotateAction2 = SKAction.rotate(byAngle: -0.1, duration: 0.3)
+		   let rotateSequence = SKAction.sequence([rotateAction1, rotateAction2])
+			client.run(rotateSequence)
 			
 			for c in scene.currentClientNumber..<scene.clients.count {
 				scene.clients[c].run(darknessMap[c - scene.currentClientNumber - 1] ?? SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 0.5))
@@ -126,8 +139,8 @@ import SpriteKit
 			scene.currentEqLabel.text = "All questions done!"
 		}
 		//Remover e readicionar as hitBoxes da equação
-		addHitBoxesFromEquation(scene: scene)
-		addSeedBags(scene: scene)
+		 addSeedBags(scene: scene)
+		 addHitBoxesFromEquation(scene: scene)
 	}
     
     
@@ -247,7 +260,7 @@ import SpriteKit
         }
         
         //Adicionar no vetor novamente os nos dos quadrados
-        for _ in scene.currentEqLabel.text!{
+        for _ in scene.currentSeedBags{
             let node = SKShapeNode(rectOf: CGSize(width: hitBoxWidth, height: hitBoxHeight))
             scene.hitBoxes.append(node)
         }
@@ -291,7 +304,7 @@ import SpriteKit
         }
         
         //Transformo a string da equação em um vetor de caracteres
-        let equation = Array(scene.currentEqLabel.text!)
+        let equation = OperationAction.joinAllNumbers(scene.currentEqLabel.text!)
         
         for (index,char) in equation.enumerated(){
             if char.isNumber{
@@ -314,18 +327,24 @@ import SpriteKit
         showEquation(scene: scene)
     }
     
-    func updateCurrentEqLabel(scene: PhaseScene){
-        var equation = ""
-        for seedBag in scene.currentSeedBags{
-            if seedBag.label.text == "?"{
-                equation += "x"
-            }else{
-                equation += seedBag.label.text!
-            }
-        }
-        print("\nNOVA EQUAÇÃO: \(equation)")
-        scene.currentEqLabel.text = equation
-    }
+	func updateCurrentEqLabel(scene: PhaseScene) {
+		var equation = ""
+		for (index, seedBag) in scene.currentSeedBags.enumerated() {
+			if seedBag.label.text == "?" {
+				equation += "x"
+			}
+			else if seedBag.label.text! == "*" {
+				if scene.currentSeedBags[index+1].label.text! != "?" {
+					equation += "*"
+				}
+			}
+			else {
+				equation += seedBag.label.text!
+			}
+		}
+		print("\nNOVA EQUAÇÃO: \(equation)")
+		scene.currentEqLabel.text = equation
+	}
     
     func showEquation(scene: PhaseScene){
         updateCurrentEqLabel(scene: scene)
@@ -418,22 +437,28 @@ import SpriteKit
         }
     }
     
-    func realocateFromLeft(scene: PhaseScene){ //Realoca com sinal os elementos
-        
-        if tradeIsPossible(scene: scene){
-            if self.initialPosition != 0{
-                //Se, quando eu for realocar um elemento, antes dele ouver algum sinal, esse sinal tem que ir junto
-                if operators.contains(scene.currentSeedBags[self.initialPosition-1].label.text!){
-                    realocateSeedBag(self.initialPosition-1,scene)
-                    realocateSeedBag(self.initialPosition-1, scene)
-                }
-            }else{ //Se não houver um sinal antes, eu preciso criar um sinal de mais, criar uma hitbox, e realocar
-                addHitBoxAtTheEnd(scene: scene) //adiciono uma hitbox ao final
-                scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight)) //adiciono ao final do vetor um sinal de mais
-                realocateSeedBag(self.initialPosition, scene) //realoco apenas o elemento que o usuario passou
-            }
-        }
-    }
+	func realocateFromLeft(scene: PhaseScene){ //Realoca com sinal os elementos
+		 if tradeIsPossible(scene: scene){
+			if self.initialPosition != 0{
+			  //Se, quando eu for realocar um elemento, antes dele ouver algum sinal, esse sinal tem que ir junto
+			  if operators.contains(scene.currentSeedBags[self.initialPosition-1].label.text!){
+				 realocateSeedBag(self.initialPosition-1,scene) //Realoco o sinal, que esta uma posição anterior ao numero
+				 realocateSeedBag(self.initialPosition-1, scene) //Como eu realoquei o sinal, a posição que esta o numero agora é outra, a que estava o sinal antes, 1 anterior, por isso subtraio 1 dele
+			  }
+			}else if scene.currentSeedBags[self.initialPosition+1].label.text! == "*"{ //Se depois do numero tiver um * e depois do * tiver um "?", entao eu preciso levar junto esse *
+			  if scene.currentSeedBags[self.initialPosition+2].label.text! == "?"{
+				 print("ENTROU NO IF!!!")
+				 realocateSeedBag(self.initialPosition+1,scene) //Realoco o sinal que esta na frente da posição inicial
+				 realocateSeedBag(self.initialPosition,scene) //Realogo o número, que permanece na posição inicial
+			  }
+			}
+			else{ //Se não houver um sinal antes, eu preciso criar um sinal de mais, criar uma hitbox, e realocar
+			  addHitBoxAtTheEnd(scene: scene) //adiciono uma hitbox ao final
+			  scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight)) //adiciono ao final do vetor um sinal de mais
+			  realocateSeedBag(self.initialPosition, scene) //realoco apenas o elemento que o usuario passou
+			}
+		 }
+	  }
     
     func realocateFromRight(scene: PhaseScene){ //realoca com sinal os elementos
         //Se quando eu for realocar um elemento, antes dele ouver algum sinal, esse sinal tem que ir junto
@@ -576,10 +601,9 @@ import SpriteKit
 		 let correctAnswer = String(scene.phaseMap[currentPhase+1]![scene.currentClientNumber].1)
 		 
 		 let refactoredClientAnswer = refactorClientAnswer(answer: clientAnswer, scene)
-        // ACERTOU!
+		 
+		// ACERTOU!
         if Float(refactoredClientAnswer) == Float(correctAnswer) {
-            print("EEEEITA PENGA \(String(scene.phaseMap[currentPhase+1]![scene.currentClientNumber].1))")
-            
             var resultSprite: String = ""
             if rose {
                 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo (acerto)")
@@ -592,9 +616,6 @@ import SpriteKit
         }
         // errou...
         else {
-            print("vishh \(String(scene.phaseMap[currentPhase+1]![scene.currentClientNumber].1))")
-            
-            
             var resultSprite: String = ""
             if rose {
                 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Feliz (erro)")
@@ -622,7 +643,7 @@ import SpriteKit
 		
 		i += 1
 		
-		while i < equation.count - 1 {
+		while i < equation.count {
 			rightString += String(equation[i])
 			i += 1
 		}
