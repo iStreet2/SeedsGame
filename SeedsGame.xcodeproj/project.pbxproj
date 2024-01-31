@@ -21,6 +21,9 @@
 		DC8208D62B6965FE00A0172C /* AlegreyaSans-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DC8208D52B6965FE00A0172C /* AlegreyaSans-Black.ttf */; };
 		DC8208D82B69685A00A0172C /* AlegreyaSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DC8208D72B69685A00A0172C /* AlegreyaSans-Medium.ttf */; };
 		DC8208DA2B696B3C00A0172C /* troika.otf in Resources */ = {isa = PBXBuildFile; fileRef = DC8208D92B696B3C00A0172C /* troika.otf */; };
+		DC8208DC2B69842700A0172C /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8208DB2B69842700A0172C /* Configuration.swift */; };
+		DC8208DE2B698D1900A0172C /* MusicStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8208DD2B698D1900A0172C /* MusicStyle.swift */; };
+		DC8208E02B6AB4AC00A0172C /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8208DF2B6AB4AC00A0172C /* ConfigurationView.swift */; };
 		DCEB03092B6179D900025ABA /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCEB03082B6179D900025ABA /* MenuView.swift */; };
 		E92A6F1A2B60354B003A4C1E /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92A6F192B60354B003A4C1E /* Stack.swift */; };
 		E9E2212C2B59B596001FE22A /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E2212B2B59B596001FE22A /* GameEngine.swift */; };
@@ -51,6 +54,9 @@
 		DC8208D52B6965FE00A0172C /* AlegreyaSans-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AlegreyaSans-Black.ttf"; sourceTree = "<group>"; };
 		DC8208D72B69685A00A0172C /* AlegreyaSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AlegreyaSans-Medium.ttf"; sourceTree = "<group>"; };
 		DC8208D92B696B3C00A0172C /* troika.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = troika.otf; sourceTree = "<group>"; };
+		DC8208DB2B69842700A0172C /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		DC8208DD2B698D1900A0172C /* MusicStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicStyle.swift; sourceTree = "<group>"; };
+		DC8208DF2B6AB4AC00A0172C /* ConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationView.swift; sourceTree = "<group>"; };
 		DCEB03082B6179D900025ABA /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		E92A6F192B60354B003A4C1E /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		E9E2212B2B59B596001FE22A /* GameEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
@@ -133,6 +139,7 @@
 				DCEB03082B6179D900025ABA /* MenuView.swift */,
 				19A4ADD32B6183B200E3E9F5 /* PhaseSelectionView.swift */,
 				DC8208CD2B61AB2800A0172C /* TopicView.swift */,
+				DC8208DF2B6AB4AC00A0172C /* ConfigurationView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -168,6 +175,8 @@
 				DC8208CB2B61993400A0172C /* SquareButtonStyle.swift */,
 				DC8208CF2B68148700A0172C /* CheckToggleStyle.swift */,
 				DC8208D12B682FCB00A0172C /* LifeScore.swift */,
+				DC8208DB2B69842700A0172C /* Configuration.swift */,
+				DC8208DD2B698D1900A0172C /* MusicStyle.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -254,14 +263,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				E9E221402B5AE7B9001FE22A /* ClientModel.swift in Sources */,
+				DC8208DC2B69842700A0172C /* Configuration.swift in Sources */,
 				E92A6F1A2B60354B003A4C1E /* Stack.swift in Sources */,
 				DC8208CE2B61AB2800A0172C /* TopicView.swift in Sources */,
 				E9E2213E2B5AE5C4001FE22A /* PhaseScene.swift in Sources */,
 				E9E221322B59B6B0001FE22A /* HapticActionModel.swift in Sources */,
+				DC8208E02B6AB4AC00A0172C /* ConfigurationView.swift in Sources */,
 				E9E2213A2B59BDFC001FE22A /* Component.swift in Sources */,
 				E9E221302B59B5DD001FE22A /* SoundActionModel.swift in Sources */,
 				3BB1AF9F2B59B15F00E61276 /* ContentView.swift in Sources */,
 				DCEB03092B6179D900025ABA /* MenuView.swift in Sources */,
+				DC8208DE2B698D1900A0172C /* MusicStyle.swift in Sources */,
 				19A4ADD62B61865A00E3E9F5 /* SeedButtonStyle.swift in Sources */,
 				E9E2212C2B59B596001FE22A /* GameEngine.swift in Sources */,
 				3B5F47C92B5B085600B09FBE /* SeedBagModel.swift in Sources */,
