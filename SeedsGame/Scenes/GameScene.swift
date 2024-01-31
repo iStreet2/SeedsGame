@@ -34,10 +34,10 @@ class GameScene: SKScene {
 	func startup() {
     
 		nextPhaseButton.position = CGPoint(x: frame.size.width - 100, y: 50)
-		nextPhaseButton.zPosition = 11
+		nextPhaseButton.zPosition = 12
 		
 		nextQuestionButton.position = CGPoint(x: frame.size.width - 200, y: 50)
-		nextQuestionButton.zPosition = 11
+		nextQuestionButton.zPosition = 12
 		
 		joinSideButton.position = CGPoint(x: frame.size.width - 100, y: frame.size.height / 3)
 		joinSideButton.size = CGSize(width: 50, height: 100)

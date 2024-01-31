@@ -50,13 +50,6 @@ class PhaseScene: GameScene {
 		
 		startup()
 		
-		
-		//Adiciono o pacote de sementes na cena
-		GameEngine.shared.addSeedBags(scene: self)
-		
-		//Para cada caracter na string da equação, eu crio um quadrado que ira receber sacos dentro dele
-		GameEngine.shared.addHitBoxesFromEquation(scene: self)
-		
 		currentEqLabel.position = CGPoint(x: 250, y: 320)
 		currentEqLabel.zPosition = 1
 		eqLabelBackground.position = currentEqLabel.position
@@ -70,6 +63,12 @@ class PhaseScene: GameScene {
 		
 		// MARK: Renderiza os 3 clientes
 		GameEngine.shared.renderClients(scene: self)
+        
+        //Adiciono o pacote de sementes na cena
+        GameEngine.shared.addSeedBags(scene: self)
+        
+        //Para cada caracter na string da equação, eu crio um quadrado que ira receber sacos dentro dele
+        GameEngine.shared.addHitBoxesFromEquation(scene: self)
 	}
 	
 	

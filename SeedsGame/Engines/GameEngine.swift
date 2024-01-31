@@ -57,6 +57,8 @@ import SpriteKit
 		  let res = action.execute()
 		  if res.contains("=") {
 			  phases[currentPhase].currentEqLabel.text = res
+              addSeedBags(scene: phases[currentPhase])
+              addHitBoxesFromEquation(scene: phases[currentPhase])
 		  }
 	  }
     
@@ -245,7 +247,7 @@ import SpriteKit
         }
         
         //Adicionar no vetor novamente os nos dos quadrados
-        for _ in scene.clients[scene.currentClientNumber].eq{
+        for _ in scene.currentEqLabel.text!{
             let node = SKShapeNode(rectOf: CGSize(width: hitBoxWidth, height: hitBoxHeight))
             scene.hitBoxes.append(node)
         }
@@ -289,7 +291,7 @@ import SpriteKit
         }
         
         //Transformo a string da equação em um vetor de caracteres
-        let equation = Array(scene.clients[scene.currentClientNumber].eq)
+        let equation = Array(scene.currentEqLabel.text!)
         
         for (index,char) in equation.enumerated(){
             if char.isNumber{
