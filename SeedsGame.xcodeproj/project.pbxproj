@@ -10,6 +10,7 @@
 		1962B3062B6814BB007642F9 /* +TupleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1962B3032B6814BA007642F9 /* +TupleView.swift */; };
 		1962B3082B6814BB007642F9 /* NewCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1962B3052B6814BB007642F9 /* NewCarousel.swift */; };
 		1962B30A2B683378007642F9 /* IndexStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1962B3092B683378007642F9 /* IndexStyle.swift */; };
+		1962B30D2B6A6278007642F9 /* PhaseViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1962B30C2B6A6278007642F9 /* PhaseViewer.swift */; };
 		19A4ADD42B6183B200E3E9F5 /* PhaseSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A4ADD32B6183B200E3E9F5 /* PhaseSelectionView.swift */; };
 		19A4ADD62B61865A00E3E9F5 /* SeedButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A4ADD52B61865A00E3E9F5 /* SeedButtonStyle.swift */; };
 		3B5F47C92B5B085600B09FBE /* SeedBagModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5F47C82B5B085500B09FBE /* SeedBagModel.swift */; };
@@ -41,6 +42,7 @@
 		1962B3032B6814BA007642F9 /* +TupleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "+TupleView.swift"; sourceTree = "<group>"; };
 		1962B3052B6814BB007642F9 /* NewCarousel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewCarousel.swift; sourceTree = "<group>"; };
 		1962B3092B683378007642F9 /* IndexStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexStyle.swift; sourceTree = "<group>"; };
+		1962B30C2B6A6278007642F9 /* PhaseViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhaseViewer.swift; sourceTree = "<group>"; };
 		19A4ADD32B6183B200E3E9F5 /* PhaseSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhaseSelectionView.swift; sourceTree = "<group>"; };
 		19A4ADD52B61865A00E3E9F5 /* SeedButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedButtonStyle.swift; sourceTree = "<group>"; };
 		3B5F47C82B5B085500B09FBE /* SeedBagModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedBagModel.swift; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 				E9E221392B59BDFC001FE22A /* Component.swift */,
 				1962B3032B6814BA007642F9 /* +TupleView.swift */,
 				1962B3052B6814BB007642F9 /* NewCarousel.swift */,
+				1962B30C2B6A6278007642F9 /* PhaseViewer.swift */,
 				1962B3092B683378007642F9 /* IndexStyle.swift */,
 				19A4ADD52B61865A00E3E9F5 /* SeedButtonStyle.swift */,
 				DC8208CB2B61993400A0172C /* SquareButtonStyle.swift */,
@@ -269,6 +272,7 @@
 				E9E2213E2B5AE5C4001FE22A /* PhaseScene.swift in Sources */,
 				E9E221322B59B6B0001FE22A /* HapticActionModel.swift in Sources */,
 				1962B30A2B683378007642F9 /* IndexStyle.swift in Sources */,
+				1962B30D2B6A6278007642F9 /* PhaseViewer.swift in Sources */,
 				E9E2213A2B59BDFC001FE22A /* Component.swift in Sources */,
 				E9E221302B59B5DD001FE22A /* SoundActionModel.swift in Sources */,
 				3BB1AF9F2B59B15F00E61276 /* ContentView.swift in Sources */,

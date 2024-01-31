@@ -9,8 +9,8 @@ import Foundation
 import SwiftUI
 
 struct MenuView: View {
-    
     var body: some View {
+        
         NavigationStack {
             VStack(spacing: 40) {
                 HStack(alignment: .top) {
@@ -42,6 +42,7 @@ struct MenuView: View {
                     }
                 }
             }
+            .navigationBarBackButtonHidden(true)
         }
     }
 }

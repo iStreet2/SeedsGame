@@ -11,6 +11,7 @@ struct Carousel: View {
     @Binding var currentIndex: Int
     @Binding var gestureIsOn: Bool
     @GestureState var gesture: Float = 0.0
+    
     @State var dragOffset: CGFloat = 0
     @State var currentScale: CGFloat = 1.2
     @State var nextScale: CGFloat = 0.7
@@ -31,8 +32,8 @@ struct Carousel: View {
                 value.translation.width
                 var scale: CGFloat = dragOffset
                 
-                if abs(scale) > 100 {
-                    scale = 100
+                if abs(scale) > 300 {
+                    scale = 300
                 } else {
                     scale = dragOffset
                 }
@@ -49,10 +50,12 @@ struct Carousel: View {
             }
             .onEnded { value in
                 withAnimation(Animation.spring()) {
-                    if value.translation.width < -40 {
+                    
+                    // Isso que muda o index
+                    if value.translation.width < -70 {
                         currentIndex = min(currentIndex + 1, views.count - 1)
                         
-                    } else if value.translation.width > 40 {
+                    } else if value.translation.width > 70 {
                         currentIndex = max(currentIndex - 1, 0)
                         
                     }
@@ -82,7 +85,7 @@ struct Carousel: View {
                 ZStack() {
                     ForEach(views.indices) { index in
                         self.views[index]
-                            .frame(width:geometry.size.width/2, height: geometry.size.width/2)
+                            .frame(width:geometry.size.width/3, height: geometry.size.width/3)
                             .scaleEffect(index == currentIndex ? currentScale : index == currentIndex + 1 ? dragOffset < 0 ? nextScale: 1.2 : index == currentIndex - 1 ? dragOffset > 0 ? nextScale: 1.2 : 1.2)
                             .offset(x: geometry.size.width)
                             .offset(x: CGFloat(index - currentIndex) * geometry.size.width/2 + dragOffset)
