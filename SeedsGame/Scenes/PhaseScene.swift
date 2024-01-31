@@ -1,13 +1,11 @@
 //
-//  PhaseScene.swift
-//  SeedsGame
+// PhaseScene.swift
+// SeedsGame
 //
-//  Created by Paulo Sonzzini Ribeiro de Souza on 19/01/24.
+// Created by Paulo Sonzzini Ribeiro de Souza on 19/01/24.
 //
-
 import Foundation
 import SpriteKit
-
 class PhaseScene: GameScene {
 	
 	var clients: [ClientModel] = []
@@ -63,12 +61,10 @@ class PhaseScene: GameScene {
 		
 		// MARK: Renderiza os 3 clientes
 		GameEngine.shared.renderClients(scene: self)
-        
-        //Adiciono o pacote de sementes na cena
-        GameEngine.shared.addSeedBags(scene: self)
-        
-        //Para cada caracter na string da equação, eu crio um quadrado que ira receber sacos dentro dele
-        GameEngine.shared.addHitBoxesFromEquation(scene: self)
+	 //Adiciono o pacote de sementes na cena
+	 GameEngine.shared.addSeedBags(scene: self)
+	 //Para cada caracter na string da equação, eu crio um quadrado que ira receber sacos dentro dele
+	 GameEngine.shared.addHitBoxesFromEquation(scene: self)
 	}
 	
 	
@@ -110,6 +106,9 @@ class PhaseScene: GameScene {
 					}
 				}
 			}
+		if GameEngine.shared.operators.contains(seedBag.label.text!){ //Se for um operador
+		  GameEngine.shared.invertOperator(seedBag,touches, index, self)
+		}
 		}
 		
 	}
@@ -125,11 +124,6 @@ class PhaseScene: GameScene {
 	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 		for (index,seedBag) in currentSeedBags.enumerated(){
 			GameEngine.shared.moveSeedBag(seedBag, touches, stage: 2, initialPosition: index, scene: self)
-            
-            if GameEngine.shared.operators.contains(seedBag.label.text!){ //Se for um operador
-                GameEngine.shared.invertOperator(seedBag,touches, index, self)
-            }
-            
 		}
 		
 	}

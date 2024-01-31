@@ -572,8 +572,12 @@ import SpriteKit
         let clientSprite = client.clientSprites[client.clientSpriteID] // String
         let rose = client.clientSpriteID == 11
         
+		 let clientAnswer = scene.currentEqLabel.text!
+		 let correctAnswer = String(scene.phaseMap[currentPhase+1]![scene.currentClientNumber].1)
+		 
+		 let refactoredClientAnswer = refactorClientAnswer(answer: clientAnswer, scene)
         // ACERTOU!
-        if scene.currentEqLabel.text! == String(scene.phaseMap[currentPhase+1]![scene.currentClientNumber].1) {
+        if Float(refactoredClientAnswer) == Float(correctAnswer) {
             print("EEEEITA PENGA \(String(scene.phaseMap[currentPhase+1]![scene.currentClientNumber].1))")
             
             var resultSprite: String = ""
@@ -602,6 +606,33 @@ import SpriteKit
             client.texture = SKTexture(imageNamed: resultSprite)
         }
     }
+	
+	
+	func refactorClientAnswer(answer: String, _ scene: PhaseScene) -> String {
+		var i = 0
+		let equation = Array(scene.currentEqLabel.text!)
+		
+		var leftString = ""
+		var rightString = ""
+		
+		while equation[i] != "=" {
+			leftString += String(equation[i])
+			i += 1
+		}
+		
+		i += 1
+		
+		while i < equation.count - 1 {
+			rightString += String(equation[i])
+			i += 1
+		}
+		
+		if leftString.contains("x") {
+			return rightString
+		}
+		return leftString
+	}
+	
 }
 
 //Sempre que eu arrastar algo para outra hitbox, eu tenho que atualizar o meu vetor de sementes, mas isso soh pode ser feito depois que dua sementes nao puderem ficar na mesma hitbox, ou seja, tem que ter o sistema de realocação feito ja
