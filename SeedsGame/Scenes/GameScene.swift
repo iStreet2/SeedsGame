@@ -14,9 +14,9 @@ class GameScene: SKScene {
 	var topBackground = SKSpriteNode(imageNamed: "topSceneBackground")
 	
 	var phaseMap: [Int : [(String, Float)]] = [
-		1: [("x+2=3", 1), ("9-x=4", 5), ("x+6=15", 9), ("90-x=50", 40), ("5=-x+4", -1), ("20=x-40", 60), ("8+x=17",9), ("x+3=-12", -15), ("10+x=-30", -40), ("x+2=-x-4", -3)],
-		2: [("5x-12=3", 3), ("3x+1=x-3", -2), ("5x+5=3x+7", 1), ("6x+3=-9", -2), ("4x-10=3x-3-4", 3), ("3x-6+10=4x+4+2", -2), ("3x+4x-40=x+20",10), ("2x+6x-15+4=x+6x-6-6", -1), ("3x+2=4x-1", 3), ("3x+2=29", 9)],
-		3: [("4-4=x", 0), ("4-4=x-2", 2), ("3x+2*9=0", -6), ("17-2x=3", 7), ("30x-120=0", 4), ("2x+3x=15x-30", 3), ("14+2x=3+2", -4.5)]
+		1: [("4-4=x", 0), ("4-4=x-2", 2), ("3x+2*9=0", -6)],
+		2: [("17-2x=3", 7), ("30x-120=0", 4), ("2x+3x=15x-30", 3), ("14+2x=3+2", -4.5), ("5", 5)],
+		3: [("1", 1), ("2", 2), ("3", 3), ("4", 4), ("5", 5), ("6", 6), ("7", 7), ("8", 8), ("9", 9), ("10", 10)]
 	]
 	
 	
@@ -32,11 +32,12 @@ class GameScene: SKScene {
 	
 	
 	func startup() {
-		nextPhaseButton.position = CGPoint(x: 200, y: 100)
-		nextPhaseButton.zPosition = 12
+    
+		nextPhaseButton.position = CGPoint(x: frame.size.width - 100, y: 50)
+		nextPhaseButton.zPosition = 11
 		
-		nextQuestionButton.position = CGPoint(x: 300, y: 100)
-		nextQuestionButton.zPosition = 12
+		nextQuestionButton.position = CGPoint(x: frame.size.width - 200, y: 50)
+		nextQuestionButton.zPosition = 11
 		
 		joinSideButton.position = CGPoint(x: frame.size.width - 100, y: frame.size.height / 3)
 		joinSideButton.size = CGSize(width: 50, height: 100)
