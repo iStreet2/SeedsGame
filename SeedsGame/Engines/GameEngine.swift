@@ -47,14 +47,17 @@ import SpriteKit
 	
 	
 	init() {
-		let phases = [PhaseScene(phase: 1, width: width, height: height), PhaseScene(phase: 2, width: width, height: height)]
+		let phases = [PhaseScene(phase: 1, width: width, height: height), PhaseScene(phase: 2, width: width, height: height), PhaseScene(phase: 3, width: width, height: height)]
 		self.phases = phases
 	}
 	
 	
 	func receiveAction(_ action: Action) {
 		actions.append(action)
-		action.execute()
+		let res = action.execute()
+		if res.contains("=") {
+			phases[currentPhase].currentEqLabel.text = res
+		}
 	}
 	
 	
@@ -89,14 +92,14 @@ import SpriteKit
 		
 		for (index, client) in scene.clients.enumerated() {
 			
-			let scaleAction = SKAction.scale(by: 1.15, duration: 0.5)
+			let scaleAction = SKAction.scale(by: 1.2, duration: 0.5)
 			client.run(scaleAction)
 			
 			let moveAction = SKAction.moveTo(x: client.position.x - 75, duration: 0.5)
 			client.run(moveAction)
 			
 			for c in scene.currentClientNumber..<scene.clients.count {
-				scene.clients[c].run(undarknessMap[c - scene.currentClientNumber - 1] ?? SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 0.5))
+				scene.clients[c].run(darknessMap[c - scene.currentClientNumber - 1] ?? SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 0.5))
 			}
 			
 			if client.eq == scene.clients[scene.currentClientNumber].eq {
@@ -130,8 +133,12 @@ import SpriteKit
 	func renderClients(scene: PhaseScene) {
 		
 		for (index, client) in scene.clients.enumerated() {
-			client.position = CGPoint(x: 564+(75*index), y: 235)
-			client.size = CGSize(width: client.size.width - CGFloat(index*(15)), height: client.size.height - CGFloat(index*(30)))
+			if index < 3 {
+				client.position = CGPoint(x: 564+(75*index), y: 235)
+			} else {
+				client.position = CGPoint(x: 775, y: 235)
+			}
+			client.run(SKAction.scale(by: 0.9 - (0.1*CGFloat(index)), duration: 0))
 			client.zPosition = CGFloat(scene.clients.count - index)
 			
 			client.run(darknessMap[index] ?? SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 0))

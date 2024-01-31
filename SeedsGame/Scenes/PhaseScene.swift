@@ -78,6 +78,10 @@ class PhaseScene: GameScene {
 	}
 	
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+		
+		let hapticAction = HapticAction(1, 1)
+		GameEngine.shared.receiveAction(hapticAction)
+		
 		guard let touch = touches.first else { return }
 		
 		if nextQuestionButton.contains(touch.location(in: self)) {
@@ -88,10 +92,9 @@ class PhaseScene: GameScene {
 		}
 		
 		if joinSideButton.contains(touch.location(in: self)) {
-			let opAction = OperationAction(eq: currentEqLabel.text!)
+			let opAction = OperationAction(eq: currentEqLabel.text!.contains("!") ? "" : currentEqLabel.text!)
 			GameEngine.shared.receiveAction(opAction)
-			let hapticAction = HapticAction(1, 1)
-			GameEngine.shared.receiveAction(hapticAction)
+			animateLever()
 		}
 		
 		if giveResponseButton.contains(touch.location(in: self)) {
