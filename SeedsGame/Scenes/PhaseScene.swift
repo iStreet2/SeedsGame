@@ -101,9 +101,9 @@ class PhaseScene: GameScene {
 		
 		//movimento do sprite de semente
 		for (index,seedBag) in currentSeedBags.enumerated(){
-			if !GameEngine.shared.operators.contains(seedBag.label.text!){
-				if seedBag.label.text! != "="{
-					if seedBag.label.text! != "0"{
+			if !GameEngine.shared.operators.contains(seedBag.label.text!){ //Se não for um operador
+				if seedBag.label.text! != "="{ //Se não for um igual
+					if seedBag.label.text! != "0"{ //Se não for zero
 						GameEngine.shared.moveSeedBag(seedBag, touches, stage: 0,initialPosition: index, scene: self)
 					}
 				}
@@ -123,6 +123,11 @@ class PhaseScene: GameScene {
 	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 		for (index,seedBag) in currentSeedBags.enumerated(){
 			GameEngine.shared.moveSeedBag(seedBag, touches, stage: 2, initialPosition: index, scene: self)
+            
+            if GameEngine.shared.operators.contains(seedBag.label.text!){ //Se for um operador
+                GameEngine.shared.invertOperator(seedBag,touches, index, self)
+            }
+            
 		}
 		
 	}
