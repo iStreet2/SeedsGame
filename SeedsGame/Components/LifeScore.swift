@@ -17,16 +17,21 @@ struct LifeScore: View {
             Image("Placar")
                 .resizable()
                 .frame(width: 144, height: 133)
+            
             VStack(spacing: 1) {
                 Text("Pontos")
                     .font(.custom("troika", size: 25))
                     .bold()
+                
                 Text("\(points)")
+                    .contentTransition(.numericText())
                     .font(.custom("AlegreyaSans-Medium", size: 25))
+                
                 HStack {
                     ForEach(0..<life, id: \.self) { index in
-                        Image("Vida")
-                            .frame(width: 30)
+                        Image("Life")
+                            .font(.system(size: 30))
+                            .foregroundStyle(.cyan)
                     }
                 }
             }
