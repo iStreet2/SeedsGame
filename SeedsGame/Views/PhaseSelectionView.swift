@@ -6,12 +6,21 @@
 //
 
 import SwiftUI
+import SpriteKit
 
 struct PhaseSelectionView: View {
+    @State var index: Int = 0
+    @State var gestureIsOn: Bool = true
+    
     var body: some View {
-        Text("aaaaa")
-            .padding()
-            .background(.blue)
+        NavigationStack {
+            GeometryReader { geometry in
+                VStack(alignment: .trailing) {
+                    PhaseViewer(phasesName: ["fase1",
+                                             "fase2"])
+                }
+            }
+        }
     }
 }
 

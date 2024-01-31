@@ -9,8 +9,8 @@ import Foundation
 import SwiftUI
 
 struct MenuView: View {
-    
     var body: some View {
+        
         NavigationStack {
             VStack(spacing: 40) {
                 HStack(alignment: .top) {
@@ -22,11 +22,7 @@ struct MenuView: View {
                         .bold()
                         .font(.custom("Troika", size: 33))
                         .background(.gray)
-                        .padding(.trailing, 122)
-
-
-                    
-//                    Spacer()
+                        .padding(.trailing, 162)
                     
                     Button(action: {
                         print("foii")
@@ -36,35 +32,21 @@ struct MenuView: View {
                     .buttonStyle(SquareButtonStyle())
                 }
                 
-                HStack(spacing: 40){
-//                    Image("client1")
-//                        .resizable()
-//                        .scaledToFit()
-//                        .frame(width: 110)
-//                        .padding()
+                HStack(spacing: 40){                    
                     VStack(spacing: 20){
-                        Button("MODO HISTÓRIA"){
-                            print("a")
-                            
-                        }
-                        .buttonStyle(SeedButtonStyle())
+                        NavigationLink("MODO HISTÓRIA", destination: PhaseSelectionView())
+                            .buttonStyle(SeedButtonStyle())
                         
-                        Button("INFINITO"){
-                            print("b")
-                        }
-                        .buttonStyle(SeedButtonStyle())
+                        NavigationLink("INFINITO", destination: TopicView())
+                            .buttonStyle(SeedButtonStyle())
                     }
-//                    Image("client1")
-//                        .resizable()
-//                        .scaledToFit()
-//                        .frame(width: 110)
-//                        .padding()
                 }
             }
+            .navigationBarBackButtonHidden(true)
         }
-        
     }
 }
+
 #Preview {
     MenuView()
 }
