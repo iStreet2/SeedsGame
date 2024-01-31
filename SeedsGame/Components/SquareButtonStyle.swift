@@ -22,7 +22,7 @@ struct SquareButtonStyle: ButtonStyle {
     Button(action: {
         print("foii")
     }) {
-        Image(systemName: "house")
+        Image(systemName: "gear")
     }
     .buttonStyle(SquareButtonStyle())
 }

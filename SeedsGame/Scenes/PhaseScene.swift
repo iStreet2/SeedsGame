@@ -50,13 +50,6 @@ class PhaseScene: GameScene {
 		
 		startup()
 		
-		
-		//Adiciono o pacote de sementes na cena
-		GameEngine.shared.addSeedBags(scene: self)
-		
-		//Para cada caracter na string da equação, eu crio um quadrado que ira receber sacos dentro dele
-		GameEngine.shared.addHitBoxesFromEquation(scene: self)
-		
 		currentEqLabel.position = CGPoint(x: 250, y: 320)
 		currentEqLabel.zPosition = 1
 		eqLabelBackground.position = currentEqLabel.position
@@ -70,6 +63,12 @@ class PhaseScene: GameScene {
 		
 		// MARK: Renderiza os 3 clientes
 		GameEngine.shared.renderClients(scene: self)
+        
+        //Adiciono o pacote de sementes na cena
+        GameEngine.shared.addSeedBags(scene: self)
+        
+        //Para cada caracter na string da equação, eu crio um quadrado que ira receber sacos dentro dele
+        GameEngine.shared.addHitBoxesFromEquation(scene: self)
 	}
 	
 	
@@ -78,6 +77,10 @@ class PhaseScene: GameScene {
 	}
 	
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+		
+		let hapticAction = HapticAction(1, 1)
+		GameEngine.shared.receiveAction(hapticAction)
+		
 		guard let touch = touches.first else { return }
 		
 		if nextQuestionButton.contains(touch.location(in: self)) {
@@ -88,10 +91,9 @@ class PhaseScene: GameScene {
 		}
 		
 		if joinSideButton.contains(touch.location(in: self)) {
-			let opAction = OperationAction(eq: currentEqLabel.text!)
+			let opAction = OperationAction(eq: currentEqLabel.text!.contains("!") ? "" : currentEqLabel.text!)
 			GameEngine.shared.receiveAction(opAction)
-			let hapticAction = HapticAction(1, 1)
-			GameEngine.shared.receiveAction(hapticAction)
+			animateLever()
 		}
 		
 		if giveResponseButton.contains(touch.location(in: self)) {
@@ -101,9 +103,9 @@ class PhaseScene: GameScene {
 		
 		//movimento do sprite de semente
 		for (index,seedBag) in currentSeedBags.enumerated(){
-			if !GameEngine.shared.operators.contains(seedBag.label.text!){
-				if seedBag.label.text! != "="{
-					if seedBag.label.text! != "0"{
+			if !GameEngine.shared.operators.contains(seedBag.label.text!){ //Se não for um operador
+				if seedBag.label.text! != "="{ //Se não for um igual
+					if seedBag.label.text! != "0"{ //Se não for zero
 						GameEngine.shared.moveSeedBag(seedBag, touches, stage: 0,initialPosition: index, scene: self)
 					}
 				}
@@ -123,6 +125,11 @@ class PhaseScene: GameScene {
 	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 		for (index,seedBag) in currentSeedBags.enumerated(){
 			GameEngine.shared.moveSeedBag(seedBag, touches, stage: 2, initialPosition: index, scene: self)
+            
+            if GameEngine.shared.operators.contains(seedBag.label.text!){ //Se for um operador
+                GameEngine.shared.invertOperator(seedBag,touches, index, self)
+            }
+            
 		}
 		
 	}
