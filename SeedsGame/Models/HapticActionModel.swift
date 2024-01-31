@@ -10,7 +10,8 @@ import CoreHaptics
 import SwiftUI
 
 
-// MARK: NÃO TESTADO rs
+// MARK: Testado
+// MARK: Nao funcionando
 class HapticAction: Action {
 	
 	private var intensity: Float
@@ -24,25 +25,12 @@ class HapticAction: Action {
 		self.relativeTime = relativeTime
 	}
 	
-	
-	// MARK: Talvez dê problema...
-	@State private var engine: CHHapticEngine?
-	
-	
-	private func prepareHaptics() {
-		guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
-		
-		do {
-			engine = try CHHapticEngine()
-			try engine?.start()
-		} catch {
-			print("Error creating the engine: \(error.localizedDescription)")
-		}
-	}
-	
-	
 	func execute() -> String {
-		prepareHaptics()
+		
+		guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return "500" }
+		
+		@State var engine: CHHapticEngine
+		
 		var events = [CHHapticEvent]()
 		
 		// criar o haptic e tocá-lo imediatamente
@@ -53,12 +41,21 @@ class HapticAction: Action {
 		
 		// convertes os eventos em padrões e tocá-los, por padrão, imediatamente
 		do {
-			let pattern = try CHHapticPattern(events: events, parameters: [])
-			let player = try engine?.makePlayer(with: pattern)
-			try player?.start(atTime: relativeTime)
+			try engine = CHHapticEngine()
+			try engine.start()
+			
+			do {
+				let pattern = try CHHapticPattern(events: events, parameters: [])
+				let player = try engine.makePlayer(with: pattern)
+				try player.start(atTime: relativeTime)
+			} catch {
+				return "Failed to play pattern: \(error.localizedDescription)"
+			}
+			
 		} catch {
-			return "Failed to play pattern: \(error.localizedDescription)"
+			print("Error starting the engine: \(error.localizedDescription)")
 		}
+		
 		return "200"
 	}
 	
