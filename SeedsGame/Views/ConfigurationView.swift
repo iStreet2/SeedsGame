@@ -9,36 +9,43 @@ import Foundation
 import SwiftUI
 
 struct ConfigurationView: View {
+    
+    @State var isMusic = true
     var body: some View {
-        Color.gray
-            .ignoresSafeArea()
-            .opacity(0.6)
+     
         ZStack {
             VStack() {
-                VStack {
                     Text("CONFIGURAÇÕES")
                         .font(.custom("troika", size: 36))
-                }
-                VStack {
-                    HStack {
-                        MusicStyle()
+                HStack {
+                    VStack(spacing: 50) {
+                        Toggle("", isOn: $isMusic)
+                            .toggleStyle(MusicToggleStyle())
+                        
+                        Button(action: {
+                            print("")
+                        }) {
+                            Text("")
+                        }
+                        .buttonStyle(SquareButtonStyle(tag: .gameCenter))
+                    }
+                    .padding(.horizontal, 80)
+                    VStack(spacing: 50){
                         Button("SOBRE NÓS"){
                         }
-                        .buttonStyle(SeedButtonStyle())
-                        .padding(.leading, 80)
-                    }
-                    HStack{
-                        Button(action: {
-                            print("GameCenter")
-                        }) {
-                            Image(systemName: "gear")
+                        .buttonStyle(RectangleButtonStyle(tag: .type2))
+                        
+                        Button("SUPORTE"){
                         }
-                        .buttonStyle(SeedButtonStyle())
-                        //                    .padding(.leading)
+                        .buttonStyle(RectangleButtonStyle(tag: .type1))
+                        .padding(.trailing)
                     }
                 }
             }
-        } .frame(width: 483, height: 277)
+        } 
+        .frame(width: 450, height: 250)
+        .background(Color(.cyan))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
 

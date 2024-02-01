@@ -12,41 +12,63 @@ struct MenuView: View {
     var body: some View {
         
         NavigationStack {
-            VStack(spacing: 40) {
-                HStack(alignment: .top) {
-                    Spacer()
-                    Text("Título do Jogo")
-                        .padding()
-                        .padding(.horizontal, 60)
-                        .padding(.vertical, 20)
-                        .bold()
-                        .font(.custom("Troika", size: 33))
-                        .background(.gray)
-                        .padding(.trailing, 162)
+            ZStack {
+                HStack(alignment: .bottom){
+                    Image("Bhas")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 196, height: 347)
+                        .padding(.bottom, 55)
                     
-                    Button(action: {
-                        print("foii")
-                    }) {
-                        Image(systemName: "gear")
-                    }
-                    .buttonStyle(SquareButtonStyle())
+                    Spacer(minLength: 400)
+                    
+                    Image("Rose - Neutro")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 196, height: 347)
+                        .padding(.top, 250)
                 }
                 
-                HStack(spacing: 40){                    
-                    VStack(spacing: 20){
-                        NavigationLink("MODO HISTÓRIA", destination: PhaseSelectionView())
-                            .buttonStyle(SeedButtonStyle())
+                VStack(spacing: 50) {
+                    HStack(alignment: .top) {
+                        Spacer()
+                        Text("Título do Jogo")
+                            .padding()
+                            .padding(.horizontal, 40)
+                            .padding(.vertical, 35)
+                            .bold()
+                            .font(.custom("Troika", size: 33))
+                            .background(.gray)
+                            .padding(.trailing, 190)
+                            .foregroundStyle(.white)
+
+                        Button(action: {
+                            print("foii")
+                        }) {
+                            Image("")
+                        }
+                        .buttonStyle(SquareButtonStyle(tag: .config))
+                        .padding()
+                    }
+                    VStack(spacing: 50){
+                        Button("MODO HISTÓRIA"){
+                            print("")
+                            
+                        }
+                        .buttonStyle(RectangleButtonStyle(tag: .story))
                         
-                        NavigationLink("INFINITO", destination: TopicView())
-                            .buttonStyle(SeedButtonStyle())
+                        Button("INFINITO"){
+                            print("")
+                        }
+                        .buttonStyle(RectangleButtonStyle(tag: .type2))
                     }
                 }
+                
             }
-            .navigationBarBackButtonHidden(true)
         }
+        
     }
 }
-
 #Preview {
     MenuView()
 }

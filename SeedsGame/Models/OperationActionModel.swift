@@ -272,7 +272,9 @@ class OperationAction: Action {
 			return ""
 		}
 		
+
 		var joinedEquation = OperationAction.joinAllNumbers(equation)
+
 		var joinedXEquation = joinXwithNum(joinedEquation)
 		
 		var resultEquation = equationEvaluator(joinedXEquation)
