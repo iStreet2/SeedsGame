@@ -9,8 +9,8 @@ import Foundation
 import SwiftUI
 
 struct MenuView: View {
-    
     var body: some View {
+        
         NavigationStack {
             ZStack {
                 HStack(alignment: .bottom){

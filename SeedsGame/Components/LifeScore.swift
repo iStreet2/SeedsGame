@@ -10,8 +10,9 @@ import SwiftUI
 
 struct LifeScore: View {
     
-    var life: Int
-    var points: Int
+    @Binding var life: Int
+    @Binding var points: Int
+    
     var body: some View {
         ZStack {
             Image("Placar")
@@ -33,11 +34,17 @@ struct LifeScore: View {
                             .font(.system(size: 30))
                             .foregroundStyle(.cyan)
                     }
+                    ForEach(0..<3-life, id: \.self) { index in
+                        Image("Life")
+                            .font(.system(size: 30))
+                            .foregroundStyle(.gray)
+                    }
+
                 }
             }
         }
     }
 }
 #Preview {
-    LifeScore(life: 3, points: 0)
+    LifeScore(life: .constant(1), points: .constant(1))
 }
