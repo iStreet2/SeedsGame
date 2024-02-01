@@ -15,11 +15,11 @@ struct TopicView: View {
     var body: some View {
         HStack(alignment: .firstTextBaseline) {
             Button(action: {
-                print("foii")
+                print("")
             }) {
-                Image("Setaesquerda")
+                Image("")
             }
-            .buttonStyle(SquareButtonStyle())
+            .buttonStyle(SquareButtonStyle(tag: .back))
             
             Spacer()
             
@@ -49,7 +49,7 @@ struct TopicView: View {
         Button("INICIAR"){
             print("a")
         }
-        .buttonStyle(SeedButtonStyle())
+        .buttonStyle(RectangleButtonStyle(tag: .type1))
     }
 }
 
