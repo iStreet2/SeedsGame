@@ -14,15 +14,15 @@ class GameScene: SKScene {
 	var topBackground = SKSpriteNode(imageNamed: "topSceneBackground")
 	
 	var phaseMap: [Int : [(String, Float)]] = [
-		1: [("3x=27", 9), ("4-4=x-2", 2), ("3x+2*9=0", -6)],
-		2: [("17-2x=3", 7), ("30x-120=0", 4), ("2x+3x=15x-30", 3), ("14+2x=3+2", -4.5), ("5", 5)],
-		3: [("1", 1), ("2", 2), ("3", 3), ("4", 4), ("5", 5), ("6", 6), ("7", 7), ("8", 8), ("9", 9), ("10", 10)]
+		1: [("5-4=x", 1), ("2x=4", 2), ("x+2=3", 1), ("9-x=4", 5), ("x+6=15", 9), ("90-x=50", 40), ("5=-x+4", -1), ("20=x-40", 60), ("8+x=17",9), ("x+3=-12", -15)],
+		2: [("10+x=-30", -40), ("x+2=-4", -3), ("17-x=3", 7), ("30x-120=0", 4), ("2x+3x=15x-30", 3), ("14+2x=3+2", -4.5), ("5x-12=3", 3), ("3x+1=x-3", -2), ("5x+5=3x+7", 1), ("6x+3=-9", -2)],
+		3: [("4x-10=3x-3-4", 3), ("3x-6+10=4x+4+2", -2), ("3x+4x-40=x+20",10), ("2x+6x-15+4=x+6x-6-6", -1), ("3x+2=4x-1", 3), ("3x+2=29", 9), ("x+(x+1)+(x+2)=60", 19), ("x+5x=2x+40", 10), ("2x/4-5/3=x-7/2", 11/3), ("(4x+2)/3-(5x-7)/6=(3-x)/2", -1/3)]
 	]
 	
 	
 	let nextPhaseButton = SKSpriteNode(color: .red, size: CGSize(width: 50, height: 50))
 	let nextQuestionButton = SKSpriteNode(color: .green, size: CGSize(width: 50, height: 50))
-	var joinSideButton = SKSpriteNode(color: .yellow, size: CGSize(width: 50, height: 50))
+	var joinSideButton = SKSpriteNode(imageNamed: "Ala - Frame 1")
 	var textureAtlas: SKTextureAtlas = SKTextureAtlas(named: "Alavanca")
 	let giveResponseButton = SKSpriteNode(imageNamed: "blackhole")
 	
@@ -40,7 +40,7 @@ class GameScene: SKScene {
 		nextQuestionButton.zPosition = 12
 		
 		joinSideButton.position = CGPoint(x: frame.size.width - 100, y: frame.size.height / 3)
-		joinSideButton.size = CGSize(width: 50, height: 100)
+		joinSideButton.size = CGSize(width: 37.5, height: 160)
 		joinSideButton.zPosition = 12
 		
 		giveResponseButton.position = CGPoint(x: frame.size.width / 2, y: 38)
@@ -62,16 +62,31 @@ class GameScene: SKScene {
 	}
 	
 	func animateLever() {
-		let idleFrames: [SKTexture] = [textureAtlas.textureNamed("alavanca1"),
-												 textureAtlas.textureNamed("alavanca2"),
-												 textureAtlas.textureNamed("alavanca3"),
-												 textureAtlas.textureNamed("alavanca4"),
-												 textureAtlas.textureNamed("alavanca5"),
-												 textureAtlas.textureNamed("alavanca4"),
-												 textureAtlas.textureNamed("alavanca3"),
-												 textureAtlas.textureNamed("alavanca2"),
-												 textureAtlas.textureNamed("alavanca1")]
-		let idleAction = SKAction.animate(with: idleFrames, timePerFrame: 0.07)
+		let idleFrames: [SKTexture] = [textureAtlas.textureNamed("Ala - Frame 1"),
+												 textureAtlas.textureNamed("Ala - Frame 2"),
+												 textureAtlas.textureNamed("Ala - Frame 3"),
+												 textureAtlas.textureNamed("Ala - Frame 4"),
+												 textureAtlas.textureNamed("Ala - Frame 5"),
+												 textureAtlas.textureNamed("Ala - Frame 6"),
+												 textureAtlas.textureNamed("Ala - Frame 7"),
+												 textureAtlas.textureNamed("Ala - Frame 8"),
+												 textureAtlas.textureNamed("Ala - Frame 9"),
+												 textureAtlas.textureNamed("Ala - Frame 10"),
+												 textureAtlas.textureNamed("Ala - Frame 11"),
+												 textureAtlas.textureNamed("Ala - Frame 12"),
+												 textureAtlas.textureNamed("Ala - Frame 11"),
+												 textureAtlas.textureNamed("Ala - Frame 10"),
+												 textureAtlas.textureNamed("Ala - Frame 9"),
+												 textureAtlas.textureNamed("Ala - Frame 8"),
+												 textureAtlas.textureNamed("Ala - Frame 7"),
+												 textureAtlas.textureNamed("Ala - Frame 6"),
+												 textureAtlas.textureNamed("Ala - Frame 5"),
+												 textureAtlas.textureNamed("Ala - Frame 4"),
+												 textureAtlas.textureNamed("Ala - Frame 3"),
+												 textureAtlas.textureNamed("Ala - Frame 2"),
+												 textureAtlas.textureNamed("Ala - Frame 1"),
+									]
+		let idleAction = SKAction.animate(with: idleFrames, timePerFrame: 0.03)
 		joinSideButton.run(idleAction)
 	}
 	

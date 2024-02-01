@@ -6,6 +6,8 @@
 //
 import Foundation
 import SpriteKit
+import SwiftUI
+
 class PhaseScene: GameScene {
 	
 	var clients: [ClientModel] = []
@@ -20,7 +22,8 @@ class PhaseScene: GameScene {
 	var currentSeedBags: [SeedBagModel] = []
 	
 	var currentEqLabel: SKLabelNode = SKLabelNode(text: "nil")
-	var eqLabelBackground = SKSpriteNode(color: .gray, size: CGSize(width: 400, height: 50))
+	var eqLabelBackground = SKSpriteNode(imageNamed: "equationLabelBackground")
+	//var eqLabelBackground = SKSpriteNode(color: .gray, size: CGSize(width: 400, height: 50))
 	var currentClientNumber = 0
 	
 	
@@ -29,6 +32,7 @@ class PhaseScene: GameScene {
 		
 		super.init(size: CGSize(width: width, height: height))
 		
+		eqLabelBackground.size = CGSize(width: 330, height: 110)
 		
 		let clientMap: [Int: Int] = [1: phaseMap[1]!.count, 2: phaseMap[2]!.count, 3: phaseMap[3]!.count] //Inicializa as equações dos clientes
 		
@@ -48,16 +52,19 @@ class PhaseScene: GameScene {
 		
 		startup()
 		
-		currentEqLabel.position = CGPoint(x: 250, y: 320)
+		currentEqLabel.position = CGPoint(x: frame.size.width / 2, y: 325)
 		currentEqLabel.zPosition = 1
 		eqLabelBackground.position = currentEqLabel.position
-		eqLabelBackground.position.y = currentEqLabel.position.y + 10
+		eqLabelBackground.position.y = currentEqLabel.position.y - 5
 		eqLabelBackground.zPosition = 0
 		
 		addChild(currentEqLabel)
 		addChild(eqLabelBackground)
 		
 		currentEqLabel.text = "\(clients[currentClientNumber].eq)"
+		currentEqLabel.fontName = "AlegreyaSans-Medium"
+		currentEqLabel.fontSize = 32
+		currentEqLabel.fontColor = UIColor(Color("FontDarkBrown"))
 		
 		// MARK: Renderiza os 3 clientes
 		GameEngine.shared.renderClients(scene: self)

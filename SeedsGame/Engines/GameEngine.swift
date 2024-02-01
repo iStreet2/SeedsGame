@@ -36,14 +36,16 @@ import SpriteKit
     var actions: [Action] = []
     var phases: [PhaseScene] = []
     var currentPhase = 0
+	
+	var phaseFirstSetup = true
     
     let darknessMap: [Int : SKAction] = [0: SKAction.colorize(with: .black, colorBlendFactor: 0, duration: 0),
-                                         1: SKAction.colorize(with: .black, colorBlendFactor: 0.2, duration: 0),
-                                         2: SKAction.colorize(with: .black, colorBlendFactor: 0.4, duration: 0)]
+                                         1: SKAction.colorize(with: .black, colorBlendFactor: 0.3, duration: 0),
+													  2: SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 0)]
     
     let undarknessMap: [Int : SKAction] = [0: SKAction.colorize(with: .black, colorBlendFactor: 0, duration: 1),
-                                           1: SKAction.colorize(with: .black, colorBlendFactor: 0.2, duration: 1),
-                                           2: SKAction.colorize(with: .black, colorBlendFactor: 0.4, duration: 1)]
+                                           1: SKAction.colorize(with: .black, colorBlendFactor: 0.3, duration: 1),
+                                           2: SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 1)]
     
     
     init() {
@@ -90,6 +92,8 @@ import SpriteKit
     
     func nextQuestion(scene: PhaseScene) {
 		
+		 phaseFirstSetup = true
+		 
 		let nQuestions = scene.clients.count
 		
 		for (_, client) in scene.clients.enumerated() {
@@ -145,25 +149,37 @@ import SpriteKit
     
     
     
-    func renderClients(scene: PhaseScene) {
+	func renderClients(scene: PhaseScene) {
+		
+		let sceneWidth = scene.size.width
+		let sceneHeight = scene.size.height
 		
 		for (index, client) in scene.clients.enumerated() {
+			// se forem os três primeiros
 			if index < 3 {
-				client.position = CGPoint(x: 564+(75*index), y: 235)
-			} else {
-				client.position = CGPoint(x: 775, y: 235)
+				let positionX = Int(0.786 * sceneWidth)
+				let positionY = Int(0.602 * sceneHeight)
+				client.position = CGPoint(x: positionX + (75*index), y: positionY)
 			}
-			client.run(SKAction.scale(by: 0.9 - (0.1*CGFloat(index)), duration: 0))
-			client.zPosition = CGFloat(scene.clients.count - index)
+			// restante dos clientes
+			else {
+				let positionX = Int(sceneWidth)
+				let positionY = Int(0.602 * sceneHeight)
+				client.position = CGPoint(x: positionX, y: positionY)
+			}
 			
-			client.run(darknessMap[index] ?? SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 0))
+			client.run(SKAction.scale(by: 0.9 - (0.1*CGFloat(index)), duration: 0))  // diminui os clientes
+			client.zPosition = CGFloat(scene.clients.count - index)  // deixa um cliente atrás do outro
 			
+			client.run(darknessMap[index] ?? SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 0))  // escurece o cliente
 			
+			// se forem os três clientes, eles são renderizados
 			if index<3 {
 				scene.addChild(client)
 			}
 		}
 		
+		//
 		scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)"
 	}
     
@@ -294,38 +310,40 @@ import SpriteKit
         scene.hitBoxes.removeFirst() //removo do vetor
     }
     
-    func addSeedBags(scene: PhaseScene){
-        
-        if scene.currentSeedBags.count != 0{
-            for seedBag in scene.currentSeedBags{
-                scene.removeChildren(in: [seedBag])
-            }
-            scene.currentSeedBags.removeAll()
-        }
-        
-        //Transformo a string da equação em um vetor de caracteres
-        let equation = OperationAction.joinAllNumbers(scene.currentEqLabel.text!)
-        
-        for (index,char) in equation.enumerated(){
-            if char.isNumber{
-                scene.currentSeedBags.append(SeedBagModel(numero: Int(String(char)) ?? 300, incognita: false, isOperator: false, operatorr: "", imageNamed: "seedbag", color: .clear, width: seedBagWidth, height: seedBagHeight))
-            }else if char == "x"{
-                //Se eu encontrar um X com um valor anterior a ele, eu adiciono um "*" entre a sacola do número e a sacola do x
-                if index != 0{
-                    if  equation[index-1].isNumber{
-                        scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "*", imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight))
-                        addHitBoxAtTheEnd(scene: scene)
-                    }
-                }
-                scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: true, isOperator: false, operatorr: "", imageNamed: "seedbag", color: .clear, width: seedBagWidth, height: seedBagHeight))
-                
-            }else{
-                scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: String(char), imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight))
-            }
-        }
-        //Depois de preparar o vetor, adiciono na cena
-        showEquation(scene: scene)
-    }
+	func addSeedBags(scene: PhaseScene){
+		
+		if scene.currentSeedBags.count != 0{
+			for seedBag in scene.currentSeedBags{
+				scene.removeChildren(in: [seedBag])
+			}
+			scene.currentSeedBags.removeAll()
+		}
+		
+		if !scene.currentEqLabel.text!.contains("!") {
+			//Transformo a string da equação em um vetor de caracteres
+			let equation = OperationAction.joinAllNumbers(scene.currentEqLabel.text!)
+			
+			for (index,char) in equation.enumerated(){
+				if char.isNumber{
+					scene.currentSeedBags.append(SeedBagModel(numero: Int(String(char)) ?? 300, incognita: false, isOperator: false, operatorr: "", imageNamed: "seedbag", color: .clear, width: seedBagWidth, height: seedBagHeight))
+				}else if char == "x"{
+					//Se eu encontrar um X com um valor anterior a ele, eu adiciono um "*" entre a sacola do número e a sacola do x
+					if index != 0{
+						if  equation[index-1].isNumber{
+							scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "*", imageNamed: "operacoes", color: .clear, width: 21, height: 22))
+							addHitBoxAtTheEnd(scene: scene)
+						}
+					}
+					scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: true, isOperator: false, operatorr: "", imageNamed: "seedbag", color: .clear, width: seedBagWidth, height: seedBagHeight))
+					
+				}else{
+					scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: String(char), imageNamed: "operacoes", color: .clear, width: 21, height: 22))
+				}
+			}
+			//Depois de preparar o vetor, adiciono na cena
+			showEquation(scene: scene)
+		}
+	}
     
 	func updateCurrentEqLabel(scene: PhaseScene) {
 		var equation = ""
@@ -346,27 +364,23 @@ import SpriteKit
 		scene.currentEqLabel.text = equation
 	}
     
-    func showEquation(scene: PhaseScene){
-        updateCurrentEqLabel(scene: scene)
-        
-        if scene.currentSeedBags.count != 0{
-            for seedBag in scene.currentSeedBags{
-                scene.removeChildren(in: [seedBag])
-            }
-        }
-        
-//        print("\nadicionando na cena: ")
-//        for seedBags in scene.currentSeedBags{
-//            print(seedBags.label.text!, terminator: "")
-//        }
-        
-        for (index,seedBag) in scene.currentSeedBags.enumerated(){
-            seedBag.position = CGPoint(x: 50+(60*index), y: 100) //Posicao da sacola com o numero, mexo com o index para colocar na posição certa da equação
-            seedBag.zPosition = 11
-            
-            scene.addChild(seedBag)
-        }
-    }
+	func showEquation(scene: PhaseScene){
+		updateCurrentEqLabel(scene: scene)
+		
+		if scene.currentSeedBags.count != 0{
+			for seedBag in scene.currentSeedBags{
+				scene.removeChildren(in: [seedBag])
+			}
+		}
+		
+		for (index,seedBag) in scene.currentSeedBags.enumerated(){
+			seedBag.position = CGPoint(x: 50+(60*index), y: 110) //Posicao da sacola com o numero, mexo com o index para colocar na posição certa da equação
+			
+			seedBag.zPosition = 11
+			
+			scene.addChild(seedBag)
+		}
+	}
     
     
     func grabNode(touches: Set<UITouch>, scene: PhaseScene) -> Bool{
@@ -454,7 +468,7 @@ import SpriteKit
 			}
 			else{ //Se não houver um sinal antes, eu preciso criar um sinal de mais, criar uma hitbox, e realocar
 			  addHitBoxAtTheEnd(scene: scene) //adiciono uma hitbox ao final
-			  scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight)) //adiciono ao final do vetor um sinal de mais
+			  scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 21, height: 22)) //adiciono ao final do vetor um sinal de mais
 			  realocateSeedBag(self.initialPosition, scene) //realoco apenas o elemento que o usuario passou
 			}
 		 }
@@ -470,7 +484,7 @@ import SpriteKit
             }
             else{ //Se não houver um sinal antes, eu preciso criar um sinal de mais, criar uma hitbox, e realocar
                 addHitBoxAtTheEnd(scene: scene) //adiciono uma hitbox ao final
-                scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight)) //adiciono ao final do vetor um sinal de mais
+                scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 21, height: 22)) //adiciono ao final do vetor um sinal de mais
                 //            self.initialPosition += 1
                 realocateSeedBag(scene.currentSeedBags.count-1,scene) //realoco o sinal que eu acabei de inserir na ultima posição
                 realocateSeedBag(self.initialPosition+1, scene) //realoco o elemento que o usuario passou
