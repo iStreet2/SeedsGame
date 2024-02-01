@@ -110,6 +110,9 @@ class PhaseScene: GameScene {
 					}
 				}
 			}
+            if GameEngine.shared.operators.contains(seedBag.label.text!){ //Se for um operador
+                GameEngine.shared.invertOperator(seedBag,touches, index, self)
+            }
 		}
 		
 	}
@@ -125,10 +128,6 @@ class PhaseScene: GameScene {
 	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 		for (index,seedBag) in currentSeedBags.enumerated(){
 			GameEngine.shared.moveSeedBag(seedBag, touches, stage: 2, initialPosition: index, scene: self)
-            
-            if GameEngine.shared.operators.contains(seedBag.label.text!){ //Se for um operador
-                GameEngine.shared.invertOperator(seedBag,touches, index, self)
-            }
             
 		}
 		
