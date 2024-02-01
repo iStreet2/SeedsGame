@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		19A4ADD42B6183B200E3E9F5 /* PhaseSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A4ADD32B6183B200E3E9F5 /* PhaseSelectionView.swift */; };
 		19A4ADD62B61865A00E3E9F5 /* RectangleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A4ADD52B61865A00E3E9F5 /* RectangleButtonStyle.swift */; };
+		3B1949872B6C2DAB00BB107F /* PhaseViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1949862B6C2DAB00BB107F /* PhaseViewer.swift */; };
 		3B5F47C92B5B085600B09FBE /* SeedBagModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5F47C82B5B085500B09FBE /* SeedBagModel.swift */; };
 		3BB1AF9D2B59B15F00E61276 /* SeedsGameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB1AF9C2B59B15F00E61276 /* SeedsGameApp.swift */; };
 		3BB1AF9F2B59B15F00E61276 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB1AF9E2B59B15F00E61276 /* ContentView.swift */; };
@@ -40,6 +41,7 @@
 /* Begin PBXFileReference section */
 		19A4ADD32B6183B200E3E9F5 /* PhaseSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhaseSelectionView.swift; sourceTree = "<group>"; };
 		19A4ADD52B61865A00E3E9F5 /* RectangleButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangleButtonStyle.swift; sourceTree = "<group>"; };
+		3B1949862B6C2DAB00BB107F /* PhaseViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhaseViewer.swift; sourceTree = "<group>"; };
 		3B5F47C82B5B085500B09FBE /* SeedBagModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedBagModel.swift; sourceTree = "<group>"; };
 		3BB1AF992B59B15F00E61276 /* SeedsGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeedsGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BB1AF9C2B59B15F00E61276 /* SeedsGameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedsGameApp.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				DC8208DB2B69842700A0172C /* Configuration.swift */,
 				DCA7EF252B6ADDC100FCE555 /* MusicToggleStyle.swift */,
 				DCA7EF272B6AE79F00FCE555 /* ButtonEnum.swift */,
+				3B1949862B6C2DAB00BB107F /* PhaseViewer.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -269,6 +272,7 @@
 				DCA7EF282B6AE79F00FCE555 /* ButtonEnum.swift in Sources */,
 				E9E2213E2B5AE5C4001FE22A /* PhaseScene.swift in Sources */,
 				E9E221322B59B6B0001FE22A /* HapticActionModel.swift in Sources */,
+				3B1949872B6C2DAB00BB107F /* PhaseViewer.swift in Sources */,
 				DC8208E02B6AB4AC00A0172C /* ConfigurationView.swift in Sources */,
 				DCA7EF262B6ADDC100FCE555 /* MusicToggleStyle.swift in Sources */,
 				E9E221302B59B5DD001FE22A /* SoundActionModel.swift in Sources */,
