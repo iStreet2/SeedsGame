@@ -39,6 +39,9 @@ import SpriteKit
     var phases: [PhaseScene] = []
     var currentPhase = 0
     
+//    @State var life = 3
+//    @State var points = 0
+    
     let darknessMap: [Int : SKAction] = [0: SKAction.colorize(with: .black, colorBlendFactor: 0, duration: 0),
                                          1: SKAction.colorize(with: .black, colorBlendFactor: 0.2, duration: 0),
                                          2: SKAction.colorize(with: .black, colorBlendFactor: 0.4, duration: 0)]
@@ -96,11 +99,24 @@ import SpriteKit
 		
 		for (_, client) in scene.clients.enumerated() {
 			
+			// Aumenta
 			let scaleAction = SKAction.scale(by: 1.2, duration: 0.5)
 			client.run(scaleAction)
 			
+			// Move
 			let moveAction = SKAction.moveTo(x: client.position.x - 75, duration: 0.5)
 			client.run(moveAction)
+			
+			// Animação Lara
+			let moveAction1 = SKAction.moveBy(x: 0, y: 100 * 0.02, duration: 0.5)
+		   let moveAction2 = SKAction.moveBy(x: 0, y: 100 * (-0.02), duration: 0.5)
+		   let moveSequence = SKAction.sequence([moveAction1, moveAction2])
+			client.run(moveSequence)
+			
+			let rotateAction1 = SKAction.rotate(byAngle: 0.1, duration: 0.3)
+		   let rotateAction2 = SKAction.rotate(byAngle: -0.1, duration: 0.3)
+		   let rotateSequence = SKAction.sequence([rotateAction1, rotateAction2])
+			client.run(rotateSequence)
 			
 			for c in scene.currentClientNumber..<scene.clients.count {
 				scene.clients[c].run(darknessMap[c - scene.currentClientNumber - 1] ?? SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 0.5))
@@ -128,9 +144,8 @@ import SpriteKit
 			scene.currentEqLabel.text = "All questions done!"
 		}
 		//Remover e readicionar as hitBoxes da equação
-		
-		addSeedBags(scene: scene)
-        addHitBoxesFromEquation(scene: scene)
+		 addSeedBags(scene: scene)
+		 addHitBoxesFromEquation(scene: scene)
 	}
     
     
@@ -299,7 +314,6 @@ import SpriteKit
         //Transformo a string da equação em um vetor de caracteres
         let equation = OperationAction.joinAllNumbers(scene.currentEqLabel.text!)
         
-        
         for (index,char) in equation.enumerated(){
             if char.isNumber{
                 scene.currentSeedBags.append(SeedBagModel(numero: Int(String(char)) ?? 300, incognita: false, isOperator: false, operatorr: "", imageNamed: "seedbag", color: .clear, width: seedBagWidth, height: seedBagHeight))
@@ -321,18 +335,24 @@ import SpriteKit
         showEquation(scene: scene)
     }
     
-    func updateCurrentEqLabel(scene: PhaseScene){
-        var equation = ""
-        for seedBag in scene.currentSeedBags{
-            if seedBag.label.text == "?"{
-                equation += "x"
-            }else{
-                equation += seedBag.label.text!
-            }
-        }
-        print("\nNOVA EQUAÇÃO: \(equation)")
-        scene.currentEqLabel.text = equation
-    }
+	func updateCurrentEqLabel(scene: PhaseScene) {
+		var equation = ""
+		for (index, seedBag) in scene.currentSeedBags.enumerated() {
+			if seedBag.label.text == "?" {
+				equation += "x"
+			}
+			else if seedBag.label.text! == "*" {
+				if scene.currentSeedBags[index+1].label.text! != "?" {
+					equation += "*"
+				}
+			}
+			else {
+				equation += seedBag.label.text!
+			}
+		}
+		print("\nNOVA EQUAÇÃO: \(equation)")
+		scene.currentEqLabel.text = equation
+	}
     
     func showEquation(scene: PhaseScene){
         updateCurrentEqLabel(scene: scene)
@@ -680,10 +700,13 @@ import SpriteKit
         let clientSprite = client.clientSprites[client.clientSpriteID] // String
         let rose = client.clientSpriteID == 11
         
-        // ACERTOU!
-        if scene.currentEqLabel.text! == String(scene.phaseMap[currentPhase+1]![scene.currentClientNumber].1) {
-            print("EEEEITA PENGA \(String(scene.phaseMap[currentPhase+1]![scene.currentClientNumber].1))")
-            
+		 let clientAnswer = scene.currentEqLabel.text!
+		 let correctAnswer = String(scene.phaseMap[currentPhase+1]![scene.currentClientNumber].1)
+		 
+		 let refactoredClientAnswer = refactorClientAnswer(answer: clientAnswer, scene)
+		 
+		// ACERTOU!
+        if Float(refactoredClientAnswer) == Float(correctAnswer) {
             var resultSprite: String = ""
             if rose {
                 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo (acerto)")
@@ -696,9 +719,6 @@ import SpriteKit
         }
         // errou...
         else {
-            print("vishh \(String(scene.phaseMap[currentPhase+1]![scene.currentClientNumber].1))")
-            
-            
             var resultSprite: String = ""
             if rose {
                 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Feliz (erro)")
@@ -735,6 +755,32 @@ import SpriteKit
         }
         return (open,close)
     }
+	
+	
+	func refactorClientAnswer(answer: String, _ scene: PhaseScene) -> String {
+		var i = 0
+		let equation = Array(scene.currentEqLabel.text!)
+		
+		var leftString = ""
+		var rightString = ""
+		
+		while equation[i] != "=" {
+			leftString += String(equation[i])
+			i += 1
+		}
+		
+		i += 1
+		
+		while i < equation.count {
+			rightString += String(equation[i])
+			i += 1
+		}
+		
+		if leftString.contains("x") {
+			return rightString
+		}
+		return leftString
+	}
 }
 
 //Se, ao soltar da direita para a esquerda um numero, e duas posicoes antes desse numero, tiver um ")", remover os parenteses da direita

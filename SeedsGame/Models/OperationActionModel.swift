@@ -231,7 +231,7 @@ class OperationAction: Action {
 			}
 		}
 		
-		if numFirst != "0" && numFirst != "" {
+		if numFirst != "0" && numFirst != "+0" {
 			resultString += numFirst
 		}
 		
@@ -272,7 +272,9 @@ class OperationAction: Action {
 			return ""
 		}
 		
-        var joinedEquation = OperationAction.joinAllNumbers(equation)
+
+		var joinedEquation = OperationAction.joinAllNumbers(equation)
+
 		var joinedXEquation = joinXwithNum(joinedEquation)
 		
 		var resultEquation = equationEvaluator(joinedXEquation)

@@ -9,57 +9,61 @@ import Foundation
 import SwiftUI
 
 struct MenuView: View {
-    
     var body: some View {
+        
         NavigationStack {
-            VStack(spacing: 40) {
-                HStack(alignment: .top) {
-                    Spacer()
-                    Text("Título do Jogo")
-                        .padding()
-                        .padding(.horizontal, 60)
-                        .padding(.vertical, 20)
-                        .bold()
-                        .font(.custom("Troika", size: 33))
-                        .background(.gray)
-                        .padding(.trailing, 122)
-
-
+            ZStack {
+                HStack(alignment: .bottom){
+                    Image("Bhas")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 196, height: 347)
+                        .padding(.bottom, 55)
                     
-//                    Spacer()
+                    Spacer(minLength: 400)
                     
-                    Button(action: {
-                        print("foii")
-                    }) {
-                        Image(systemName: "gear")
-                    }
-                    .buttonStyle(SquareButtonStyle())
+                    Image("Rose - Neutro")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 196, height: 347)
+                        .padding(.top, 250)
                 }
                 
-                HStack(spacing: 40){
-//                    Image("client1")
-//                        .resizable()
-//                        .scaledToFit()
-//                        .frame(width: 110)
-//                        .padding()
-                    VStack(spacing: 20){
+                VStack(spacing: 50) {
+                    HStack(alignment: .top) {
+                        Spacer()
+                        Text("Título do Jogo")
+                            .padding()
+                            .padding(.horizontal, 40)
+                            .padding(.vertical, 35)
+                            .bold()
+                            .font(.custom("Troika", size: 33))
+                            .background(.gray)
+                            .padding(.trailing, 190)
+                            .foregroundStyle(.white)
+
+                        Button(action: {
+                            print("foii")
+                        }) {
+                            Image("")
+                        }
+                        .buttonStyle(SquareButtonStyle(tag: .config))
+                        .padding()
+                    }
+                    VStack(spacing: 50){
                         Button("MODO HISTÓRIA"){
-                            print("a")
+                            print("")
                             
                         }
-                        .buttonStyle(SeedButtonStyle())
+                        .buttonStyle(RectangleButtonStyle(tag: .story))
                         
                         Button("INFINITO"){
-                            print("b")
+                            print("")
                         }
-                        .buttonStyle(SeedButtonStyle())
+                        .buttonStyle(RectangleButtonStyle(tag: .type2))
                     }
-//                    Image("client1")
-//                        .resizable()
-//                        .scaledToFit()
-//                        .frame(width: 110)
-//                        .padding()
                 }
+                
             }
         }
         

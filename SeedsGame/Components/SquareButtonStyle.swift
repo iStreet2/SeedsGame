@@ -8,21 +8,19 @@
 import SwiftUI
 
 struct SquareButtonStyle: ButtonStyle {
+    var tag: SquareImages
+    
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.system(size: 32))
-            .bold()
-            .frame(width: 59, height: 59)
-            .background(configuration.isPressed ? .black: .gray)
-            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .background(configuration.isPressed ? Image(tag.pressed): Image(tag.rawValue))
     }
 }
 
 #Preview {
     Button(action: {
-        print("foii")
+        print("")
     }) {
-        Image(systemName: "gear")
+        Text("")
     }
-    .buttonStyle(SquareButtonStyle())
+    .buttonStyle(SquareButtonStyle(tag: .home))
 }
