@@ -9,6 +9,8 @@ import SwiftUI
 import SpriteKit
 
 struct ContentView: View {
+    @State var life = 3
+    @State var points = 1
     let width = UIScreen.main.bounds.width
     let height = UIScreen.main.bounds.height
     
@@ -21,10 +23,17 @@ struct ContentView: View {
     }
     
     var body: some View {
-        VStack {
+        ZStack {
             SpriteView(scene: scene)
                 .ignoresSafeArea()
             
+            VStack{
+                HStack{
+                    LifeScore(life: $life, points: $points)
+                    Spacer()
+                }
+                Spacer()
+            }
         }
     }
 }

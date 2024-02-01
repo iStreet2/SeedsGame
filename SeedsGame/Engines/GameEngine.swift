@@ -37,6 +37,9 @@ import SpriteKit
     var phases: [PhaseScene] = []
     var currentPhase = 0
     
+//    @State var life = 3
+//    @State var points = 0
+    
     let darknessMap: [Int : SKAction] = [0: SKAction.colorize(with: .black, colorBlendFactor: 0, duration: 0),
                                          1: SKAction.colorize(with: .black, colorBlendFactor: 0.2, duration: 0),
                                          2: SKAction.colorize(with: .black, colorBlendFactor: 0.4, duration: 0)]
