@@ -40,6 +40,9 @@ struct TopicView: View {
                         .toggleStyle(CheckToggleStyle())
                         .padding()
                         .font(.custom("AlegreyaSans-Medium", size: 24))
+                    
+        
+
                       
                 }
             }

@@ -46,5 +46,5 @@ struct LifeScore: View {
     }
 }
 #Preview {
-    LifeScore(life: .constant(1), points: .constant(1))
+    LifeScore(life: .constant(2), points: .constant(1))
 }
