@@ -16,16 +16,22 @@ class GameScene: SKScene {
 	var phaseMap: [Int : [(String, Float)]] = [
 		1: [("x+10=2x", 0), ("27=3x", 9), ("3x+2*9=0", -6)],
 		2: [("17-2x=3", 7), ("30x-120=0", 4), ("2x+3x=15x-30", 3), ("14+2x=3+2", -4.5), ("5", 5)],
-		3: [("1", 1), ("2", 2), ("3", 3), ("4", 4), ("5", 5), ("6", 6), ("7", 7), ("8", 8), ("9", 9), ("10", 10)]
+		3: [("1", 1), ("2", 2), ("3", 3), ("4", 4), ("5", 5), ("6", 6), ("7", 7), ("8", 8), ("9", 9), ("10", 10), ("11", 11)]
 
 	]
 	
 	
 	let nextPhaseButton = SKSpriteNode(color: .red, size: CGSize(width: 50, height: 50))
 	let nextQuestionButton = SKSpriteNode(color: .green, size: CGSize(width: 50, height: 50))
+	
 	var joinSideButton = SKSpriteNode(imageNamed: "Ala - Frame 1")
 	var textureAtlas: SKTextureAtlas = SKTextureAtlas(named: "Alavanca")
+	
 	let giveResponseButton = SKSpriteNode(imageNamed: "blackhole")
+	
+	
+	let restartEquationButton = SKSpriteNode(imageNamed: "Destructive")
+	var destructiveButtonTextureAtlas: SKTextureAtlas = SKTextureAtlas(named: "DestructiveButtonAssets")
 	
 	override func didMove(to view: SKView) {
 		startup()
@@ -33,6 +39,8 @@ class GameScene: SKScene {
 	
 	
 	func startup() {
+		let width = frame.width
+		let height = frame.height
     
 		nextPhaseButton.position = CGPoint(x: frame.size.width - 100, y: 50)
 		nextPhaseButton.zPosition = 12
@@ -60,6 +68,11 @@ class GameScene: SKScene {
 		topBackground.position = CGPoint(x: frame.size.width / 2, y: frame.size.height - frame.size.height / 4)
 		topBackground.zPosition = -1
 		addChild(topBackground)
+		
+		restartEquationButton.position = CGPoint(x: width * 0.07, y: 50)
+		restartEquationButton.size = CGSize(width: 44.92, height: 33)
+		restartEquationButton.zPosition = 12
+		addChild(restartEquationButton)
 	}
 	
 	func animateLever() {
@@ -89,6 +102,14 @@ class GameScene: SKScene {
 									]
 		let idleAction = SKAction.animate(with: idleFrames, timePerFrame: 0.03)
 		joinSideButton.run(idleAction)
+	}
+	
+	
+	func animateDestructiveButton() {
+		let animationFrames: [SKTexture] = [destructiveButtonTextureAtlas.textureNamed("Destructive - Pressed"),
+											destructiveButtonTextureAtlas.textureNamed("Destructive")]
+		let frameAction = SKAction.animate(with: animationFrames, timePerFrame: 0.5)
+		restartEquationButton.run(frameAction)
 	}
 	
 }

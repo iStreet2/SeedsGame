@@ -54,7 +54,7 @@ import SpriteKit
     
     
     init() {
-        let phases = [PhaseScene(phase: 1, width: width, height: height), PhaseScene(phase: 2, width: width, height: height)]
+        let phases = [PhaseScene(phase: 1, width: width, height: height), PhaseScene(phase: 2, width: width, height: height), PhaseScene(phase: 3, width: width, height: height)]
         self.phases = phases
     }
     
@@ -131,6 +131,9 @@ import SpriteKit
 				scene.removeChildren(in: [client])
 			}
 		}
+		 
+		// Remove os sacos e hitboxes da tela
+		 removeSeedBagsAndHitboxes(scene)
 		
 		// renderiza o sprite do próximo cliente no final da fila
 		if (scene.currentClientNumber + 3) <= (nQuestions - 1) {
@@ -147,11 +150,22 @@ import SpriteKit
 		else {
 			scene.currentEqLabel.text = "All questions done!"
 		}
-		//Remover e readicionar as hitBoxes da equação
-		 addSeedBags(scene: scene)
-		 addHitBoxesFromEquation(scene: scene)
+		 
+		 if !scene.children.contains(scene.currentEqLabel) && !scene.children.contains(scene.eqLabelBackground) {
+			 scene.addChild(scene.currentEqLabel)
+			 scene.addChild(scene.eqLabelBackground)
+		 }
 	}
-    
+	
+	
+	func removeSeedBagsAndHitboxes(_ scene: PhaseScene) {
+		for seedbag in scene.currentSeedBags {
+			scene.removeChildren(in: [seedbag])
+		}
+		for hitBox in scene.hitBoxes {
+			scene.removeChildren(in: [hitBox])
+		}
+	}
     
     
 	func renderClients(scene: PhaseScene) {
@@ -168,7 +182,7 @@ import SpriteKit
 			}
 			// restante dos clientes
 			else {
-				let positionX = Int(sceneWidth)
+				let positionX = Int(sceneWidth + client.size.width / 2)
 				let positionY = Int(0.602 * sceneHeight)
 				client.position = CGPoint(x: positionX, y: positionY)
 			}
@@ -186,6 +200,25 @@ import SpriteKit
 		
 		//
 		scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)"
+	}
+	
+	
+	func moveFirstClientToFront(_ scene: PhaseScene) {
+		let firstClient = scene.clients[scene.currentClientNumber]
+		let action = SKAction.move(to: CGPoint(x: scene.size.width / 2, y: firstClient.position.y), duration: 1)
+		
+		let moveAction1 = SKAction.moveBy(x: 0, y: 100 * 0.02, duration: 0.5)
+		let moveAction2 = SKAction.moveBy(x: 0, y: 100 * (-0.02), duration: 0.5)
+		let moveSequence = SKAction.sequence([moveAction1, moveAction2])
+		firstClient.run(moveSequence)
+		
+		let rotateAction1 = SKAction.rotate(byAngle: 0.1, duration: 0.3)
+		let rotateAction2 = SKAction.rotate(byAngle: -0.1, duration: 0.3)
+		let rotateSequence = SKAction.sequence([rotateAction1, rotateAction2])
+		firstClient.run(rotateSequence)
+		
+		scene.removeChildren(in: [scene.currentEqLabel, scene.eqLabelBackground])
+		firstClient.run(action)
 	}
     
     
@@ -292,7 +325,7 @@ import SpriteKit
         for (index,hitBox) in scene.hitBoxes.enumerated(){
             hitBox.position = CGPoint(x: 50+(60*index), y: 100)
             hitBox.zPosition = 11
-            hitBox.strokeColor = .red
+            hitBox.strokeColor = .clear
             scene.addChild(hitBox)
         }
     }
@@ -368,7 +401,6 @@ import SpriteKit
 				equation += seedBag.label.text!
 			}
 		}
-		print("\nNOVA EQUAÇÃO: \(equation)")
 		scene.currentEqLabel.text = equation
 	}
     
@@ -795,6 +827,15 @@ import SpriteKit
 		}
 		return leftString
 	}
+	
+	
+	func resetCurrentEquation(_ scene: PhaseScene) {
+		scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)" // Volta o label para a equação inicial
+		addSeedBags(scene: scene)
+		addHitBoxesFromEquation(scene: scene)
+	}
+	
+	
 }
 
 //Se, ao soltar da direita para a esquerda um numero, e duas posicoes antes desse numero, tiver um ")", remover os parenteses da direita

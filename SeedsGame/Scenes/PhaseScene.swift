@@ -69,9 +69,9 @@ class PhaseScene: GameScene {
 		// MARK: Renderiza os 3 clientes
 		GameEngine.shared.renderClients(scene: self)
 	 //Adiciono o pacote de sementes na cena
-	 GameEngine.shared.addSeedBags(scene: self)
+	 //GameEngine.shared.addSeedBags(scene: self)
 	 //Para cada caracter na string da equação, eu crio um quadrado que ira receber sacos dentro dele
-	 GameEngine.shared.addHitBoxesFromEquation(scene: self)
+	 //GameEngine.shared.addHitBoxesFromEquation(scene: self)
 	}
 	
 	
@@ -102,6 +102,17 @@ class PhaseScene: GameScene {
 		if giveResponseButton.contains(touch.location(in: self)) {
 			print("Equação deve ser avaliada!")
 			GameEngine.shared.renderClientResponse(self)
+		}
+		
+		if eqLabelBackground.contains(touch.location(in: self)) {
+			GameEngine.shared.moveFirstClientToFront(self)
+			GameEngine.shared.addSeedBags(scene: self)
+			GameEngine.shared.addHitBoxesFromEquation(scene: self)
+		}
+		
+		if restartEquationButton.contains(touch.location(in: self)) {
+			GameEngine.shared.resetCurrentEquation(self)
+			animateDestructiveButton()
 		}
 		
 		//movimento do sprite de semente
