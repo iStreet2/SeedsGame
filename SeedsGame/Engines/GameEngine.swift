@@ -724,9 +724,11 @@ import SpriteKit
             var resultSprite: String = ""
             if rose {
                 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo (acerto)")
+                userEngine?.rightAnswerRose()
             }
             else {
                 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Feliz")
+                userEngine?.rightAnswer()
             }
             
             client.texture = SKTexture(imageNamed: resultSprite)
@@ -736,11 +738,13 @@ import SpriteKit
             var resultSprite: String = ""
             if rose {
                 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Feliz (erro)")
+                userEngine?.wrongAnswerRose()
             }
             else {
                 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo")
+                userEngine?.wrongAnswer()
             }
-            userEngine?.wrongAnswer()
+            
             client.texture = SKTexture(imageNamed: resultSprite)
         }
     }

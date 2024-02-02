@@ -22,6 +22,15 @@ class UserEngine: ObservableObject{
     
     func wrongAnswer() {
         life -= 1
-        print("menos uma vida \(life)")
+    }
+    func wrongAnswerRose(){
+        life -= 3
+    }
+    
+    func rightAnswer(){
+        score += 100
+    }
+    func rightAnswerRose(){
+        score += 200
     }
 }
