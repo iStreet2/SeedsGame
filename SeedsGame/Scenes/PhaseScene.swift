@@ -69,9 +69,9 @@ class PhaseScene: GameScene {
 		// MARK: Renderiza os 3 clientes
 		GameEngine.shared.renderClients(scene: self)
 	 //Adiciono o pacote de sementes na cena
-	 GameEngine.shared.addSeedBags(scene: self)
+	 //GameEngine.shared.addSeedBags(scene: self)
 	 //Para cada caracter na string da equação, eu crio um quadrado que ira receber sacos dentro dele
-	 GameEngine.shared.addHitBoxesFromEquation(scene: self)
+	 //GameEngine.shared.addHitBoxesFromEquation(scene: self)
 	}
 	
 	
@@ -104,28 +104,40 @@ class PhaseScene: GameScene {
 			GameEngine.shared.renderClientResponse(self)
 		}
 		
+		if eqLabelBackground.contains(touch.location(in: self)) {
+			GameEngine.shared.moveFirstClientToFront(self)
+			GameEngine.shared.addSeedBags(scene: self)
+			GameEngine.shared.addHitBoxesFromEquation(scene: self)
+		}
+		
+		if restartEquationButton.contains(touch.location(in: self)) {
+			GameEngine.shared.resetCurrentEquation(self)
+			animateDestructiveButton()
+		}
+		
 		//movimento do sprite de semente
-		for (index,seedBag) in currentSeedBags.enumerated(){
-			if !GameEngine.shared.operators.contains(seedBag.label.text!){ //Se não for um operador
-				if seedBag.label.text! != "="{ //Se não for um igual
-					if seedBag.label.text! != "0"{ //Se não for zero
-						GameEngine.shared.moveSeedBag(seedBag, touches, stage: 0,initialPosition: index, scene: self)
-					}
-				}
-			}
-      if GameEngine.shared.operators.contains(seedBag.label.text!){ //Se for um operador
+        for (index,seedBag) in currentSeedBags.enumerated(){
+            if seedBag.contains(touch.location(in: self)){
+                if !GameEngine.shared.operators.contains(seedBag.label.text!){ //Se não for um operador
+                    if seedBag.label.text! != "="{ //Se não for um igual
+                        if seedBag.label.text! != "0"{ //Se não for zero
+                            GameEngine.shared.moveSeedBag(seedBag, touches, stage: 0,initialPosition: index, scene: self)
+                        }
+                    }
+                }
+            }
+            if GameEngine.shared.operators.contains(seedBag.label.text!){ //Se for um operador
                 GameEngine.shared.invertOperator(seedBag,touches, index, self)
-      }
+            }
 
 		}
 		
 	}
 	
 	override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-		for (index,seedBag) in currentSeedBags.enumerated(){
-			GameEngine.shared.moveSeedBag(seedBag, touches, stage: 1, initialPosition: index, scene: self)
-		}
-		
+        for (index,seedBag) in currentSeedBags.enumerated(){
+            GameEngine.shared.moveSeedBag(seedBag, touches, stage: 1, initialPosition: index, scene: self)
+        }
 	}
 	
 	

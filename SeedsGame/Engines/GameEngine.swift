@@ -14,6 +14,8 @@ import SpriteKit
     
     static let shared = GameEngine()
     
+    var userEngine: UserEngine?
+    
     let operators = ["+","-","*","/","(",")"]
     
     let width = UIScreen.main.bounds.width
@@ -25,7 +27,6 @@ import SpriteKit
     let hitBoxWidth: Double = 50
     let hitBoxHeight: Double = 50
     
-    var initialPosition = 0
     var realocationPosition = 0
     
     var eqHasZeroRight = false
@@ -41,8 +42,6 @@ import SpriteKit
 	
 	var phaseFirstSetup = true
     
-//    @State var life = 3
-//    @State var points = 0
     
     let darknessMap: [Int : SKAction] = [0: SKAction.colorize(with: .black, colorBlendFactor: 0, duration: 0),
                                          1: SKAction.colorize(with: .black, colorBlendFactor: 0.3, duration: 0),
@@ -54,7 +53,7 @@ import SpriteKit
     
     
     init() {
-        let phases = [PhaseScene(phase: 1, width: width, height: height), PhaseScene(phase: 2, width: width, height: height)]
+        let phases = [PhaseScene(phase: 1, width: width, height: height), PhaseScene(phase: 2, width: width, height: height), PhaseScene(phase: 3, width: width, height: height)]
         self.phases = phases
     }
     
@@ -131,6 +130,9 @@ import SpriteKit
 				scene.removeChildren(in: [client])
 			}
 		}
+		 
+		// Remove os sacos e hitboxes da tela
+		 removeSeedBagsAndHitboxes(scene)
 		
 		// renderiza o sprite do próximo cliente no final da fila
 		if (scene.currentClientNumber + 3) <= (nQuestions - 1) {
@@ -147,11 +149,22 @@ import SpriteKit
 		else {
 			scene.currentEqLabel.text = "All questions done!"
 		}
-		//Remover e readicionar as hitBoxes da equação
-		 addSeedBags(scene: scene)
-		 addHitBoxesFromEquation(scene: scene)
+		 
+		 if !scene.children.contains(scene.currentEqLabel) && !scene.children.contains(scene.eqLabelBackground) {
+			 scene.addChild(scene.currentEqLabel)
+			 scene.addChild(scene.eqLabelBackground)
+		 }
 	}
-    
+	
+	
+	func removeSeedBagsAndHitboxes(_ scene: PhaseScene) {
+		for seedbag in scene.currentSeedBags {
+			scene.removeChildren(in: [seedbag])
+		}
+		for hitBox in scene.hitBoxes {
+			scene.removeChildren(in: [hitBox])
+		}
+	}
     
     
 	func renderClients(scene: PhaseScene) {
@@ -168,7 +181,7 @@ import SpriteKit
 			}
 			// restante dos clientes
 			else {
-				let positionX = Int(sceneWidth)
+				let positionX = Int(sceneWidth + client.size.width / 2)
 				let positionY = Int(0.602 * sceneHeight)
 				client.position = CGPoint(x: positionX, y: positionY)
 			}
@@ -187,6 +200,25 @@ import SpriteKit
 		//
 		scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)"
 	}
+	
+	
+	func moveFirstClientToFront(_ scene: PhaseScene) {
+		let firstClient = scene.clients[scene.currentClientNumber]
+		let action = SKAction.move(to: CGPoint(x: scene.size.width / 2, y: firstClient.position.y), duration: 1)
+		
+		let moveAction1 = SKAction.moveBy(x: 0, y: 100 * 0.02, duration: 0.5)
+		let moveAction2 = SKAction.moveBy(x: 0, y: 100 * (-0.02), duration: 0.5)
+		let moveSequence = SKAction.sequence([moveAction1, moveAction2])
+		firstClient.run(moveSequence)
+		
+		let rotateAction1 = SKAction.rotate(byAngle: 0.1, duration: 0.3)
+		let rotateAction2 = SKAction.rotate(byAngle: -0.1, duration: 0.3)
+		let rotateSequence = SKAction.sequence([rotateAction1, rotateAction2])
+		firstClient.run(rotateSequence)
+		
+		scene.removeChildren(in: [scene.currentEqLabel, scene.eqLabelBackground])
+		firstClient.run(action)
+	}
     
     
     // Função para mexer seeBagModels
@@ -197,8 +229,12 @@ import SpriteKit
                 if node.contains(location){
                     self.initialNodePosition = node.position
                     scene.movableNode = node
-                    scene.movableNode!.position = location
-                    self.initialPosition = initialPosition
+                    if inParentheses(initialPosition, scene){
+                        scene.movableNode = nil
+                    }else{
+                        scene.movableNode!.position = location
+                        scene.movableNode!.zPosition = 30
+                    }
                 }
             }
         }else if stage == 1{
@@ -216,34 +252,33 @@ import SpriteKit
                     
                     if grabNode(touches: touches, scene: scene){ //Se o nó foi soltado em alguma hitBox que consiga segurar ele
                         
-                        if tradeIsPossible(scene: scene){ //E se a troca for possível, ou seja, ele jogar para o outro lado da equação
-                            
-                            //Eu preciso checar se ele deixar o saco em algum lado que tem um zero, o zero tem que sumir
-                            
-                            //                        removeZeroIfItNeedsTo(scene: scene)
-                            
-                            let fromLeft = checkFromLeft(scene: scene) //Checa se o elemento esta sendo arrastado da esquerda
-                            
-                            if fromLeft{ //Se o usuário estiver arrastando da esquerda para a direita
-                                realocateFromLeft(scene: scene) //Função que realoca os sinais também a partir da esquerda
-                            }else{ //Se o usuário estiver arrastando da direita para a esquerda
-                                realocateFromRight(scene: scene) //Função que realoca os sinais também a partir da direita
-                            }
-                            //Depois de realocar preciso checar se não tem algum lado sem nada
-                            addZeroIfItNeedsTo(scene: scene)
-                            
-                            //Depois de realocar preciso atualizar as equações na tela
-                            showEquation(scene: scene)
-                            
-                            scene.movableNode = nil
-                            
-                            //                        print("\ndepois de realocar tudo de remover o zero \n")
-                            //                        for seedBags in scene.currentSeedBags{
-                            //                                      print(seedBags.label.text!, terminator: "")
-                            //                        }
+                        //Eu preciso checar se ele deixar o saco em algum lado que tem um zero, o zero tem que sumir
+                        
+                        //removeZeroIfItNeedsTo(scene: scene)
+                        
+                        let fromLeft = fromLeft(scene) //Checa se o elemento esta sendo arrastado da esquerda
+                        
+                        if fromLeft{ //Se o usuário estiver arrastando da esquerda para a direita
+                            realocateFromLeft(scene: scene) //Função que realoca os sinais também a partir da esquerda
+                        }else{ //Se o usuário estiver arrastando da direita para a esquerda
+                            realocateFromRight(scene: scene) //Função que realoca os sinais também a partir da direita
                         }
-                    }else{ //Se nao ele só volta para sua posição inicial
+                        //Depois de realocar preciso checar se não tem algum lado sem nada
+                        addZeroIfItNeedsTo(scene: scene)
+                        
+                        //Depois de realocar preciso atualizar as equações na tela
+                        showEquation(scene: scene)
+                        
+                        scene.movableNode = nil
+                        
+                        //                        print("\ndepois de realocar tudo de remover o zero \n")
+                        //                        for seedBags in scene.currentSeedBags{
+                        //                                      print(seedBags.label.text!, terminator: "")
+                        //                        }
+                    }
+                    else{ //Se nao ele só volta para sua posição inicial
                         resetPosition(scene: scene)
+                        scene.movableNode = nil
                     }
                 }
             }
@@ -254,19 +289,21 @@ import SpriteKit
         
         if let touch = touches.first{
             let location = touch.location(in: scene.self)
-            if node.contains(location){
-                //Inverto o sinal na label do laço
-                if node.label.text == "+"{
-                    scene.currentSeedBags[position].label.text = "-"
-                }else if node.label.text == "-"{
-                    scene.currentSeedBags[position].label.text = "+"
-                }else if node.label.text == "*"{
-                    scene.currentSeedBags[position].label.text = "/"
-                }else if node.label.text == "/"{
-                    scene.currentSeedBags[position].label.text = "*"
+            if scene.movableNode == nil{
+                if node.contains(location){
+                    //Inverto o sinal na label do laço
+                    if node.label.text == "+"{
+                        scene.currentSeedBags[position].label.text = "-"
+                    }else if node.label.text == "-"{
+                        scene.currentSeedBags[position].label.text = "+"
+                    }else if node.label.text == "*"{
+                        scene.currentSeedBags[position].label.text = "/"
+                    }else if node.label.text == "/"{
+                        scene.currentSeedBags[position].label.text = "*"
+                    }
+                    //Atualizo na tela
+                    showEquation(scene: scene)
                 }
-                //Atualizo na tela
-                showEquation(scene: scene)
             }
         }
         
@@ -292,7 +329,7 @@ import SpriteKit
         for (index,hitBox) in scene.hitBoxes.enumerated(){
             hitBox.position = CGPoint(x: 50+(60*index), y: 100)
             hitBox.zPosition = 11
-            hitBox.strokeColor = .red
+            hitBox.strokeColor = .clear
             scene.addChild(hitBox)
         }
     }
@@ -320,12 +357,8 @@ import SpriteKit
     
 	func addSeedBags(scene: PhaseScene){
 		
-		if scene.currentSeedBags.count != 0{
-			for seedBag in scene.currentSeedBags{
-				scene.removeChildren(in: [seedBag])
-			}
-			scene.currentSeedBags.removeAll()
-		}
+        clearSeedsOfScene(scene)
+        clearSeedOfList(scene)
 		
 		if !scene.currentEqLabel.text!.contains("!") {
 			//Transformo a string da equação em um vetor de caracteres
@@ -368,18 +401,13 @@ import SpriteKit
 				equation += seedBag.label.text!
 			}
 		}
-		print("\nNOVA EQUAÇÃO: \(equation)")
 		scene.currentEqLabel.text = equation
 	}
     
 	func showEquation(scene: PhaseScene){
 		updateCurrentEqLabel(scene: scene)
 		
-		if scene.currentSeedBags.count != 0{
-			for seedBag in scene.currentSeedBags{
-				scene.removeChildren(in: [seedBag])
-			}
-		}
+		clearSeedsOfScene(scene)
 		
 		for (index,seedBag) in scene.currentSeedBags.enumerated(){
 			seedBag.position = CGPoint(x: 50+(60*index), y: 110) //Posicao da sacola com o numero, mexo com o index para colocar na posição certa da equação
@@ -390,6 +418,20 @@ import SpriteKit
 		}
 	}
     
+    func clearSeedsOfScene(_ scene: PhaseScene){
+        if scene.currentSeedBags.count != 0{
+            for seedBag in scene.currentSeedBags{
+                scene.removeChildren(in: [seedBag])
+            }
+        }
+    }
+    
+    func clearSeedOfList(_ scene: PhaseScene){
+        if scene.currentSeedBags.count != 0{
+            scene.currentSeedBags.removeAll()
+        }
+    }
+    
     
     func grabNode(touches: Set<UITouch>, scene: PhaseScene) -> Bool{
         if let touch = touches.first{
@@ -398,8 +440,12 @@ import SpriteKit
                 for (index,hitBox) in scene.hitBoxes.enumerated(){
                     if hitBox.contains(location){
                         realocationPosition = index
-                        scene.movableNode!.position = hitBox.position
-                        return true
+                        if tradeIsPossible(scene){ //Se a troca for possível, eu agarro
+                            scene.movableNode!.position = hitBox.position
+                            return true
+                        }else{ //Porem se não for, eu não agarro e o movableNode se torna nulo, para não mexer mais
+                            return false
+                        }
                     }
                 }
             }
@@ -407,109 +453,87 @@ import SpriteKit
         return false
     }
     
-    func realocateSeedBag(_ initialPosition: Int, _ scene: PhaseScene){ //Nessa função, o destino de realocação do nó é sempre no ultimo elemento do lado para onde esta sendo realocada.
+    func realocateToOtherSide(_ position: Int, _ scene: PhaseScene){ //Nessa função, o destino de realocação do nó é sempre no ultimo elemento do lado para onde esta sendo realocado.
         
-        var fromLeft = false
-        var possible = true
-        
-        for i in initialPosition..<scene.currentSeedBags.count{ //Percorro o vetor da posicao que o nó esta sendo mexido até o final do vetor, se achar algum igual no caminho, ele esta trazendo da esquerda
-            if scene.currentSeedBags[i].label.text == "="{
-                fromLeft = true
-                for j in realocationPosition..<scene.currentSeedBags.count{
-                    if scene.currentSeedBags[j].label.text == "="{//Porém, se eu encontrar um igual novamente, partindo da posição de realocação, significa que o usuário esta tentando mexer no mesmo lado, o que nao é possivel
-                        possible = false
-                    }
-                }
-            }
-        }
-        
-        if !fromLeft{ //Se ele nao achou nenhum "igual" a direita do saco que esta mexendo, signifca que o elemento que ele esta mexendo esta a direita do igual, entao preciso checar se onde ele quer soltar esta do lado esquerdo do igual, se nao estiver, nao posso deixar ele mexer
-            possible = false
-            for i in realocationPosition..<scene.currentSeedBags.count{
-                if scene.currentSeedBags[i].label.text == "="{
-                    possible = true
-                }
-            }
-        }
-        
-        if possible{
-            if fromLeft{//se eu estiver arrastado o elemento da esquerda para a direita
-                let currentSeedBag = scene.currentSeedBags[initialPosition] //salvo o valor no qual estou pegando
-                
-                realocateToLeft(scene: scene, from: initialPosition+1, to: scene.currentSeedBags.count-1) //realoco todos os elementos para a esquerda da posicao inicial ate o final do vetor
-                
-                scene.currentSeedBags[scene.currentSeedBags.count-1] = currentSeedBag //coloco na posição finao do vetor
-            }
-            else{//se eu estiver arrastando o elemento da direita para a esquerda
-                let equalPosition = getEqual(scene: scene) //Procuro onde esta o sinal de igual para colocar o elemento atual nessa posição
-                
-                let currentSeedBag = scene.currentSeedBags[initialPosition] //salvo o valor que estou pegando
+        if fromLeft(scene){//se eu estiver arrastado o elemento da esquerda para a direita
+            let currentSeedBag = scene.currentSeedBags[position] //salvo o valor no qual estou pegando
             
-                realocateToRight(scene: scene, from: equalPosition-1, to: initialPosition) //realoco para a direita todos os elementos a partir do igual ate a posição inicial do saco
-                
-                scene.currentSeedBags[equalPosition] = currentSeedBag //coloco na posição anterior do igual o elemento que estava segurando
-            }
+            //Vamos la, aqui eu quero arrastar um elemento da esquerda para a direita :D
+            scene.currentSeedBags.remove(at: position) //Removo da posição dele
+            scene.currentSeedBags.append(currentSeedBag) //Coloco no final
             
-        }else{ //Se nao for possivel realizar a troca, eu reseto a posição do nó
-            resetPosition(scene: scene)
+        }
+        else{ //Se eu estiver arrastando o elemento da direita para a esquerda
+            let equalPosition = getEqual(scene: scene) //Procuro onde esta o sinal de igual para colocar o elemento atual nessa posição
+            
+            let currentSeedBag = scene.currentSeedBags[position] //salvo o valor que estou pegando
+            
+            scene.currentSeedBags.remove(at: position)
+            scene.currentSeedBags.insert(currentSeedBag, at: equalPosition)
         }
     }
     
-    //Se, ao mandar ou uma multiplicação, ou uma divisão, tiver mais de 1 número do outro lado, eu preciso colocar parênteses no começo e no final desse lado da equação
-    
     func realocateFromLeft(scene: PhaseScene){ //Realoca com sinal os elementos
         
-        if self.initialPosition != 0{
+        if getMovableNodePosition(scene) != 0{
             //Se, quando eu for realocar um elemento, antes dele ouver algum sinal, esse sinal tem que ir junto
-            if operators.contains(scene.currentSeedBags[self.initialPosition-1].label.text!){
-                if scene.currentSeedBags[self.initialPosition-1].label.text! == "*"{ //Se esse sinal for multiplicação
-                    
-                    if scene.currentSeedBags[self.initialPosition-2].label.text! == ")"{ //se antes do sinal de multiplicação for um parenteses fechando
-                        
-                        //Remover parenteses da esquerda!
-                        
+            if operators.contains(scene.currentSeedBags[getMovableNodePosition(scene)-1].label.text!){
+                if scene.currentSeedBags[getMovableNodePosition(scene)-1].label.text! == "*" || scene.currentSeedBags[getMovableNodePosition(scene)-1].label.text! == "/"{ //Se for "*" ou "/"
+                    if scene.currentSeedBags[getMovableNodePosition(scene)-2].label.text! == ")"{ //se antes do sinal de multiplicação for um parenteses fechando
+                        removeParentheses(scene) //Precisaria remover parenteses certo, tipo, saber de onde estou tirando o numero
                     }
-                    
+                
                     if getNumRightEqual(scene) > 1{ //Se a quantidade de numeros do lado direito da equação for maior que 1
                         //Adiciono os parênteses!
-                        addParenthesesRight(scene)
+                        addParenthesesRight(scene) //Precisaria adicionar parenteses certo
                     }
                 }
                 
-                realocateSeedBag(self.initialPosition-1,scene) //Realoco o sinal, que esta uma posição anterior ao numero
-                realocateSeedBag(self.initialPosition-1, scene) //Como eu realoquei o sinal, a posição que esta o numero agora é outra, a que estava o sinal antes, 1 anterior, por isso subtraio 1 dele
+                realocateToOtherSide(getMovableNodePosition(scene)-1,scene) //Realoco o sinal, que esta uma posição anterior ao numero
+                realocateToOtherSide(getMovableNodePosition(scene), scene) //Realoco o número
+                
             }
-        }else if scene.currentSeedBags[self.initialPosition+1].label.text! == "*"{ //Se depois do numero tiver um * e depois do * tiver um "?", entao eu preciso levar junto esse *
-            if scene.currentSeedBags[self.initialPosition+2].label.text! == "?"{ //Se depois * tiver um "?"
+        }else if scene.currentSeedBags[getMovableNodePosition(scene)+1].label.text! == "*" || scene.currentSeedBags[getMovableNodePosition(scene)+1].label.text! == "/"{ //Se depois do numero tiver um * ou um "/"
+//            if scene.currentSeedBags[getMovableNodePosition(scene)+2].label.text! == "?"{ //Se depois * tiver um "?"
                 
                 if getNumRightEqual(scene) > 1{ //Se a quantidade de numeros do lado direito da equação for maior que 1
                     //Adiciono os parênteses!
                     addParenthesesRight(scene)
-                }
+                    print("\nDepois de adicionar os parênteses:")
+                    for seedBags in scene.currentSeedBags{
+                        print(seedBags.label.text!, terminator: "")
+                    }
+//                }
                 
-                realocateSeedBag(self.initialPosition+1,scene) //Realoco o sinal que esta na frente da posição inicial
-                realocateSeedBag(self.initialPosition,scene) //Realoco o número, que permanece na posição inicial
+                realocateToOtherSide(getMovableNodePosition(scene)+1,scene) //Realoco o sinal que esta na frente do numero
+                print("\nDepois de realocar o sinal:")
+                for seedBags in scene.currentSeedBags{
+                    print(seedBags.label.text!, terminator: "")
+                }
+                realocateToOtherSide(getMovableNodePosition(scene),scene) //Realoco o número
+                print("\nDepois de realocar o numero:")
+                for seedBags in scene.currentSeedBags{
+                    print(seedBags.label.text!, terminator: "")
+                }
                 
             }
         }
         else{ //Se não houver um sinal antes, eu preciso criar um sinal de mais, criar uma hitbox, e realocar
             addHitBoxAtTheEnd(scene: scene) //adiciono uma hitbox ao final
             scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 21, height: 22)) //adiciono ao final do vetor um sinal de mais
-            realocateSeedBag(self.initialPosition, scene) //realoco apenas o elemento que o usuario passou
+            realocateToOtherSide(getMovableNodePosition(scene), scene) //Realoco o nó que esta sendo mexido
         }
     }
   
     func realocateFromRight(scene: PhaseScene){ //realoca com sinal os elementos
         //Se quando eu for realocar um elemento, antes dele ouver algum sinal, esse sinal tem que ir junto
         
-        if operators.contains(scene.currentSeedBags[self.initialPosition-1].label.text!){ //Se na posição anterior do número que eu estou vendo, tiver um sinal
-            if scene.currentSeedBags[self.initialPosition-1].label.text! == "*"{ //Se esse sinal for multiplicação
+        if operators.contains(scene.currentSeedBags[getMovableNodePosition(scene)-1].label.text!){ //Se na posição anterior do número que eu estou vendo, tiver um sinal
+            if scene.currentSeedBags[getMovableNodePosition(scene)-1].label.text! == "*" || scene.currentSeedBags[getMovableNodePosition(scene)-1].label.text! == "/"{ //Se esse sinal for "*" ou "/"
                 
-                if scene.currentSeedBags[self.initialPosition-2].label.text! == ")"{ //Se antes da multiplicação tiver um parenteses fechando
-                    
-                    //Removo os parenteses da direita!
+                if scene.currentSeedBags[getMovableNodePosition(scene)-2].label.text! == ")"{ //Se antes da multiplicação tiver um parenteses fechando
+                    removeParentheses(scene)
                 }
-                
                 
                 if getNumLeftEqual(scene) > 1{ //Se a quantidade de numeros do lado direito da equação for maior que 1
                     //Adiciono os parênteses!
@@ -517,30 +541,30 @@ import SpriteKit
                 }
             }
             
-            realocateSeedBag(self.initialPosition-1,scene)  //Eu pego o sinal, realoco ele pra esquerda
-            realocateSeedBag(self.initialPosition, scene)   //O número permanece na mesma posição, entao realoco ele
+            realocateToOtherSide(getMovableNodePosition(scene)-1,scene) //Eu pego o sinal, realoco ele pra esquerda
+            realocateToOtherSide(getMovableNodePosition(scene), scene)  //Realoco o número
             
-        }else if scene.currentSeedBags[self.initialPosition+1].label.text! == "*"{ //Se depois do numero tiver um * e depois do * tiver um "?", entao eu preciso levar junto esse *
-            if scene.currentSeedBags[self.initialPosition+2].label.text! == "?"{
+        }else if getMovableNodePosition(scene) != scene.currentSeedBags.count-1{ //Se não for a ultima posição do vetor
+            if scene.currentSeedBags[getMovableNodePosition(scene)+1].label.text! == "*" || scene.currentSeedBags[getMovableNodePosition(scene)+1].label.text! == "/"{ //Se depois do numero tiver um * ou um "/"
+                //            if scene.currentSeedBags[getMovableNodePosition(scene)+1].label.text! == "/"{
                 
-                if getNumRightEqual(scene) > 1{ //Se a quantidade de numeros do lado esquerdo da equação for maior que 1
+                if getNumLeftEqual(scene) > 1{ //Se a quantidade de numeros do lado esquerdo da equação for maior que 1
                     //Adiciono os parênteses!
                     addParenthesesLeft(scene)
                 }
                 
-                realocateSeedBag(self.initialPosition+1,scene) //Realoco o sinal que esta na frente da posição inicial
-                realocateSeedBag(self.initialPosition+1,scene) //Ao realocar o sinal, que estava numa posição a frente do numero, o número vai para essa posição que estava o sinal, portando o numero agora esta a uma posição a frente tambem, por isso passo o initialPosition + 1
+                realocateToOtherSide(getMovableNodePosition(scene)+1,scene) //Realoco o sinal que esta na frente da posição inicial
+                realocateToOtherSide(getMovableNodePosition(scene),scene) //Realoco o número
+                //            }
             }
         }
         else{ //Se não houver um sinal antes, eu preciso criar um sinal de mais, criar uma hitbox, e realocar
             addHitBoxAtTheEnd(scene: scene) //adiciono uma hitbox ao final
             scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 21, height: 22)) //adiciono ao final do vetor um sinal de mais
             //            self.initialPosition += 1
-            realocateSeedBag(scene.currentSeedBags.count-1,scene) //realoco o sinal que eu acabei de inserir na ultima posição
-            realocateSeedBag(self.initialPosition+1, scene) //realoco o elemento que o usuario passou
+            realocateToOtherSide(scene.currentSeedBags.count-1,scene) //realoco o sinal que eu acabei de inserir na ultima posição
+            realocateToOtherSide(getMovableNodePosition(scene), scene) //realoco o elemento que o usuario passou
         }
-        
-        
     }
     
     func resetPosition(scene: PhaseScene){
@@ -556,13 +580,13 @@ import SpriteKit
         return 0
     }
     
-    func checkFromLeft(scene: PhaseScene) -> Bool{ //Checo se o elemento que esta sendo arrastado esta vindo da esquerda para a direita
-        for i in initialPosition..<scene.currentSeedBags.count{ //Percorro o vetor da posicao que o nó esta sendo mexido até o final do vetor, se achar algum igual no caminho, ele esta trazendo da esquerda
-            if scene.currentSeedBags[i].label.text == "="{
-                return true
-            }
+    func fromLeft(_ scene: PhaseScene) -> Bool{ //Checo se o elemento que esta sendo arrastado esta vindo da esquerda para a direita
+        
+        if getEqual(scene: scene) > getMovableNodePosition(scene){
+            return true
+        }else{
+            return false
         }
-        return false
     }
     
     func addZeroIfItNeedsTo(scene: PhaseScene){
@@ -570,12 +594,8 @@ import SpriteKit
         
         if equalPosition == 0{ //Se o igual esta na primeira posição
             let zero = SeedBagModel(numero: 0, incognita: false, isOperator: false, operatorr: "", imageNamed: "seedbag", color: .clear, width: seedBagWidth, height: seedBagHeight) //Crio o zero que vai ser adicionado
-            scene.currentSeedBags.append(zero) //Dou um append na lista com esse zero
+            scene.currentSeedBags.insert(zero, at: 0) //Adiciono o zero na posição zero
             addHitBoxAtTheEnd(scene: scene) //Coloco mais uma hitBox
-            
-            realocateToRight(scene: scene, from: 0, to: scene.currentSeedBags.count-1) //Realoco para a direita o vetor inteiro
-            
-            scene.currentSeedBags[0] = zero //coloco na posição zero o zero
             self.eqHasZeroLeft = true //Agora a equação tem um zero
             
         }else if equalPosition == scene.currentSeedBags.count-1{ //Se o igual esta na ultima posição
@@ -583,7 +603,6 @@ import SpriteKit
             let zero = SeedBagModel(numero: 0, incognita: false, isOperator: false, operatorr: "", imageNamed: "seedbag", color: .clear, width: seedBagWidth, height: seedBagHeight) //Crio o zero que vai ser adicionado
             scene.currentSeedBags.append(zero) //adiciono o zero ao final, pront :)
             self.eqHasZeroRight = true
-            
         }
     }
     
@@ -616,30 +635,19 @@ import SpriteKit
         }
     }
     
-    func tradeIsPossible(scene: PhaseScene) -> Bool{
-        var fromLeft = false
-        var possible = true
-        
-        for i in initialPosition..<scene.currentSeedBags.count{ //Percorro o vetor da posicao que o nó esta sendo mexido até o final do vetor, se achar algum igual no caminho, ele esta trazendo da esquerda
-            if scene.currentSeedBags[i].label.text == "="{
-                fromLeft = true
-                for j in realocationPosition..<scene.currentSeedBags.count{
-                    if scene.currentSeedBags[j].label.text == "="{//Porém, se eu encontrar um igual novamente, partindo da posição de realocação, significa que o usuário esta tentando mexer no mesmo lado, o que nao é possivel
-                        possible = false
-                    }
-                }
-            }
-        }
-        if !fromLeft{ //Se ele nao achou nenhum "igual" a direita do saco que esta mexendo, signifca que o elemento que ele esta mexendo esta a direita do igual, entao preciso checar se onde ele quer soltar esta do lado esquerdo do igual, se nao estiver, nao posso deixar ele mexer
-            possible = false
-            for i in realocationPosition..<scene.currentSeedBags.count{
-                if scene.currentSeedBags[i].label.text == "="{
-                    possible = true
-                }
+    func tradeIsPossible(_ scene: PhaseScene) -> Bool{
+        if fromLeft(scene){
+            if realocationPosition > getEqual(scene: scene){ //Se a posição de realocação estiver depois do igual, em uma posição maior
+                return true //possível realizar a troca
             }
         }
         
-        return possible
+        if !fromLeft(scene){
+            if realocationPosition < getEqual(scene: scene){ //Se a posição de realocação estiver depois do igual, em uma posição menor
+                return true //possível realizar a troca
+            }
+        }
+        return false
     }
     
     func getNumRightEqual(_ scene: PhaseScene) -> Int{
@@ -669,44 +677,34 @@ import SpriteKit
     }
     
     func addParenthesesRight(_ scene: PhaseScene){
-        //Preciso realocar todos os elementos 1 pra frente, mas antes, alocar um espaço a mais no final do vetor, adicionar uma hitbox ao final, e criar um saco de semente com um parenteses, e colocar na posição 1 pra frente do igual, depois adicionar mais uma hitbox no final e dar append no vetor de um seedBag com parenteses fechados
         
         let equalPosition = getEqual(scene: scene) //Acho a posição do "="
-        scene.currentSeedBags.append(emptySeedBag) //Adiciono um elemento vazio para criar um espaço no final do vetor
-        realocateToRight(scene: scene, from: equalPosition+1, to: scene.currentSeedBags.count-1) //Realoco todos os elementos 1 posicao para a direita
+        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "(", imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight), at: equalPosition+1)//Adiciono o parenteses logo depois do igual
         addHitBoxAtTheEnd(scene: scene) //adiciono uma hitbox no final para aguentar a adição de 1 elemento
-        scene.currentSeedBags[equalPosition+1] = SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "(", imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight) //Adiciono o parenteses logo depois do igual
-        
         addHitBoxAtTheEnd(scene: scene) //adiciono outra hitbox para o parenteses do final
         scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: ")", imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight)) //adiciono o parenteses no final :D
-        
     }
     
     func addParenthesesLeft(_ scene: PhaseScene){
-        //Primeiro vou adicionar um elemento vazio ao final para aumentar a quantidade do vetor em 1, vou realocar todos os elementos um para a direita para adicionar o parenteses no inicio do vetor, depois vou adicionar uma hitBox no final do vetor, depois adiciono novamente um elemento vazio ao final, depois localizo a posição do igual e realoco todos os elementos a partir do igual (incluindo o igual) para a direita, depois localizo o igual novamente e adiciono o parenteses 1 posicao antes do igual
-         
-        scene.currentSeedBags.append(emptySeedBag) //adiciono uma posicao ao vetor
-        realocateToRight(scene: scene, from: 0, to: scene.currentSeedBags.count-1) //Realoco todos os elementos 1 para a direita
-        self.initialPosition += 1 //como realoquei todos elementos para a direita, a posicao do meu nó muda
-        addHitBoxAtTheEnd(scene: scene) //Adiciono uma hitBox
-        scene.currentSeedBags[0] = SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "(", imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight)
         
-        scene.currentSeedBags.append(emptySeedBag) //adiciono uma posicao ao vetor
-        var equalPosition = getEqual(scene: scene) //pego a posição do igual
-        realocateToRight(scene: scene, from: equalPosition-1, to: scene.currentSeedBags.count-1) //Realoco todos os elementos depois do igual, incluindo o igual, para a direita
-        self.initialPosition += 1 //como realoquei todos elementos para a direita, a posicao do meu nó muda
-        equalPosition = getEqual(scene: scene) //Pego a posição do igual novamente
-        scene.currentSeedBags[equalPosition-1] = SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: ")", imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight) //Adiciono 1 posição antes do igual um parênteses
+        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "(", imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight), at: 0) //Insiro na primeira posição um parênteses fechando
+        addHitBoxAtTheEnd(scene: scene) //Adiciono uma hitBox
+        
+        let equalPosition = getEqual(scene: scene) //pego a posição do igual
+        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: ")", imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight), at: equalPosition)
         addHitBoxAtTheEnd(scene: scene)
     }
     
-    func removeParenthesesRight(_ scene: PhaseScene){
-        //Ok, vamos la, aqui eu preciso remover os parenteses da direita eba, entao primeiro preciso localizar os parenteses, achar a posição de cada um, depois remover daquela posição, depois de remover, retirar a hitbox daquela posição, e ajustar o initialPosition :D, vamo la
+    func removeParentheses(_ scene: PhaseScene){ //Remove os parenteses
         
+        clearSeedsOfScene(scene)
         scene.currentSeedBags.remove(at: getParenthesesLocation(scene).0) //removo o parenteses que abre
+        removeHitBoxAtTheEnd(scene: scene)
+        scene.currentSeedBags.remove(at: getParenthesesLocation(scene).1) //removo o parenteses que fecha
         removeHitBoxAtTheEnd(scene: scene)
         
     }
+
     
     func renderClientResponse(_ scene: PhaseScene) {
         
@@ -724,9 +722,11 @@ import SpriteKit
             var resultSprite: String = ""
             if rose {
                 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo (acerto)")
+                userEngine?.rightAnswerRose()
             }
             else {
                 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Feliz")
+                userEngine?.rightAnswer()
             }
             
             client.texture = SKTexture(imageNamed: resultSprite)
@@ -736,9 +736,11 @@ import SpriteKit
             var resultSprite: String = ""
             if rose {
                 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Feliz (erro)")
+                userEngine?.wrongAnswerRose()
             }
             else {
                 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo")
+                userEngine?.wrongAnswer()
             }
             
             client.texture = SKTexture(imageNamed: resultSprite)
@@ -757,17 +759,58 @@ import SpriteKit
         }
     }
     
-    func getParenthesesLocation(_ scene: PhaseScene) -> (Int,Int){
-        var open = 1000
-        var close = 1000
-        for (index,seedBag) in scene.currentSeedBags.enumerated(){
-            if seedBag.label.text == "("{
-                open = index
-            }else if seedBag.label.text == ")"{
-                close = index
+    func getParenthesesLocation(_ scene: PhaseScene) -> (Int,Int,Bool){
+        var open = 0
+        var close = 0
+        var hasParentheses = false
+        
+        if fromLeft(scene){ //Se vier da esquerda o saco que estou mexendo, preciso achar parenteses apenas na esquerda
+            let equalPosition = getEqual(scene: scene)
+            for index in 0..<equalPosition{
+                if scene.currentSeedBags[index].label.text == "("{
+                    open = index
+                    hasParentheses = true
+                }else if scene.currentSeedBags[index].label.text == ")"{
+                    close = index
+                }
             }
         }
-        return (open,close)
+        else{ //Se vier da direita, preciso achar sacos apenas na direita
+            let equalPosition = getEqual(scene: scene)
+            for index in equalPosition..<scene.currentSeedBags.count{
+                if scene.currentSeedBags[index].label.text == "("{
+                    open = index
+                    hasParentheses = true
+                }else if scene.currentSeedBags[index].label.text == ")"{
+                    close = index
+                }
+            }
+        }
+        return (open,close,hasParentheses)
+    }
+    
+    func getMovableNodePosition(_ scene: PhaseScene) -> Int{ //Retorna a posição de onde está o nó que esta sendo mexido
+        for (index,seedBag) in scene.currentSeedBags.enumerated(){
+            if seedBag == scene.movableNode!{
+                return index
+            }
+        }
+        return 1000
+    }
+    
+    func inParentheses(_ index: Int, _ scene: PhaseScene) -> Bool{
+        let leftParentheses = getParenthesesLocation(scene).0
+        let rightParentheses = getParenthesesLocation(scene).1
+        let hasParentheses = getParenthesesLocation(scene).2
+        
+        if hasParentheses {
+            if index > leftParentheses{
+                if index < rightParentheses{
+                    return true
+                }
+            }
+        }
+        return false
     }
 	
 	
@@ -795,8 +838,16 @@ import SpriteKit
 		}
 		return leftString
 	}
+	
+	
+	func resetCurrentEquation(_ scene: PhaseScene) {
+		scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)" // Volta o label para a equação inicial
+		addSeedBags(scene: scene)
+		addHitBoxesFromEquation(scene: scene)
+	}
+	
+	
 }
 
-//Se, ao soltar da direita para a esquerda um numero, e duas posicoes antes desse numero, tiver um ")", remover os parenteses da direita
 
-//Se, ao soltar um elemento da esquerda para a direita, ates da multiplicacao tiver um ")", remover parenteses da esquerda
+

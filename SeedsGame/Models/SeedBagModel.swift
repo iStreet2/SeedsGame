@@ -36,11 +36,36 @@ class SeedBagModel: SKSpriteNode {
 		super.init(texture: texture, color: color, size: size)
 		self.addChild(label)
 		
+		setLabelPosition()
+	}
+	
+	
+	func invertOperator(_ node: SeedBagModel, _ touches: Set<UITouch>, _ position: Int, _ scene: PhaseScene) {
+		
+		let inverseMap: [String: String] = ["+": "-",
+														"-": "+",
+														"*": "/",
+														"/": "*"]
+		
+		if let touch = touches.first {
+			let location = touch.location(in: scene.self)
+			if node.contains(location) {
+				scene.currentSeedBags[position].label.text = inverseMap[node.label.text!]
+				scene.currentSeedBags[position].setLabelPosition()
+			}
+		}
+	}
+	
+	
+	func setLabelPosition() {
 		if !self.isOperator {
 			self.label.position.y = self.label.position.y - 20
 		}
 		else if self.isOperator && self.label.text == "*" {
 			self.label.position.y = self.label.position.y - 15
+		}
+		else if self.isOperator && self.label.text == "/" {
+			self.label.position.y = self.label.position.y - 7
 		}
 		else {
 			self.label.position.y = self.label.position.y - 7
