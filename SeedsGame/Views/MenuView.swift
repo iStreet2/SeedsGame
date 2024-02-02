@@ -47,7 +47,7 @@ struct MenuView: View {
                         }) {
                             Image("")
                         }
-                        .buttonStyle(SquareButtonStyle(tag: .config))
+								.buttonStyle(SquareButtonStyle(tag: .config))
                         .padding()
                     }
                     VStack(spacing: 50){
