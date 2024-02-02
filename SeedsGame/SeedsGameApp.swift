@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct SeedsGameApp: App {
+    @StateObject var userEngine: UserEngine = UserEngine()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().environmentObject(userEngine)
         }
     }
 }

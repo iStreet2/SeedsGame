@@ -14,6 +14,8 @@ import SpriteKit
     
     static let shared = GameEngine()
     
+    var userEngine: UserEngine?
+    
     let operators = ["+","-","*","/","(",")"]
     
     let width = UIScreen.main.bounds.width
@@ -41,8 +43,6 @@ import SpriteKit
 	
 	var phaseFirstSetup = true
     
-//    @State var life = 3
-//    @State var points = 0
     
     let darknessMap: [Int : SKAction] = [0: SKAction.colorize(with: .black, colorBlendFactor: 0, duration: 0),
                                          1: SKAction.colorize(with: .black, colorBlendFactor: 0.3, duration: 0),
@@ -740,7 +740,7 @@ import SpriteKit
             else {
                 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo")
             }
-            
+            userEngine?.wrongAnswer()
             client.texture = SKTexture(imageNamed: resultSprite)
         }
     }
