@@ -17,8 +17,8 @@
 		3BB1AF9F2B59B15F00E61276 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB1AF9E2B59B15F00E61276 /* ContentView.swift */; };
 		3BB1AFA12B59B16000E61276 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BB1AFA02B59B16000E61276 /* Assets.xcassets */; };
 		3BB1AFA42B59B16000E61276 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BB1AFA32B59B16000E61276 /* Preview Assets.xcassets */; };
-		DC4FBAE02B6D6874007E3B6E /* PauseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4FBADF2B6D6874007E3B6E /* PauseView.swift */; };
 		9FA11D182B6C3CB80098C7A9 /* UserEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FA11D172B6C3CB80098C7A9 /* UserEngine.swift */; };
+		DC4FBAE02B6D6874007E3B6E /* PauseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4FBADF2B6D6874007E3B6E /* PauseView.swift */; };
 		DC8208CC2B61993400A0172C /* SquareButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8208CB2B61993400A0172C /* SquareButtonStyle.swift */; };
 		DC8208CE2B61AB2800A0172C /* TopicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8208CD2B61AB2800A0172C /* TopicView.swift */; };
 		DC8208D02B68148700A0172C /* CheckToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8208CF2B68148700A0172C /* CheckToggleStyle.swift */; };
@@ -55,8 +55,8 @@
 		3BB1AF9E2B59B15F00E61276 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		3BB1AFA02B59B16000E61276 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3BB1AFA32B59B16000E61276 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		DC4FBADF2B6D6874007E3B6E /* PauseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseView.swift; sourceTree = "<group>"; };
 		9FA11D172B6C3CB80098C7A9 /* UserEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEngine.swift; sourceTree = "<group>"; };
+		DC4FBADF2B6D6874007E3B6E /* PauseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseView.swift; sourceTree = "<group>"; };
 		DC8208CB2B61993400A0172C /* SquareButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareButtonStyle.swift; sourceTree = "<group>"; };
 		DC8208CD2B61AB2800A0172C /* TopicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicView.swift; sourceTree = "<group>"; };
 		DC8208CF2B68148700A0172C /* CheckToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckToggleStyle.swift; sourceTree = "<group>"; };
@@ -442,7 +442,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SeedsGame/Preview Content\"";
-				DEVELOPMENT_TEAM = YHC26T5B2D;
+				DEVELOPMENT_TEAM = 6S6995TY46;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SeedsGame/Info.plist;
@@ -457,7 +457,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.GabrielNegro2.SeedsGame;
+				PRODUCT_BUNDLE_IDENTIFIER = com.GabrielNegro.SeedsGame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -477,7 +477,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SeedsGame/Preview Content\"";
-				DEVELOPMENT_TEAM = YHC26T5B2D;
+				DEVELOPMENT_TEAM = 6S6995TY46;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SeedsGame/Info.plist;
@@ -492,7 +492,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.GabrielNegro2.SeedsGame;
+				PRODUCT_BUNDLE_IDENTIFIER = com.GabrielNegro.SeedsGame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

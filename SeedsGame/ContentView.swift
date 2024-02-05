@@ -26,7 +26,6 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             
-//            EndGameView(tag: .uncoverd)
             SpriteView(scene: scene)
                 .ignoresSafeArea()
             

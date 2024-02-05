@@ -14,7 +14,7 @@ class GameScene: SKScene {
 	var topBackground = SKSpriteNode(imageNamed: "Fundo Provisorio")
 	
 	var phaseMap: [Int : [(String, Float)]] = [
-		1: [("x+10=10+3", 3), ("x+10=2x", 9), ("3x+2*9=0", -6)],
+		1: [("x+10=10+3", 3), ("x+10=2x", 10), ("3x+2*9=0", -6)],
 		2: [("17-2x=3", 7), ("30x-120=0", 4), ("2x+3x=15x-30", 3), ("14+2x=3+2", -4.5), ("5", 5)],
 		3: [("1", 1), ("2", 2), ("3", 3), ("4", 4), ("5", 5), ("6", 6), ("7", 7), ("8", 8), ("9", 9), ("10", 10)]
 	]
@@ -29,7 +29,7 @@ class GameScene: SKScene {
 	let undoButton = SKSpriteNode(imageNamed: "UndoButton")
 	let undoButtonTextureAtlas = SKTextureAtlas(named: "UndoButtonAssets")
 	let blackHole = SKSpriteNode(imageNamed: "Buraco Negro Provisorio")
-
+    var deliveryPlace = SKSpriteNode()
 	
 	
 	let restartEquationButton = SKSpriteNode(imageNamed: "DestructiveButton")
@@ -41,8 +41,8 @@ class GameScene: SKScene {
 	
 	
 	func startup() {
-		let width = frame.width
-		let height = frame.height
+        let width = frame.size.width
+        let height = frame.size.height
     
 		//nextPhaseButton.position = CGPoint(x: frame.size.width - 100, y: 50)
 		//nextPhaseButton.zPosition = 12
@@ -50,25 +50,31 @@ class GameScene: SKScene {
 		//nextQuestionButton.position = CGPoint(x: frame.size.width - 200, y: 50)
 		//nextQuestionButton.zPosition = 12
 		
-		joinSideButton.position = CGPoint(x: frame.size.width - 80, y: frame.size.height / 3)
-		joinSideButton.size = CGSize(width: 209.73, height: 160.24)
-		joinSideButton.zPosition = 12
+        joinSideButton.position = CGPoint(x: frame.size.width - 80, y: frame.size.height / 3)
+        joinSideButton.size = CGSize(width: 209.73, height: 160.24)
+        joinSideButton.zPosition = 12
 		
 
-		blackHole.position = CGPoint(x: frame.size.width / 2, y: 30)
-		blackHole.size = CGSize(width: 327, height: 92)
-		blackHole.zPosition = 12
+		blackHole.position = CGPoint(x: frame.size.width / 2, y: 38)
+        blackHole.size = CGSize(width: 327, height: 92)
+        blackHole.zPosition = 12
+        
+        deliveryPlace.position = CGPoint(x: (width/2)-10, y: (height/2)+150)
+        deliveryPlace.zPosition = 12
+        deliveryPlace.size = CGSize(width: 125.71, height: 260)
+        deliveryPlace.color = .clear
 		
 		//addChild(nextPhaseButton)
 		//addChild(nextQuestionButton)
 		addChild(joinSideButton)
 		addChild(blackHole)
+        addChild(deliveryPlace)
 		
-		bottomBackground.position = CGPoint(x: frame.size.width / 2, y: frame.size.height / 4)
+		bottomBackground.position = CGPoint(x: width / 2, y: frame.size.height / 4)
 		bottomBackground.zPosition = 11
 		addChild(bottomBackground)
 		
-		topBackground.position = CGPoint(x: frame.size.width / 2, y: frame.size.height - frame.size.height / 4)
+		topBackground.position = CGPoint(x: width / 2, y: frame.size.height - frame.size.height / 4)
 		topBackground.zPosition = -1
 		addChild(topBackground)
 		
