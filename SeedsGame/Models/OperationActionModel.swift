@@ -283,7 +283,10 @@ class OperationAction: Action {
 		if equation.isEmpty {
 			return ""
 		}
-
+        
+        //Se a o vetor de sementes estiver x = 2 ou 2 = x
+            //apagar o x e só deixar a semente com o número!
+        
 		var joinedEquation = OperationAction.joinAllNumbers(equation)
 
 		var joinedXEquation = joinXwithNum(joinedEquation)

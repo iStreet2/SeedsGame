@@ -28,8 +28,8 @@ class GameScene: SKScene {
 	
 	let undoButton = SKSpriteNode(imageNamed: "UndoButton")
 	let undoButtonTextureAtlas = SKTextureAtlas(named: "UndoButtonAssets")
-	
-	let giveResponseButton = SKSpriteNode(imageNamed: "Buraco Negro Provisorio")
+	let blackHole = SKSpriteNode(imageNamed: "Buraco Negro Provisorio")
+
 	
 	
 	let restartEquationButton = SKSpriteNode(imageNamed: "DestructiveButton")
@@ -54,14 +54,15 @@ class GameScene: SKScene {
 		joinSideButton.size = CGSize(width: 37.5, height: 160)
 		joinSideButton.zPosition = 12
 		
-		giveResponseButton.position = CGPoint(x: frame.size.width / 2, y: 25)
-		giveResponseButton.size = CGSize(width: 327, height: 92)
-		giveResponseButton.zPosition = 12
+
+		blackHole.position = CGPoint(x: frame.size.width / 2, y: 38)
+    blackHole.size = CGSize(width: 75, height: 75)
+    blackHole.zPosition = 12
 		
 		//addChild(nextPhaseButton)
 		//addChild(nextQuestionButton)
 		addChild(joinSideButton)
-		addChild(giveResponseButton)
+		addChild(blackHole)
 		
 		bottomBackground.position = CGPoint(x: frame.size.width / 2, y: frame.size.height / 4)
 		bottomBackground.zPosition = 11
