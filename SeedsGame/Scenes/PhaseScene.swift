@@ -86,16 +86,17 @@ class PhaseScene: GameScene {
 		
 		guard let touch = touches.first else { return }
 		
-		if nextQuestionButton.contains(touch.location(in: self)) {
-			GameEngine.shared.nextQuestion(scene: self)
-		}
-		if nextPhaseButton.contains(touch.location(in: self)) {
-			GameEngine.shared.nextPhase(scene: self)
-		}
+//		if nextQuestionButton.contains(touch.location(in: self)) {
+//			GameEngine.shared.nextQuestion(scene: self)
+//		}
+//		if nextPhaseButton.contains(touch.location(in: self)) {
+//			GameEngine.shared.nextPhase(scene: self)
+//		}
 		
 		if joinSideButton.contains(touch.location(in: self)) {
 			let opAction = OperationAction(eq: currentEqLabel.text!.contains("!") ? "" : currentEqLabel.text!)
 			GameEngine.shared.receiveAction(opAction)
+			GameEngine.shared.mementoStack.push(currentEqLabel.text!)
 			animateLever()
 		}
 		
@@ -113,6 +114,12 @@ class PhaseScene: GameScene {
 		if restartEquationButton.contains(touch.location(in: self)) {
 			GameEngine.shared.resetCurrentEquation(self)
 			animateDestructiveButton()
+		}
+		
+		if undoButton.contains(touch.location(in: self)) {
+			self.currentEqLabel.text = GameEngine.shared.mementoStack.pop()
+			GameEngine.shared.addSeedBags(scene: self)
+			GameEngine.shared.addHitBoxesFromEquation(scene: self)
 		}
 		
 		//movimento do sprite de semente

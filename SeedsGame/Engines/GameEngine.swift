@@ -41,6 +41,8 @@ import SpriteKit
     var currentPhase = 0
 	
 	var phaseFirstSetup = true
+	
+	var mementoStack = Stack()
     
     
     let darknessMap: [Int : SKAction] = [0: SKAction.colorize(with: .black, colorBlendFactor: 0, duration: 0),
@@ -100,10 +102,17 @@ import SpriteKit
 		 
 		let nQuestions = scene.clients.count
 		
-		for (_, client) in scene.clients.enumerated() {
+		for (index, client) in scene.clients.enumerated() {
 			
 			// Aumenta
-			let scaleAction = SKAction.scale(by: 1.2, duration: 0.5)
+//			let scaleFactor = 1
+//			
+//			let scaleAction = SKAction.scale(by: CGFloat(scaleFactor)/100, duration: 0.5)
+//			client.run(scaleAction)
+//			if scene.currentClientNumber+index < scene.clients.count {
+//				scene.clients[scene.currentClientNumber+index].run(SKAction.scale(by: 1 + 0.05*CGFloat(index), duration: 0.5))
+//			}
+			let scaleAction = SKAction.scale(by: 1.05, duration: 0.5)
 			client.run(scaleAction)
 			
 			// Move
@@ -186,7 +195,7 @@ import SpriteKit
 				client.position = CGPoint(x: positionX, y: positionY)
 			}
 			
-			client.run(SKAction.scale(by: 0.9 - (0.1*CGFloat(index)), duration: 0))  // diminui os clientes
+			client.setScale(1 - (0.05*CGFloat(index))) // diminui os clientes
 			client.zPosition = CGFloat(scene.clients.count - index)  // deixa um cliente atrás do outro
 			
 			client.run(darknessMap[index] ?? SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 0))  // escurece o cliente
@@ -377,7 +386,10 @@ import SpriteKit
 					}
 					scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: true, isOperator: false, operatorr: "", imageNamed: "seedbag", color: .clear, width: seedBagWidth, height: seedBagHeight))
 					
-				}else{
+				}else if char == "="{
+					scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: String(char), imageNamed: "igual", color: .clear, width: 21, height: 22))
+				}
+				else {
 					scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: String(char), imageNamed: "operacoes", color: .clear, width: 21, height: 22))
 				}
 			}
@@ -410,7 +422,7 @@ import SpriteKit
 		clearSeedsOfScene(scene)
 		
 		for (index,seedBag) in scene.currentSeedBags.enumerated(){
-			seedBag.position = CGPoint(x: 50+(60*index), y: 110) //Posicao da sacola com o numero, mexo com o index para colocar na posição certa da equação
+			seedBag.position = CGPoint(x: 200+(45*index), y: 150) //Posicao da sacola com o numero, mexo com o index para colocar na posição certa da equação
 			
 			seedBag.zPosition = 11
 			
