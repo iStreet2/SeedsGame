@@ -13,6 +13,7 @@ struct MenuView: View {
         GeometryReader { geo in
             NavigationStack {
                 ZStack {
+                    
                     Button(action: {
                         print("foii")
                     }) {
@@ -20,21 +21,22 @@ struct MenuView: View {
                     }
                     .buttonStyle(SquareButtonStyle(tag: .config))
                     .padding()
-                    .frame(width: geo.size.width/1.05, height: geo.size.height/1.5, alignment: .topTrailing)
+                    .frame(width: geo.size.width/0.96, height: geo.size.height/1.3, alignment: .topTrailing)
                     
                     HStack {
                         // Personagem Sr.Bhas
                         
-                        Image("Bhas")
+                        Image("Sr.Bhas")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 187, height: 260)
-                            .padding(.top, 150)
+                            .frame(width: 187, height: 353)
+                            .padding(.top, 250)
                             .edgesIgnoringSafeArea(.bottom)
                         
                         VStack(spacing: 50) {
                             // Título do Jogo
-                            Text("Título do\nJogo")
+                            Text("Sr.Bhas e as Sementes Siderais")
+                                .frame(width: 400)
                                 .bold()
                                 .font(.custom("Troika", size: 49))
                                 .foregroundStyle(Color("fontLightBrown"))
@@ -67,7 +69,7 @@ struct MenuView: View {
                         }
                         .edgesIgnoringSafeArea(.bottom)
                     }
-                }
+                } .background(Image("Fundo"))
             }
         }
         
