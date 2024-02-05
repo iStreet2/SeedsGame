@@ -295,6 +295,9 @@ import SpriteKit
                     }else if finalSeedCreated{ //Se a semente final esta criada
                         if !finalSeedTransformed{
                             transformSeed(touches, scene) //Transformar
+                            if !finalSeedTransformed{
+                                resetPosition(scene: scene)
+                            }
                         }else{
                             if grabResult(touches, scene){ //Dar o resultado
                                 renderClientResponse(scene)
@@ -889,6 +892,7 @@ import SpriteKit
                     //transformar a semente
                     resetPosition(scene: scene)
                     finalSeedTransformed = true
+                    
                 }
             }
         }

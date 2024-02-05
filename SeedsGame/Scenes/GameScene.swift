@@ -50,9 +50,9 @@ class GameScene: SKScene {
 		//nextQuestionButton.position = CGPoint(x: frame.size.width - 200, y: 50)
 		//nextQuestionButton.zPosition = 12
 		
-		joinSideButton.position = CGPoint(x: width - 100, y: height / 3)
-		joinSideButton.size = CGSize(width: 37.5, height: 160)
-		joinSideButton.zPosition = 12
+        joinSideButton.position = CGPoint(x: frame.size.width - 80, y: frame.size.height / 3)
+        joinSideButton.size = CGSize(width: 209.73, height: 160.24)
+        joinSideButton.zPosition = 12
 		
 
 		blackHole.position = CGPoint(x: frame.size.width / 2, y: 38)
