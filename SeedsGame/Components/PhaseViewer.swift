@@ -12,7 +12,7 @@ import SpriteKit
 // Para ver como está ficando
 struct uPhaseViewer: View {
     var body: some View {
-        PhaseViewer(phasesName: ["fase1", "fase2"])
+        PhaseViewer(phasesName: ["fase1", "fase2", "fase3"])
     }
 }
 
@@ -44,7 +44,6 @@ struct PhaseViewer: View {
                     .ignoresSafeArea()
                 
                 TabView(selection: $phaseIndex) {
-                    // Aqui só dá para ter duas fases porque o jogo em si só tem duas fases
                     ForEach(0..<phases.count, id: \.self) { index in
                         ZStack {
                             NavigationLink {
@@ -71,11 +70,21 @@ struct PhaseViewer: View {
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 .ignoresSafeArea()
                 
+                // Nome de cada fase
                 VStack {
-                    Text("Fase \(phaseIndex + 1)")
-                        .font(.custom("troika", size: 40))
-                        .foregroundStyle(.fontLightBrown)
-                        .offset(y: 160)
+                    if phaseIndex == 0 {
+                        Text("Tutorial")
+                            .font(.custom("troika", size: 40))
+                            .foregroundStyle(.fontLightBrown)
+                            .offset(y: 160)
+                        
+                    } else {
+                        Text("Fase \(phaseIndex)")
+                            .font(.custom("troika", size: 40))
+                            .foregroundStyle(.fontLightBrown)
+                            .offset(y: 160)
+                    }
+                    
                     
                     HStack {
                         ForEach(0..<phasesName.count, id: \.self) { index in

@@ -16,7 +16,6 @@ struct PhaseSelectionView: View {
         NavigationStack {
             GeometryReader { geometry in
                 VStack(alignment: .center, spacing: -60) {
-                    
                     HStack(alignment: .center) {
                         Button(action: {}, label: {
                             Text("")
@@ -30,11 +29,11 @@ struct PhaseSelectionView: View {
                     }
                     .padding(.top, geometry.size.height * 0.1)
                     
-                    PhaseViewer(phasesName: ["fase3", "fase2"])
+                    PhaseViewer(phasesName: ["fase3", "fase2", "fase3"])
                         .frame(width: geometry.size.width, height: geometry.size.height)
                     
                 }
-                .background(Color("BGDarkGreen"))
+                .background(Image("Fundo"))
             }
         }
     }

@@ -16,9 +16,14 @@ struct EndGameView: View {
         HStack(alignment: .top, spacing: 70) {
             VStack {
                 // Lado esquerdo do Pop Up
-                Image("fase1")
+                Image("Foto")
                     .resizable()
-                    .frame(width: 267, height: 279)
+                    .frame(width: 263, height: 264)
+                    .overlay {
+                        Image("Moldura - Fim de Fase")
+                            .resizable()
+                            .frame(width: 280, height: 282)
+                    }
             }
             
             // Lado direito do Pop Up
@@ -41,7 +46,7 @@ struct EndGameView: View {
                 }
                                 
                 // Botões
-                VStack(spacing: 65) {
+                VStack(spacing: 60) {
                     HStack(spacing: 140) {
                         Button("") {
                             print("aaa")
