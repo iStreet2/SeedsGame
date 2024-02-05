@@ -56,8 +56,8 @@ class GameScene: SKScene {
 		
 
 		blackHole.position = CGPoint(x: frame.size.width / 2, y: 38)
-    blackHole.size = CGSize(width: 75, height: 75)
-    blackHole.zPosition = 12
+        blackHole.size = CGSize(width: 327, height: 92)
+        blackHole.zPosition = 12
 		
 		//addChild(nextPhaseButton)
 		//addChild(nextQuestionButton)
