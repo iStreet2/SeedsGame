@@ -31,12 +31,12 @@ struct LifeScore: View {
                     ForEach(0..<userEngine.life, id: \.self) { index in
                         Image("Life")
                             .font(.system(size: 30))
-                            .foregroundStyle(.cyan)
+                            .foregroundStyle(Color("FontDarkBrown"))
                     }
                     ForEach(0..<3-userEngine.life, id: \.self) { index in
                         Image("Life")
                             .font(.system(size: 30))
-                            .foregroundStyle(.gray)
+                            .foregroundStyle(Color("FadedLifePoint"))
                     }
 
                 }

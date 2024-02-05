@@ -32,6 +32,8 @@ import SpriteKit
     var eqHasZeroRight = false
     var eqHasZeroLeft = false
     
+    var finalSeedTransformed = false
+    
     var initialNodePosition = CGPoint(x: 0, y: 0)
     
     var emptySeedBag = SeedBagModel(numero: 0, incognita: false, isOperator: false, operatorr: "", imageNamed: "nothing", color: .clear, width: 50, height: 70)
@@ -41,6 +43,8 @@ import SpriteKit
     var currentPhase = 0
 	
 	var phaseFirstSetup = true
+	
+	var mementoStack = Stack()
     
     
     let darknessMap: [Int : SKAction] = [0: SKAction.colorize(with: .black, colorBlendFactor: 0, duration: 0),
@@ -100,26 +104,33 @@ import SpriteKit
 		 
 		let nQuestions = scene.clients.count
 		
-		for (_, client) in scene.clients.enumerated() {
+		for (index, client) in scene.clients.enumerated() {
 			
 			// Aumenta
-			let scaleAction = SKAction.scale(by: 1.2, duration: 0.5)
+//			let scaleFactor = 1
+//			
+//			let scaleAction = SKAction.scale(by: CGFloat(scaleFactor)/100, duration: 0.5)
+//			client.run(scaleAction)
+//			if scene.currentClientNumber+index < scene.clients.count {
+//				scene.clients[scene.currentClientNumber+index].run(SKAction.scale(by: 1 + 0.05*CGFloat(index), duration: 0.5))
+//			}
+			let scaleAction = SKAction.scale(by: 1.05, duration: 0.5)
 			client.run(scaleAction)
 			
 			// Move
 			let moveAction = SKAction.moveTo(x: client.position.x - 75, duration: 0.5)
 			client.run(moveAction)
 			
-			// Animação Lara
-			let moveAction1 = SKAction.moveBy(x: 0, y: 100 * 0.02, duration: 0.5)
-		   let moveAction2 = SKAction.moveBy(x: 0, y: 100 * (-0.02), duration: 0.5)
-		   let moveSequence = SKAction.sequence([moveAction1, moveAction2])
-			client.run(moveSequence)
-			
-			let rotateAction1 = SKAction.rotate(byAngle: 0.1, duration: 0.3)
-		   let rotateAction2 = SKAction.rotate(byAngle: -0.1, duration: 0.3)
-		   let rotateSequence = SKAction.sequence([rotateAction1, rotateAction2])
-			client.run(rotateSequence)
+            // Animação Lara
+            let moveAction1 = SKAction.moveBy(x: 0, y: 100 * 0.02, duration: 0.5)
+            let moveAction2 = SKAction.moveBy(x: 0, y: 100 * (-0.02), duration: 0.5)
+            let moveSequence = SKAction.sequence([moveAction1, moveAction2])
+            client.run(moveSequence)
+            
+            let rotateAction1 = SKAction.rotate(byAngle: 0.1, duration: 0.3)
+            let rotateAction2 = SKAction.rotate(byAngle: -0.1, duration: 0.3)
+            let rotateSequence = SKAction.sequence([rotateAction1, rotateAction2])
+            client.run(rotateSequence)
 			
 			for c in scene.currentClientNumber..<scene.clients.count {
 				scene.clients[c].run(darknessMap[c - scene.currentClientNumber - 1] ?? SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 0.5))
@@ -186,7 +197,7 @@ import SpriteKit
 				client.position = CGPoint(x: positionX, y: positionY)
 			}
 			
-			client.run(SKAction.scale(by: 0.9 - (0.1*CGFloat(index)), duration: 0))  // diminui os clientes
+			client.setScale(1 - (0.05*CGFloat(index))) // diminui os clientes
 			client.zPosition = CGFloat(scene.clients.count - index)  // deixa um cliente atrás do outro
 			
 			client.run(darknessMap[index] ?? SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 0))  // escurece o cliente
@@ -254,7 +265,7 @@ import SpriteKit
                         
                         //Eu preciso checar se ele deixar o saco em algum lado que tem um zero, o zero tem que sumir
                         
-                        //removeZeroIfItNeedsTo(scene: scene)
+                        removeZeroIfItNeedsTo(scene: scene)
                         
                         let fromLeft = fromLeft(scene) //Checa se o elemento esta sendo arrastado da esquerda
                         
@@ -270,11 +281,6 @@ import SpriteKit
                         showEquation(scene: scene)
                         
                         scene.movableNode = nil
-                        
-                        //                        print("\ndepois de realocar tudo de remover o zero \n")
-                        //                        for seedBags in scene.currentSeedBags{
-                        //                                      print(seedBags.label.text!, terminator: "")
-                        //                        }
                     }
                     else{ //Se nao ele só volta para sua posição inicial
                         resetPosition(scene: scene)
@@ -327,9 +333,9 @@ import SpriteKit
         }
         //Adicionar na cena as hitBoxes
         for (index,hitBox) in scene.hitBoxes.enumerated(){
-            hitBox.position = CGPoint(x: 50+(60*index), y: 100)
+            hitBox.position = CGPoint(x: 200+(45*index), y: 150)
             hitBox.zPosition = 11
-            hitBox.strokeColor = .clear
+            hitBox.strokeColor = .red
             scene.addChild(hitBox)
         }
     }
@@ -337,7 +343,7 @@ import SpriteKit
     //Adiciona uma hitBox a mais no final da equação
     func addHitBoxAtTheEnd(scene: PhaseScene){
         let node = SKShapeNode(rectOf: CGSize(width: hitBoxWidth, height: hitBoxHeight)) //Crio mais uma hitbox
-        node.position = CGPoint(x: 50+(60*scene.hitBoxes.count), y: 100) //Defino a posição dele com base na posição da ultima hitBox
+        node.position = CGPoint(x: 200+(45*scene.hitBoxes.count), y: 150)//Defino a posição dele com base na posição da ultima hitBox
         node.zPosition = 11
         node.strokeColor = .red //Defino a cor dele de vermelho
         scene.hitBoxes.append(node) //Adiciono ela no vetor de hitBoxes
@@ -377,7 +383,10 @@ import SpriteKit
 					}
 					scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: true, isOperator: false, operatorr: "", imageNamed: "seedbag", color: .clear, width: seedBagWidth, height: seedBagHeight))
 					
-				}else{
+				}else if char == "="{
+					scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: String(char), imageNamed: "igual", color: .clear, width: 21, height: 22))
+				}
+				else {
 					scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: String(char), imageNamed: "operacoes", color: .clear, width: 21, height: 22))
 				}
 			}
@@ -410,7 +419,7 @@ import SpriteKit
 		clearSeedsOfScene(scene)
 		
 		for (index,seedBag) in scene.currentSeedBags.enumerated(){
-			seedBag.position = CGPoint(x: 50+(60*index), y: 110) //Posicao da sacola com o numero, mexo com o index para colocar na posição certa da equação
+			seedBag.position = CGPoint(x: 200+(45*index), y: 150) //Posicao da sacola com o numero, mexo com o index para colocar na posição certa da equação
 			
 			seedBag.zPosition = 11
 			
@@ -494,29 +503,13 @@ import SpriteKit
                 
             }
         }else if scene.currentSeedBags[getMovableNodePosition(scene)+1].label.text! == "*" || scene.currentSeedBags[getMovableNodePosition(scene)+1].label.text! == "/"{ //Se depois do numero tiver um * ou um "/"
-//            if scene.currentSeedBags[getMovableNodePosition(scene)+2].label.text! == "?"{ //Se depois * tiver um "?"
-                
-                if getNumRightEqual(scene) > 1{ //Se a quantidade de numeros do lado direito da equação for maior que 1
-                    //Adiciono os parênteses!
-                    addParenthesesRight(scene)
-                    print("\nDepois de adicionar os parênteses:")
-                    for seedBags in scene.currentSeedBags{
-                        print(seedBags.label.text!, terminator: "")
-                    }
-//                }
-                
-                realocateToOtherSide(getMovableNodePosition(scene)+1,scene) //Realoco o sinal que esta na frente do numero
-                print("\nDepois de realocar o sinal:")
-                for seedBags in scene.currentSeedBags{
-                    print(seedBags.label.text!, terminator: "")
-                }
-                realocateToOtherSide(getMovableNodePosition(scene),scene) //Realoco o número
-                print("\nDepois de realocar o numero:")
-                for seedBags in scene.currentSeedBags{
-                    print(seedBags.label.text!, terminator: "")
-                }
+            if getNumRightEqual(scene) > 1{ //Se a quantidade de numeros do lado direito da equação for maior que 1
+                //Adiciono os parênteses!
+                addParenthesesRight(scene)
                 
             }
+            realocateToOtherSide(getMovableNodePosition(scene)+1,scene) //Realoco o sinal que esta na frente do numero
+            realocateToOtherSide(getMovableNodePosition(scene), scene) //Realoco o número 
         }
         else{ //Se não houver um sinal antes, eu preciso criar um sinal de mais, criar uma hitbox, e realocar
             addHitBoxAtTheEnd(scene: scene) //adiciono uma hitbox ao final
@@ -546,7 +539,6 @@ import SpriteKit
             
         }else if getMovableNodePosition(scene) != scene.currentSeedBags.count-1{ //Se não for a ultima posição do vetor
             if scene.currentSeedBags[getMovableNodePosition(scene)+1].label.text! == "*" || scene.currentSeedBags[getMovableNodePosition(scene)+1].label.text! == "/"{ //Se depois do numero tiver um * ou um "/"
-                //            if scene.currentSeedBags[getMovableNodePosition(scene)+1].label.text! == "/"{
                 
                 if getNumLeftEqual(scene) > 1{ //Se a quantidade de numeros do lado esquerdo da equação for maior que 1
                     //Adiciono os parênteses!
@@ -555,7 +547,13 @@ import SpriteKit
                 
                 realocateToOtherSide(getMovableNodePosition(scene)+1,scene) //Realoco o sinal que esta na frente da posição inicial
                 realocateToOtherSide(getMovableNodePosition(scene),scene) //Realoco o número
-                //            }
+            }
+            else{ //Se não houver um sinal antes, eu preciso criar um sinal de mais, criar uma hitbox, e realocar
+                addHitBoxAtTheEnd(scene: scene) //adiciono uma hitbox ao final
+                scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 21, height: 22)) //adiciono ao final do vetor um sinal de mais
+                //            self.initialPosition += 1
+                realocateToOtherSide(scene.currentSeedBags.count-1,scene) //realoco o sinal que eu acabei de inserir na ultima posição
+                realocateToOtherSide(getMovableNodePosition(scene), scene) //realoco o elemento que o usuario passou
             }
         }
         else{ //Se não houver um sinal antes, eu preciso criar um sinal de mais, criar uma hitbox, e realocar
@@ -606,11 +604,11 @@ import SpriteKit
         }
     }
     
-    func removeZeroIfItNeedsTo(scene: PhaseScene){ //Função não funciona direito :D
+    func removeZeroIfItNeedsTo(scene: PhaseScene){
         
         if eqHasZeroRight{
             if scene.currentSeedBags[scene.currentSeedBags.count-1].label.text == "0"{ //Se a o valor da ultima posição do vetor for 0
-                scene.removeChildren(in: [scene.currentSeedBags[scene.currentSeedBags.count-1]]) //Removo da cena
+                scene.removeChildren(in: [scene.currentSeedBags[scene.currentSeedBags.count-1]])
                 scene.currentSeedBags.removeLast() //Eu removo do vetor
                 removeHitBoxAtTheEnd(scene: scene) //Removo a ultima hitBox
                 eqHasZeroRight = false
@@ -618,19 +616,10 @@ import SpriteKit
         }
         else if eqHasZeroLeft{ //E O PROBLMEA ESTA AQUI!
             if scene.currentSeedBags[0].label.text == "0"{ //Se o primeiro elemento no vetor das sementes vale 0
-
-                //Movo todos os objetos uma posição para trás
-                for i in 0..<scene.currentSeedBags.count-1{
-                    scene.currentSeedBags[i] = scene.currentSeedBags[i+1]
-                }
-                //Removo a ultima hitbox
-                removeHitBoxAtTheEnd(scene: scene)
-                //Aqui removo a semente da ultima posição
-                scene.removeChildren(in: [scene.currentSeedBags[scene.currentSeedBags.count-1]]) //MAS EU TIRO DA CENA, PQ NAO FUNCIONA???? aaah eu tiro da cena o ultimo elemento, nao o zero
-                
-                scene.currentSeedBags.removeLast() //COMO EU ESTOU REMOVENDO DA LISTA, NA HORA DE LIMPAR A LISTA ELE CHECA MENOS 1 ELEMENTO
-                
-                eqHasZeroLeft = false
+                scene.removeChildren(in: [scene.currentSeedBags[0]])
+                scene.currentSeedBags.removeFirst() //Removo o zero do vetor
+                removeHitBoxAtTheEnd(scene: scene) //Removo uma hitbox
+                eqHasZeroLeft = false //Equação não tem mais zero a esquerda
             }
         }
     }
@@ -745,17 +734,8 @@ import SpriteKit
             
             client.texture = SKTexture(imageNamed: resultSprite)
         }
-    }
-    
-    func realocateToRight(scene: PhaseScene, from: Int, to: Int){ //Realoca todos os elementos 1 pra direita
-        for i in stride(from: to-1, through: from, by: -1){
-            scene.currentSeedBags[i+1] = scene.currentSeedBags[i]
-        }
-    }
-    
-    func realocateToLeft(scene: PhaseScene, from: Int, to: Int){ //Realoca todos os elementos 1 para a esquerda
-        for i in from...to{
-            scene.currentSeedBags[i-1] = scene.currentSeedBags[i]
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { //Essa função atrasa uma quantidade de segundos específicos
+            self.nextQuestion(scene: scene)
         }
     }
     
@@ -795,10 +775,19 @@ import SpriteKit
                 return index
             }
         }
-        return 1000
+        return -1
     }
     
-    func inParentheses(_ index: Int, _ scene: PhaseScene) -> Bool{
+    func getNodePosition(_ text: String, _ scene: PhaseScene) -> Int{
+        for (index,seedBag) in scene.currentSeedBags.enumerated(){
+            if seedBag.label.text == text{
+                return index
+            }
+        }
+        return -1
+    }
+    
+    func inParentheses(_ index: Int, _ scene: PhaseScene) -> Bool{ //Checa se o index recebido como parâmetro está entre parênteses
         let leftParentheses = getParenthesesLocation(scene).0
         let rightParentheses = getParenthesesLocation(scene).1
         let hasParentheses = getParenthesesLocation(scene).2
@@ -811,6 +800,27 @@ import SpriteKit
             }
         }
         return false
+    }
+    
+    func resultIsReady(_ scene: PhaseScene) -> Bool{ //Retorna se o resultado esta pronto
+        if scene.currentSeedBags.count == 3{
+            if scene.currentSeedBags[0].label.text! == "?" && scene.currentSeedBags[2].label.text!.isNumber{
+                return true
+            }else if scene.currentSeedBags[2].label.text! == "?" && scene.currentSeedBags[0].label.text!.isNumber{
+                return true
+            }
+        }
+        return false
+    }
+    
+    func createFinalSeedBag(_ scene: PhaseScene){
+        
+        for seedBag in scene.currentSeedBags{ //Varro o vetor de sementes
+            if seedBag.label.text!.isNumber{ //Se for um numero o saco atual
+                scene.currentEqLabel = seedBag.label //A equação atual se torna apenas esse número
+                addSeedBags(scene: scene) //E o vetor vira esse número
+            }
+        }
     }
 	
 	
@@ -846,7 +856,23 @@ import SpriteKit
 		addHitBoxesFromEquation(scene: scene)
 	}
 	
-	
+    func transformSeed(_ touches: Set<UITouch>, _ scene: PhaseScene) -> Bool{
+        if let touch = touches.first{
+            if scene.movableNode != nil{
+                let location = touch.location(in: scene.self)
+                if scene.blackHole.contains(location){ //Se o buraco negro contém a semente em cima dele ao soltar
+                    //transformar a semente
+                    finalSeedTransformed = true
+                }
+            }
+        }
+        return false
+    }
+    
+    func grabResult(){
+        
+    }
+    
 }
 
 

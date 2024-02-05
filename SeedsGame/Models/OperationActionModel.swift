@@ -283,7 +283,10 @@ class OperationAction: Action {
 		if equation.isEmpty {
 			return ""
 		}
-
+        
+        //Se a o vetor de sementes estiver x = 2 ou 2 = x
+            //apagar o x e só deixar a semente com o número!
+        
 		var joinedEquation = OperationAction.joinAllNumbers(equation)
 
 		var joinedXEquation = joinXwithNum(joinedEquation)
@@ -293,7 +296,7 @@ class OperationAction: Action {
 			return resultEquation
 		}
 		
-		print("tried to divide by x!")
+		// tried to divide by x!
 		return joinedEquation.joined()
 	}
 	
