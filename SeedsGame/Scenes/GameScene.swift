@@ -120,6 +120,14 @@ class GameScene: SKScene {
 		restartEquationButton.run(frameAction)
 	}
 	
+	
+	func animateUndoButton() {
+		let animationFrames: [SKTexture] = [undoButtonTextureAtlas.textureNamed("UndoButton - Pressed"),
+														undoButtonTextureAtlas.textureNamed("UndoButton")]
+		let frameAction = SKAction.animate(with: animationFrames, timePerFrame: 0.5)
+		undoButton.run(frameAction)
+	}
+	
 }
 
 // [2x]

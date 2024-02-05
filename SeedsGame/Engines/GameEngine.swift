@@ -738,6 +738,7 @@ import SpriteKit
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { //Essa função atrasa uma quantidade de segundos específicos
             self.nextQuestion(scene: scene)
+			  self.mementoStack.clear()
         }
     }
     
@@ -827,35 +828,40 @@ import SpriteKit
 	
 	
 	func refactorClientAnswer(answer: String, _ scene: PhaseScene) -> String {
-		var i = 0
-		let equation = Array(scene.currentEqLabel.text!)
-		
-		var leftString = ""
-		var rightString = ""
-		
-		while equation[i] != "=" {
-			leftString += String(equation[i])
+		if Array(answer).count > 1 {
+			var i = 0
+			let equation = Array(scene.currentEqLabel.text!)
+			
+			var leftString = ""
+			var rightString = ""
+			
+			while equation[i] != "=" {
+				leftString += String(equation[i])
+				i += 1
+			}
+			
 			i += 1
+			
+			while i < equation.count {
+				rightString += String(equation[i])
+				i += 1
+			}
+			
+			if leftString.contains("x") {
+				return rightString
+			}
+			return leftString
 		}
-		
-		i += 1
-		
-		while i < equation.count {
-			rightString += String(equation[i])
-			i += 1
-		}
-		
-		if leftString.contains("x") {
-			return rightString
-		}
-		return leftString
+		return answer
 	}
 	
 	
 	func resetCurrentEquation(_ scene: PhaseScene) {
-		scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)" // Volta o label para a equação inicial
-		addSeedBags(scene: scene)
-		addHitBoxesFromEquation(scene: scene)
+		if !scene.children.contains(scene.currentEqLabel) {
+			scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)" // Volta o label para a equação inicial
+			addSeedBags(scene: scene)
+			addHitBoxesFromEquation(scene: scene)
+		}
 	}
 	
     func transformSeed(_ touches: Set<UITouch>, _ scene: PhaseScene) -> Bool{

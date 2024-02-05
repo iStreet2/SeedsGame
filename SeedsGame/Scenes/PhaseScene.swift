@@ -105,7 +105,6 @@ class PhaseScene: GameScene {
 		}
 		
 		if blackHole.contains(touch.location(in: self)) {
-			print("Equação deve ser avaliada!")
 			GameEngine.shared.renderClientResponse(self)
 		}
 		
@@ -121,9 +120,12 @@ class PhaseScene: GameScene {
 		}
 		
 		if undoButton.contains(touch.location(in: self)) {
-			self.currentEqLabel.text = GameEngine.shared.mementoStack.pop()
-			GameEngine.shared.addSeedBags(scene: self)
-			GameEngine.shared.addHitBoxesFromEquation(scene: self)
+			if GameEngine.shared.mementoStack.top() != "" {
+				self.currentEqLabel.text = GameEngine.shared.mementoStack.pop()
+				GameEngine.shared.addSeedBags(scene: self)
+				GameEngine.shared.addHitBoxesFromEquation(scene: self)
+			}
+			animateUndoButton()
 		}
 		
 		//movimento do sprite de semente
