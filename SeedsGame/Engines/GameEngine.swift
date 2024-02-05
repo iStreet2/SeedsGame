@@ -180,7 +180,8 @@ import SpriteKit
 					print(scene.currentEqLabel.zPosition)
 					print("nova equação: ", scene.currentEqLabel.text!)
             }
-			  
+          self.finalSeedCreated = false
+
         }
     }
 
@@ -303,13 +304,16 @@ import SpriteKit
                         
                     }else if finalSeedCreated{ //Se a semente final esta criada
                         if !finalSeedTransformed{
-                            transformSeed(touches, scene) //Transformar
-                            if !finalSeedTransformed{
+                            if transformSeed(touches, scene){ //Transformar
+                                resetPosition(scene: scene)
+                            }else{
                                 resetPosition(scene: scene)
                             }
                         }else{
-                            if grabResult(touches, scene){ //Dar o resultado
+                            if grabResult(touches, scene){ //Resultado é recebido
                                 renderClientResponse(scene)
+                            }else{
+                                resetPosition(scene: scene)
                             }
                         }
                         
@@ -850,6 +854,7 @@ import SpriteKit
             if seedBag.label.text!.isNumber{ //Se for um numero o saco atual
                 scene.currentEqLabel = seedBag.label //A equação atual se torna apenas esse número
                 addSeedBags(scene: scene) //E o vetor vira esse número
+                
                 finalSeedCreated = true
             }
         }
@@ -857,7 +862,9 @@ import SpriteKit
 	
 	
 	func refactorClientAnswer(answer: String, _ scene: PhaseScene) -> String {
-		if OperationAction.joinAllNumbers(answer).count > 1 {
+
+      if OperationAction.joinAllNumbers(answer).count > 1 {
+
 			var i = 0
 			let equation = Array(scene.currentEqLabel.text!)
 			
@@ -893,7 +900,7 @@ import SpriteKit
 		}
 	}
 	
-    func transformSeed(_ touches: Set<UITouch>, _ scene: PhaseScene){
+    func transformSeed(_ touches: Set<UITouch>, _ scene: PhaseScene) -> Bool{
         if let touch = touches.first{
             if scene.movableNode != nil{
                 let location = touch.location(in: scene.self)
@@ -901,10 +908,12 @@ import SpriteKit
                     //transformar a semente
                     resetPosition(scene: scene)
                     finalSeedTransformed = true
-                    
+                    print("semente transformada")
+                    return true
                 }
             }
         }
+        return false
     }
     
     func grabResult(_ touches: Set<UITouch>, _ scene: PhaseScene) -> Bool{
