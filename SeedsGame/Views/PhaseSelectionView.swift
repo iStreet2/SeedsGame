@@ -15,10 +15,25 @@ struct PhaseSelectionView: View {
     var body: some View {
         NavigationStack {
             GeometryReader { geometry in
-                VStack(alignment: .trailing) {
-                    PhaseViewer(phasesName: ["fase1",
-                                             "fase2"])
+                VStack(alignment: .center, spacing: -60) {
+                    HStack(alignment: .center) {
+                        Button(action: {}, label: {
+                            Text("")
+                        })
+                        .buttonStyle(SquareButtonStyle(tag: .back))
+                        Spacer()
+                        Text("Selecione o Capítulo")
+                            .font(.custom("AlegreyaSans-Black", size: 32))
+                            .foregroundStyle(Color("FontLightBrown"))
+                            .padding(.trailing, geometry.size.width/3)
+                    }
+                    .padding(.top, geometry.size.height * 0.1)
+                    
+                    PhaseViewer(phasesName: ["fase3", "fase2", "fase3"])
+                        .frame(width: geometry.size.width, height: geometry.size.height)
+                    
                 }
+                .background(Image("Fundo"))
             }
         }
     }

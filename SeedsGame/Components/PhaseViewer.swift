@@ -12,7 +12,7 @@ import SpriteKit
 // Para ver como está ficando
 struct uPhaseViewer: View {
     var body: some View {
-        PhaseViewer(phasesName: ["fase1", "fase2"])
+        PhaseViewer(phasesName: ["fase1", "fase2", "fase3"])
     }
 }
 
@@ -38,45 +38,66 @@ struct PhaseViewer: View {
     }
     
     var body: some View {
-        ZStack {
-            Color.gray
-                .ignoresSafeArea()
-            
-            TabView(selection: $phaseIndex) {
-                ForEach(0..<phases.count, id: \.self) { index in
-                    ZStack {
-                        NavigationLink {
-                            SpriteView(scene: getScene(phaseIndex: phaseIndex))
-                                .navigationBarBackButtonHidden(true)
-                                .ignoresSafeArea()
-                            
-                        } label: {
-                            Image("\(phasesName[index])")
-                                .resizable()
-                                .tag(index)
-                                .frame(width: 350, height: 200)
-                                .clipShape(RoundedRectangle(cornerRadius: 20))
+        GeometryReader { geometry in
+            ZStack {
+                Color.clear
+                    .ignoresSafeArea()
+                
+                TabView(selection: $phaseIndex) {
+                    ForEach(0..<phases.count, id: \.self) { index in
+                        ZStack {
+                            NavigationLink {
+                                SpriteView(scene: getScene(phaseIndex: phaseIndex))
+                                    .navigationBarBackButtonHidden(true)
+                                    .ignoresSafeArea()
+                                
+                            } label: {
+                                Image("\(phasesName[index])")
+                                    .resizable()
+                                    .frame(width: 315, height: 198)
+                                
+                                    .overlay {
+                                        Image("Moldura do  Nivel")
+                                            .resizable()
+                                            .tag(index)
+                                            .frame(width: 342.73, height: 221.46)
+                                    }
+                            }
                         }
-                        
-                        
                     }
                 }
-            }
-            .frame(height: 300)
-            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-            .ignoresSafeArea()
-            
-            
-            HStack {
-                ForEach(0..<phasesName.count, id: \.self) { index in
-                    Circle()
-                        .fill(Color.white.opacity(phaseIndex == index ? 1 : 0.30))
-                        .frame(width: 10)
-                        .onTapGesture {
-                            phaseIndex = index
+                .frame(height: 300)
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                .ignoresSafeArea()
+                
+                // Nome de cada fase
+                VStack {
+                    if phaseIndex == 0 {
+                        Text("Tutorial")
+                            .font(.custom("troika", size: 40))
+                            .foregroundStyle(.fontLightBrown)
+                            .offset(y: 160)
+                        
+                    } else {
+                        Text("Fase \(phaseIndex)")
+                            .font(.custom("troika", size: 40))
+                            .foregroundStyle(.fontLightBrown)
+                            .offset(y: 160)
+                    }
+                    
+                    
+                    HStack {
+                        ForEach(0..<phasesName.count, id: \.self) { index in
+                            Circle()
+                                .fill(phaseIndex == index ? Color.fontLightBrown : Color.indexDarkBrown)
+                                .frame(width: 10)
+                                .onTapGesture {
+                                    phaseIndex = index
+                                }
                         }
+                        .offset(y: 140)
+                    }
                 }
-                .offset(y: -120)
             }
         }
     }

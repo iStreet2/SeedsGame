@@ -28,7 +28,6 @@ enum SquareImages: String {
         case .pause: return "Botao - Pause Pressionado"
         }
     }
-    
 }
 
 enum RectangleImages: String {
@@ -41,9 +40,13 @@ enum RectangleImages: String {
         case .type1: return "Botao - Texto 1 Pressionado"
         case .type2: return "Botao - Texto 2 Pressionado"
         case .story: return "Fundo Modo Historia Pressionado"
-
-
         }
     }
+}
+
+enum PhasesFrases: String {
+    case win = "Successo nas \nVendas!"
+    case failed = "Você faliu!"
+    case uncoverd = "Você foi \ndescoberto!"
 }
 

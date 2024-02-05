@@ -22,14 +22,12 @@ class OperationAction: Action {
 	// ["+..", "+", "-4", "=", "-.....", "+", "+10"]
 	
 	func execute() -> String {
-		print("executando ação!")
 		return prepareEq(eq)
 	}
 	
 	
 	//MARK: Junta números
 	static public func joinAllNumbers(_ equation: String) -> [String] {
-		print("Joining numbers!")
 		var resultEquation: [String] = []
 		let eq = Array(equation)
 		
@@ -61,7 +59,6 @@ class OperationAction: Action {
 			resultEquation.append(currentNum)
 			i += 1
 		}
-		print("joinedResultEquation = \(resultEquation)")
 		return resultEquation
 	}
 	
@@ -97,8 +94,6 @@ class OperationAction: Action {
 			
 		}
 		
-		print("joinedResultEquation = \(resultEquation)")
-		
 		return resultEquation
 	}
 	
@@ -127,7 +122,6 @@ class OperationAction: Action {
 				}
 				
 				xQ.enqueue(currentNum)
-				print("\(xQ)")
 			}
 			
 			else if !operandos.contains(equation[i]) {
@@ -140,7 +134,6 @@ class OperationAction: Action {
 				currentNum.append(equation[i])
 				
 				numQ.enqueue(currentNum)
-				print("\(numQ)")
 			}
 			
 			i += 1
@@ -173,9 +166,29 @@ class OperationAction: Action {
 		if Array(ResultEquation)[0] == "+" {
 			ResultEquation.remove(at: ResultEquation.startIndex)
 		}
-		var ResultString = evaluate(eq: ResultEquation) 
-		print("Resultado de \(ResultEquation) = \(ResultString)")
+		else if Array(ResultEquation)[0] == "(" && Array(ResultEquation)[1] == "+" {
+			let i = ResultEquation.index(ResultEquation.startIndex, offsetBy: 1)
+			ResultEquation.remove(at: i)
+		}
+		var ResultString = evaluate(eq: ResultEquation)
+		
 		return ResultString
+	}
+	
+	
+	func checkForXDivision(_ equation: [String]) -> Bool {
+		var i = 0
+		while i < equation.count - 1 {
+			if equation[i] == ")" {
+				if equation[i+1] == "/" && i+1 < equation.count - 1 {
+					if equation[i+2] == "x" && i+2 < equation.count - 1 {
+						return false
+					}
+				}
+			}
+			i += 1
+		}
+		return true
 	}
 	
 	
@@ -213,12 +226,13 @@ class OperationAction: Action {
 		if Int(numSecondResultString)! >= 0 && xSecondResultString != "0" {
 			numSecondResultString = "+" + numSecondResultString
 		}
-		print("\n-----\nxFirst: \(xFirstResultString)\nnumFirst: \(numFirstResultString)\nxSecond: \(xSecondResultString)\nnumSecond: \(numSecondResultString)\n-----")
 		resultString = buildResultString(xFirst: xFirstResultString, numFirst: numFirstResultString, xSecond: xSecondResultString, numSecond: numSecondResultString)
 		
 		return resultString
 	}
 	
+	
+	// Junta a equeação final
 	func buildResultString(xFirst: String, numFirst: String, xSecond: String, numSecond: String) -> String {
 		var resultString = ""
 		
@@ -258,8 +272,7 @@ class OperationAction: Action {
 		if xSecond == "0" && numSecond == "0" {
 			resultString += "0"
 		}
-		
-		print("BuildResultString() -> \(resultString)")
+
 		return resultString
 	}
 	
@@ -267,19 +280,24 @@ class OperationAction: Action {
 	//MARK: Chama tudo e devolve
 	// função principal pra preparar a equação pra ela conseguir ser "juntada" pelo botão de juntar
 	func prepareEq(_ equation: String) -> String {
-		print("Preparing Equation!")
 		if equation.isEmpty {
 			return ""
 		}
-		
-
+        
+        //Se a o vetor de sementes estiver x = 2 ou 2 = x
+            //apagar o x e só deixar a semente com o número!
+        
 		var joinedEquation = OperationAction.joinAllNumbers(equation)
 
 		var joinedXEquation = joinXwithNum(joinedEquation)
 		
-		var resultEquation = equationEvaluator(joinedXEquation)
+		if checkForXDivision(joinedXEquation) {
+			var resultEquation = equationEvaluator(joinedXEquation)
+			return resultEquation
+		}
 		
-		return resultEquation
+		// tried to divide by x!
+		return joinedEquation.joined()
 	}
 	
 }

@@ -10,8 +10,7 @@ import SwiftUI
 
 struct LifeScore: View {
     
-    @Binding var life: Int
-    @Binding var points: Int
+    @EnvironmentObject var userEngine: UserEngine
     
     var body: some View {
         ZStack {
@@ -24,20 +23,20 @@ struct LifeScore: View {
                     .font(.custom("troika", size: 25))
                     .bold()
                 
-                Text("\(points)")
+                Text("\(userEngine.score)")
                     .contentTransition(.numericText())
                     .font(.custom("AlegreyaSans-Medium", size: 25))
                 
                 HStack {
-                    ForEach(0..<life, id: \.self) { index in
+                    ForEach(0..<userEngine.life, id: \.self) { index in
                         Image("Life")
                             .font(.system(size: 30))
-                            .foregroundStyle(.cyan)
+                            .foregroundStyle(Color("FontDarkBrown"))
                     }
-                    ForEach(0..<3-life, id: \.self) { index in
+                    ForEach(0..<3-userEngine.life, id: \.self) { index in
                         Image("Life")
                             .font(.system(size: 30))
-                            .foregroundStyle(.gray)
+                            .foregroundStyle(Color("FadedLifePoint"))
                     }
 
                 }
@@ -45,6 +44,6 @@ struct LifeScore: View {
         }
     }
 }
-#Preview {
-    LifeScore(life: .constant(2), points: .constant(1))
-}
+//#Preview {
+//    LifeScore(userEngine: UserEngine())
+//}
