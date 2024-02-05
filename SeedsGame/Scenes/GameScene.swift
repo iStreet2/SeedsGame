@@ -27,7 +27,7 @@ class GameScene: SKScene {
 	var joinSideButton = SKSpriteNode(imageNamed: "Ala - Frame 1")
 	var textureAtlas: SKTextureAtlas = SKTextureAtlas(named: "Alavanca")
 	
-	let giveResponseButton = SKSpriteNode(imageNamed: "blackhole")
+	let blackHole = SKSpriteNode(imageNamed: "blackhole")
 	
 	
 	let restartEquationButton = SKSpriteNode(imageNamed: "Destructive")
@@ -52,14 +52,14 @@ class GameScene: SKScene {
 		joinSideButton.size = CGSize(width: 37.5, height: 160)
 		joinSideButton.zPosition = 12
 		
-		giveResponseButton.position = CGPoint(x: frame.size.width / 2, y: 38)
-		giveResponseButton.size = CGSize(width: 75, height: 75)
-		giveResponseButton.zPosition = 12
+		blackHole.position = CGPoint(x: frame.size.width / 2, y: 38)
+        blackHole.size = CGSize(width: 75, height: 75)
+        blackHole.zPosition = 12
 		
 		addChild(nextPhaseButton)
 		addChild(nextQuestionButton)
 		addChild(joinSideButton)
-		addChild(giveResponseButton)
+		addChild(blackHole)
 		
 		bottomBackground.position = CGPoint(x: frame.size.width / 2, y: frame.size.height / 4)
 		bottomBackground.zPosition = 11
