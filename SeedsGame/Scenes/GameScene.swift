@@ -90,8 +90,7 @@ class GameScene: SKScene {
 	}
 	
 	func animateLever() {
-		let idleFrames: [SKTexture] = [textureAtlas.textureNamed("Ala - Frame 1"),
-												 textureAtlas.textureNamed("Ala - Frame 2"),
+		let idleFrames: [SKTexture] = [textureAtlas.textureNamed("Ala - Frame 2"),
 												 textureAtlas.textureNamed("Ala - Frame 3"),
 												 textureAtlas.textureNamed("Ala - Frame 4"),
 												 textureAtlas.textureNamed("Ala - Frame 5"),
@@ -101,6 +100,7 @@ class GameScene: SKScene {
 												 textureAtlas.textureNamed("Ala - Frame 9"),
 												 textureAtlas.textureNamed("Ala - Frame 10"),
 												 textureAtlas.textureNamed("Ala - Frame 11"),
+												 textureAtlas.textureNamed("Ala - Frame 12"),
 												 textureAtlas.textureNamed("Ala - Frame 12"),
 												 textureAtlas.textureNamed("Ala - Frame 11"),
 												 textureAtlas.textureNamed("Ala - Frame 10"),
@@ -114,7 +114,7 @@ class GameScene: SKScene {
 												 textureAtlas.textureNamed("Ala - Frame 2"),
 												 textureAtlas.textureNamed("Ala - Frame 1"),
 									]
-		let idleAction = SKAction.animate(with: idleFrames, timePerFrame: 0.03)
+		let idleAction = SKAction.animate(with: idleFrames, timePerFrame: 0.041)
 		joinSideButton.run(idleAction)
 	}
 	
