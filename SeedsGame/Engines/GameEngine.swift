@@ -32,6 +32,7 @@ import SpriteKit
     var eqHasZeroRight = false
     var eqHasZeroLeft = false
     
+    var finalSeedCreated = false
     var finalSeedTransformed = false
     
     var initialNodePosition = CGPoint(x: 0, y: 0)
@@ -41,22 +42,22 @@ import SpriteKit
     var actions: [Action] = []
     var phases: [PhaseScene] = []
     var currentPhase = 0
-	
-	var phaseFirstSetup = true
-	
-	var mementoStack = Stack()
+    
+    var phaseFirstSetup = true
+    
+    var mementoStack = Stack()
     
     
     let darknessMap: [Int : SKAction] = [0: SKAction.colorize(with: .black, colorBlendFactor: 0, duration: 0),
                                          1: SKAction.colorize(with: .black, colorBlendFactor: 0.3, duration: 0),
-													  2: SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 0)]
+                                         2: SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 0)]
     
     let undarknessMap: [Int : SKAction] = [0: SKAction.colorize(with: .black, colorBlendFactor: 0, duration: 1),
                                            1: SKAction.colorize(with: .black, colorBlendFactor: 0.3, duration: 1),
                                            2: SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 1)]
     
-	let initialBagPosition = CGPoint(x: 200, y: 150)
-	let bagSpacing = 45
+    let initialBagPosition = CGPoint(x: 200, y: 150)
+    let bagSpacing = 45
     
     init() {
         let phases = [PhaseScene(phase: 1, width: width, height: height), PhaseScene(phase: 2, width: width, height: height), PhaseScene(phase: 3, width: width, height: height)]
@@ -65,14 +66,14 @@ import SpriteKit
     
     
     func receiveAction(_ action: Action) {
-		  actions.append(action)
-		  let res = action.execute()
-		  if res.contains("=") {
-			  phases[currentPhase].currentEqLabel.text = res
-              addSeedBags(scene: phases[currentPhase])
-              addHitBoxesFromEquation(scene: phases[currentPhase])
-		  }
-	  }
+        actions.append(action)
+        let res = action.execute()
+        if res.contains("=") {
+            phases[currentPhase].currentEqLabel.text = res
+            addSeedBags(scene: phases[currentPhase])
+            addHitBoxesFromEquation(scene: phases[currentPhase])
+        }
+    }
     
     
     func clearActions() {
@@ -101,73 +102,79 @@ import SpriteKit
     
     
     func nextQuestion(scene: PhaseScene) {
-		
-		 phaseFirstSetup = true
-		 
-		let nQuestions = scene.clients.count
-		
-		for (index, client) in scene.clients.enumerated() {
-			
-			// Aumenta
-//			let scaleFactor = 1
-//			
-//			let scaleAction = SKAction.scale(by: CGFloat(scaleFactor)/100, duration: 0.5)
-//			client.run(scaleAction)
-//			if scene.currentClientNumber+index < scene.clients.count {
-//				scene.clients[scene.currentClientNumber+index].run(SKAction.scale(by: 1 + 0.05*CGFloat(index), duration: 0.5))
-//			}
-			let scaleAction = SKAction.scale(by: 1.05, duration: 0.5)
-			client.run(scaleAction)
-			
-			// Move
-			let moveAction = SKAction.moveTo(x: client.position.x - 75, duration: 0.5)
-			client.run(moveAction)
-			
-            // Animação Lara
-            let moveAction1 = SKAction.moveBy(x: 0, y: 100 * 0.02, duration: 0.5)
-            let moveAction2 = SKAction.moveBy(x: 0, y: 100 * (-0.02), duration: 0.5)
-            let moveSequence = SKAction.sequence([moveAction1, moveAction2])
-            client.run(moveSequence)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { //Essa função atrasa uma quantidade de segundos específicos
             
-            let rotateAction1 = SKAction.rotate(byAngle: 0.1, duration: 0.3)
-            let rotateAction2 = SKAction.rotate(byAngle: -0.1, duration: 0.3)
-            let rotateSequence = SKAction.sequence([rotateAction1, rotateAction2])
-            client.run(rotateSequence)
-			
-			for c in scene.currentClientNumber..<scene.clients.count {
-				scene.clients[c].run(darknessMap[c - scene.currentClientNumber - 1] ?? SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 0.5))
-			}
-			
-			if client.eq == scene.clients[scene.currentClientNumber].eq {
-				// Cliente da pergunta atual é despachado
-				scene.removeChildren(in: [client])
-			}
-		}
-		 
-		// Remove os sacos e hitboxes da tela
-		 removeSeedBagsAndHitboxes(scene)
-		
-		// renderiza o sprite do próximo cliente no final da fila
-		if (scene.currentClientNumber + 3) <= (nQuestions - 1) {
-			scene.addChild(scene.clients[scene.currentClientNumber + 3])
-		}
-		
-		// não deixa o número do cliente atual ser maior do que o número de clientes
-		if scene.currentClientNumber != nQuestions - 1 {
-			scene.currentClientNumber += 1
-			scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)"
-		}
-		
-		// se todos os clientes tiverem as suas perguntas resolvidas
-		else {
-			scene.currentEqLabel.text = "All questions done!"
-		}
-		 
-		 if !scene.children.contains(scene.currentEqLabel) && !scene.children.contains(scene.eqLabelBackground) {
-			 scene.addChild(scene.currentEqLabel)
-			 scene.addChild(scene.eqLabelBackground)
-		 }
-	}
+            self.mementoStack.clear()
+            
+            self.phaseFirstSetup = true
+            
+            let nQuestions = scene.clients.count
+            
+            for (index, client) in scene.clients.enumerated() {
+                
+                // Aumenta
+                //			let scaleFactor = 1
+                //
+                //			let scaleAction = SKAction.scale(by: CGFloat(scaleFactor)/100, duration: 0.5)
+                //			client.run(scaleAction)
+                //			if scene.currentClientNumber+index < scene.clients.count {
+                //				scene.clients[scene.currentClientNumber+index].run(SKAction.scale(by: 1 + 0.05*CGFloat(index), duration: 0.5))
+                //			}
+                let scaleAction = SKAction.scale(by: 1.05, duration: 0.5)
+                client.run(scaleAction)
+                
+                // Move
+                let moveAction = SKAction.moveTo(x: client.position.x - 75, duration: 0.5)
+                client.run(moveAction)
+                
+                // Animação Lara
+                let moveAction1 = SKAction.moveBy(x: 0, y: 100 * 0.02, duration: 0.5)
+                let moveAction2 = SKAction.moveBy(x: 0, y: 100 * (-0.02), duration: 0.5)
+                let moveSequence = SKAction.sequence([moveAction1, moveAction2])
+                client.run(moveSequence)
+                
+                let rotateAction1 = SKAction.rotate(byAngle: 0.1, duration: 0.3)
+                let rotateAction2 = SKAction.rotate(byAngle: -0.1, duration: 0.3)
+                let rotateSequence = SKAction.sequence([rotateAction1, rotateAction2])
+                client.run(rotateSequence)
+                
+                for c in scene.currentClientNumber..<scene.clients.count {
+                    scene.clients[c].run(self.darknessMap[c - scene.currentClientNumber - 1] ?? SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 0.5))
+                }
+                
+                if client.eq == scene.clients[scene.currentClientNumber].eq {
+                    // Cliente da pergunta atual é despachado
+                    scene.removeChildren(in: [client])
+                }
+            }
+            
+            // Remove os sacos e hitboxes da tela
+            self.removeSeedBagsAndHitboxes(scene)
+            
+            // renderiza o sprite do próximo cliente no final da fila
+            if (scene.currentClientNumber + 3) <= (nQuestions - 1) {
+                scene.addChild(scene.clients[scene.currentClientNumber + 3])
+            }
+            
+            // não deixa o número do cliente atual ser maior do que o número de clientes
+            if scene.currentClientNumber != nQuestions - 1 {
+                scene.currentClientNumber += 1
+                scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)"
+            }
+            
+            // se todos os clientes tiverem as suas perguntas resolvidas
+            else {
+                scene.currentEqLabel.text = "All questions done!"
+            }
+            
+            if !scene.children.contains(scene.currentEqLabel) && !scene.children.contains(scene.eqLabelBackground) {
+                scene.addChild(scene.currentEqLabel)
+                scene.addChild(scene.eqLabelBackground)
+            }
+        }
+    }
+
 	
 	
 	func removeSeedBagsAndHitboxes(_ scene: PhaseScene) {
@@ -279,10 +286,21 @@ import SpriteKit
                         //Depois de realocar preciso checar se não tem algum lado sem nada
                         addZeroIfItNeedsTo(scene: scene)
                         
+                        
                         //Depois de realocar preciso atualizar as equações na tela
                         showEquation(scene: scene)
                         
                         scene.movableNode = nil
+                        
+                    }else if finalSeedCreated{ //Se a semente final esta criada
+                        if !finalSeedTransformed{
+                            transformSeed(touches, scene) //Transformar
+                        }else{
+                            if grabResult(touches, scene){ //Dar o resultado
+                                renderClientResponse(scene)
+                            }
+                        }
+                        
                     }
                     else{ //Se nao ele só volta para sua posição inicial
                         resetPosition(scene: scene)
@@ -292,6 +310,7 @@ import SpriteKit
             }
         }
     }
+    
     
     func invertOperator(_ node: SeedBagModel, _ touches: Set<UITouch>, _ position: Int, _ scene: PhaseScene){
         
@@ -337,7 +356,7 @@ import SpriteKit
         for (index,hitBox) in scene.hitBoxes.enumerated(){
             hitBox.position = CGPoint(x: initialBagPosition.x+CGFloat((bagSpacing*index)), y: initialBagPosition.y)
             hitBox.zPosition = 11
-            hitBox.strokeColor = .red
+            hitBox.strokeColor = .clear
             scene.addChild(hitBox)
         }
     }
@@ -347,7 +366,7 @@ import SpriteKit
         let node = SKShapeNode(rectOf: CGSize(width: hitBoxWidth, height: hitBoxHeight)) //Crio mais uma hitbox
 		 node.position = CGPoint(x: initialBagPosition.x+CGFloat((bagSpacing*scene.hitBoxes.count)), y: initialBagPosition.y)//Defino a posição dele com base na posição da ultima hitBox
         node.zPosition = 11
-        node.strokeColor = .red //Defino a cor dele de vermelho
+        node.strokeColor = .clear //Defino a cor dele de vermelho
         scene.hitBoxes.append(node) //Adiciono ela no vetor de hitBoxes
         scene.addChild(node) //Adiciono ela na cena
         
@@ -511,7 +530,7 @@ import SpriteKit
                 
             }
             realocateToOtherSide(getMovableNodePosition(scene)+1,scene) //Realoco o sinal que esta na frente do numero
-            realocateToOtherSide(getMovableNodePosition(scene), scene) //Realoco o número 
+            realocateToOtherSide(getMovableNodePosition(scene), scene) //Realoco o número
         }
         else{ //Se não houver um sinal antes, eu preciso criar um sinal de mais, criar uma hitbox, e realocar
             addHitBoxAtTheEnd(scene: scene) //adiciono uma hitbox ao final
@@ -736,9 +755,7 @@ import SpriteKit
             
             client.texture = SKTexture(imageNamed: resultSprite)
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { //Essa função atrasa uma quantidade de segundos específicos
-            self.nextQuestion(scene: scene)
-        }
+        nextQuestion(scene: scene)
     }
     
     func getParenthesesLocation(_ scene: PhaseScene) -> (Int,Int,Bool){
@@ -821,6 +838,7 @@ import SpriteKit
             if seedBag.label.text!.isNumber{ //Se for um numero o saco atual
                 scene.currentEqLabel = seedBag.label //A equação atual se torna apenas esse número
                 addSeedBags(scene: scene) //E o vetor vira esse número
+                finalSeedCreated = true
             }
         }
     }
@@ -858,21 +876,31 @@ import SpriteKit
 		addHitBoxesFromEquation(scene: scene)
 	}
 	
-    func transformSeed(_ touches: Set<UITouch>, _ scene: PhaseScene) -> Bool{
+    func transformSeed(_ touches: Set<UITouch>, _ scene: PhaseScene){
         if let touch = touches.first{
             if scene.movableNode != nil{
                 let location = touch.location(in: scene.self)
                 if scene.blackHole.contains(location){ //Se o buraco negro contém a semente em cima dele ao soltar
                     //transformar a semente
+                    resetPosition(scene: scene)
                     finalSeedTransformed = true
                 }
             }
         }
-        return false
     }
     
-    func grabResult(){
-        
+    func grabResult(_ touches: Set<UITouch>, _ scene: PhaseScene) -> Bool{
+        if let touch = touches.first{
+            if scene.movableNode != nil{
+                let location = touch.location(in: scene.self)
+                if scene.deliveryPlace.contains(location){ //Se o usuário arrastar para entregar o resultado
+                    scene.movableNode!.position = scene.deliveryPlace.position
+                    scene.movableNode!.position.y = scene.deliveryPlace.position.y - 100
+                    return true
+                }
+            }
+        }
+        return false
     }
     
 }
