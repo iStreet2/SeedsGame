@@ -7,44 +7,37 @@
 
 import Foundation
 
-struct Queue {
+struct Stack {
 	var items: [String] = []
 	
 	
-	func peek() -> String {
-		guard let topElement = items.first else { fatalError("This stack is empty.") }
-		return topElement
+	func top() -> String {
+		return items.last ?? ""
 	}
 	
 	
-	mutating func dequeue() -> String {
-		return items.removeFirst()
+	func isEmpty() -> Bool {
+		return items.count == 0
 	}
 	
 	
-	mutating func enqueue(_ element: String) {
-		items.append(element)
+	mutating func push(_ s: String) {
+		items.append(s)
+	}
+	
+	
+	mutating func pop() -> String {
+		if !isEmpty() {
+			return items.removeLast()
+		}
+		return ""
 	}
 	
 	
 	mutating func clear() {
-		items = []
+		items.removeAll()
 	}
 	
 	
 }
-
-
-extension Queue: CustomStringConvertible {
-	var description: String {
-		let topDivider = "---Stack---\n"
-		
-		let stackElements = self.items.joined(separator: "\n")
-		
-		let bottomDivider = "\n-----------\n"
-		
-		return topDivider + stackElements + bottomDivider
-	}
-}
-
 

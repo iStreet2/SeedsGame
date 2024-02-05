@@ -296,7 +296,7 @@ class OperationAction: Action {
 			return resultEquation
 		}
 		
-		print("tried to divide by x!")
+		// tried to divide by x!
 		return joinedEquation.joined()
 	}
 	
