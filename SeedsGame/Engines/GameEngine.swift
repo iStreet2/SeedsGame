@@ -55,6 +55,8 @@ import SpriteKit
                                            1: SKAction.colorize(with: .black, colorBlendFactor: 0.3, duration: 1),
                                            2: SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 1)]
     
+	let initialBagPosition = CGPoint(x: 200, y: 150)
+	let bagSpacing = 45
     
     init() {
         let phases = [PhaseScene(phase: 1, width: width, height: height), PhaseScene(phase: 2, width: width, height: height), PhaseScene(phase: 3, width: width, height: height)]
@@ -333,7 +335,7 @@ import SpriteKit
         }
         //Adicionar na cena as hitBoxes
         for (index,hitBox) in scene.hitBoxes.enumerated(){
-            hitBox.position = CGPoint(x: 200+(45*index), y: 150)
+            hitBox.position = CGPoint(x: initialBagPosition.x+CGFloat((bagSpacing*index)), y: initialBagPosition.y)
             hitBox.zPosition = 11
             hitBox.strokeColor = .red
             scene.addChild(hitBox)
@@ -343,7 +345,7 @@ import SpriteKit
     //Adiciona uma hitBox a mais no final da equação
     func addHitBoxAtTheEnd(scene: PhaseScene){
         let node = SKShapeNode(rectOf: CGSize(width: hitBoxWidth, height: hitBoxHeight)) //Crio mais uma hitbox
-        node.position = CGPoint(x: 200+(45*scene.hitBoxes.count), y: 150)//Defino a posição dele com base na posição da ultima hitBox
+		 node.position = CGPoint(x: initialBagPosition.x+CGFloat((bagSpacing*scene.hitBoxes.count)), y: initialBagPosition.y)//Defino a posição dele com base na posição da ultima hitBox
         node.zPosition = 11
         node.strokeColor = .red //Defino a cor dele de vermelho
         scene.hitBoxes.append(node) //Adiciono ela no vetor de hitBoxes
@@ -419,7 +421,7 @@ import SpriteKit
 		clearSeedsOfScene(scene)
 		
 		for (index,seedBag) in scene.currentSeedBags.enumerated(){
-			seedBag.position = CGPoint(x: 200+(45*index), y: 150) //Posicao da sacola com o numero, mexo com o index para colocar na posição certa da equação
+			seedBag.position = CGPoint(x: initialBagPosition.x+CGFloat((bagSpacing*index)), y: initialBagPosition.y) //Posicao da sacola com o numero, mexo com o index para colocar na posição certa da equação
 			
 			seedBag.zPosition = 11
 			
