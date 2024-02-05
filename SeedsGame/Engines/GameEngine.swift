@@ -333,9 +333,9 @@ import SpriteKit
         }
         //Adicionar na cena as hitBoxes
         for (index,hitBox) in scene.hitBoxes.enumerated(){
-            hitBox.position = CGPoint(x: 50+(60*index), y: 100)
+            hitBox.position = CGPoint(x: 200+(45*index), y: 150)
             hitBox.zPosition = 11
-            hitBox.strokeColor = .clear
+            hitBox.strokeColor = .red
             scene.addChild(hitBox)
         }
     }
@@ -343,9 +343,9 @@ import SpriteKit
     //Adiciona uma hitBox a mais no final da equação
     func addHitBoxAtTheEnd(scene: PhaseScene){
         let node = SKShapeNode(rectOf: CGSize(width: hitBoxWidth, height: hitBoxHeight)) //Crio mais uma hitbox
-        node.position = CGPoint(x: 50+(60*scene.hitBoxes.count), y: 100) //Defino a posição dele com base na posição da ultima hitBox
+        node.position = CGPoint(x: 200+(45*scene.hitBoxes.count), y: 150)//Defino a posição dele com base na posição da ultima hitBox
         node.zPosition = 11
-        node.strokeColor = .clear //Defino a cor dele de vermelho
+        node.strokeColor = .red //Defino a cor dele de vermelho
         scene.hitBoxes.append(node) //Adiciono ela no vetor de hitBoxes
         scene.addChild(node) //Adiciono ela na cena
         
@@ -869,7 +869,9 @@ import SpriteKit
         return false
     }
     
-    func grabResult
+    func grabResult(){
+        
+    }
     
 }
 
