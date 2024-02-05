@@ -102,6 +102,8 @@ import SpriteKit
     
     
     func nextQuestion(scene: PhaseScene) {
+		 
+		
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { //Essa função atrasa uma quantidade de segundos específicos
             
@@ -168,10 +170,17 @@ import SpriteKit
                 scene.currentEqLabel.text = "All questions done!"
             }
             
-            if !scene.children.contains(scene.currentEqLabel) && !scene.children.contains(scene.eqLabelBackground) {
-                scene.addChild(scene.currentEqLabel)
+            if !scene.children.contains(scene.currentEqLabel) || !scene.children.contains(scene.eqLabelBackground) {
+					scene.currentEqLabel.position = CGPoint(x: scene.frame.size.width / 2, y: 325)
+					scene.currentEqLabel.zPosition = 12
+					
                 scene.addChild(scene.eqLabelBackground)
+					scene.addChild(scene.currentEqLabel)
+					print(scene.currentEqLabel.position)
+					print(scene.currentEqLabel.zPosition)
+					print("nova equação: ", scene.currentEqLabel.text!)
             }
+			  
         }
     }
 
@@ -848,7 +857,7 @@ import SpriteKit
 	
 	
 	func refactorClientAnswer(answer: String, _ scene: PhaseScene) -> String {
-		if Array(answer).count > 1 {
+		if OperationAction.joinAllNumbers(answer).count > 1 {
 			var i = 0
 			let equation = Array(scene.currentEqLabel.text!)
 			
