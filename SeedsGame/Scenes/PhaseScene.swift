@@ -104,9 +104,9 @@ class PhaseScene: GameScene {
 			animateLever()
 		}
 		
-		if blackHole.contains(touch.location(in: self)) {
-			GameEngine.shared.renderClientResponse(self)
-		}
+//		if blackHole.contains(touch.location(in: self)) {
+//			GameEngine.shared.renderClientResponse(self)
+//		}
 		
 		if eqLabelBackground.contains(touch.location(in: self)) {
 			GameEngine.shared.moveFirstClientToFront(self)

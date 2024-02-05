@@ -24,7 +24,7 @@ class UserEngine: ObservableObject{
         life -= 1
     }
     func wrongAnswerRose(){
-        life -= 3
+        life = 0
     }
     
     func rightAnswer(){
