@@ -22,5 +22,5 @@ struct SquareButtonStyle: ButtonStyle {
     }) {
         Text("")
     }
-    .buttonStyle(SquareButtonStyle(tag: .home))
+    .buttonStyle(SquareButtonStyle(tag: .config))
 }
