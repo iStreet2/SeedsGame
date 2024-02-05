@@ -25,16 +25,18 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            SpriteView(scene: scene)
-                .ignoresSafeArea()
             
-            VStack{
-                HStack{
-                    LifeScore()
-                    Spacer()
-                }
-                Spacer()
-            }
+            EndGameView(tag: .uncoverd)
+//            SpriteView(scene: scene)
+//                .ignoresSafeArea()
+//            
+//            VStack{
+//                HStack{
+//                    LifeScore()
+//                    Spacer()
+//                }
+//                Spacer()
+//            }
         }
     }
 }
