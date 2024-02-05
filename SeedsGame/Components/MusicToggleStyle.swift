@@ -10,10 +10,16 @@ import SwiftUI
 
 
 struct MusicToggleStyle: ToggleStyle {
-    
+    @State var isMusicOn = true
     
     func makeBody(configuration: Configuration) -> some View {
         HStack {
+            Image(systemName: configuration.isOn
+                  ? "music.note"
+                  : "music.note.list")
+            .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+            .frame(width: 15)
+            
             configuration.label
             Spacer()
             (configuration.isOn ? Image("Toggle On") : Image("Toggle Off"))

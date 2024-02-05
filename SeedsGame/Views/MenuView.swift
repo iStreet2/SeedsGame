@@ -10,60 +10,66 @@ import SwiftUI
 
 struct MenuView: View {
     var body: some View {
-        
-        NavigationStack {
-            ZStack {
-                HStack(alignment: .bottom){
-                    Image("Bhas")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 196, height: 347)
-                        .padding(.bottom, 55)
+        GeometryReader { geo in
+            NavigationStack {
+                ZStack {
                     
-                    Spacer(minLength: 400)
-                    
-                    Image("Rose - Neutro")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 196, height: 347)
-                        .padding(.top, 250)
-                }
-                
-                VStack(spacing: 50) {
-                    HStack(alignment: .top) {
-                        Spacer()
-                        Text("Título do Jogo")
-                            .padding()
-                            .padding(.horizontal, 40)
-                            .padding(.vertical, 35)
-                            .bold()
-                            .font(.custom("Troika", size: 33))
-                            .background(.gray)
-                            .padding(.trailing, 190)
-                            .foregroundStyle(.white)
-
-                        Button(action: {
-                            print("foii")
-                        }) {
-                            Image("")
-                        }
-								.buttonStyle(SquareButtonStyle(tag: .config))
-                        .padding()
+                    Button(action: {
+                        print("foii")
+                    }) {
+                        Image("")
                     }
-                    VStack(spacing: 50){
-                        Button("MODO HISTÓRIA"){
-                            print("")
+                    .buttonStyle(SquareButtonStyle(tag: .config))
+                    .padding()
+                    .frame(width: geo.size.width/0.96, height: geo.size.height/1.3, alignment: .topTrailing)
+                    
+                    HStack {
+                        // Personagem Sr.Bhas
+                        
+                        Image("Sr.Bhas")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 187, height: 353)
+                            .padding(.top, 250)
+                            .edgesIgnoringSafeArea(.bottom)
+                        
+                        VStack(spacing: 50) {
+                            // Título do Jogo
+                            Text("Sr.Bhas e as Sementes Siderais")
+                                .frame(width: 400)
+                                .bold()
+                                .font(.custom("Troika", size: 49))
+                                .foregroundStyle(Color("fontLightBrown"))
+                                .multilineTextAlignment(.center)
+                            
+                            
+                            // Botão do Modo História
+                            Button("MODO HISTÓRIA"){
+                                print("")
+                            }
+                            .buttonStyle(RectangleButtonStyle(tag: .story))
+                            
+                            // Botão do Modo Infinito
+                            Button("INFINITO"){
+                                print("")
+                            }
+                            .buttonStyle(RectangleButtonStyle(tag: .type2))
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        
+                        // Personagem Rose
+                        VStack {
+                            Spacer(minLength: 250)
+                            
+                            Image("Rose - Neutro")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 568/3, height: 1007/3)
                             
                         }
-                        .buttonStyle(RectangleButtonStyle(tag: .story))
-                        
-                        Button("INFINITO"){
-                            print("")
-                        }
-                        .buttonStyle(RectangleButtonStyle(tag: .type2))
+                        .edgesIgnoringSafeArea(.bottom)
                     }
-                }
-                
+                } .background(Image("Fundo"))
             }
         }
         
