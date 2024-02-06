@@ -36,6 +36,16 @@ struct ContentView: View {
                 }
                 Spacer()
             }
+			  
+			  VStack(spacing: 0) {
+				  Color.blue
+				  if !GameEngine.shared.endOfPhase {
+					  EndGameView(tag: .win)
+				  }
+				  Color.red
+			  }
+			  .ignoresSafeArea()
+			  
         }
     }
 }

@@ -58,6 +58,9 @@ import SpriteKit
     
     let initialBagPosition = CGPoint(x: 200, y: 150)
     let bagSpacing = 45
+	
+	// MARK: variáveis de controle de vida e fim de fase
+	var endOfPhase: Bool = false
     
     init() {
         let phases = [PhaseScene(phase: 1, width: width, height: height), PhaseScene(phase: 2, width: width, height: height), PhaseScene(phase: 3, width: width, height: height)]
@@ -168,6 +171,7 @@ import SpriteKit
             // se todos os clientes tiverem as suas perguntas resolvidas
             else {
                 scene.currentEqLabel.text = "All questions done!"
+					self.endOfPhase = true
             }
             
             if !scene.children.contains(scene.currentEqLabel) || !scene.children.contains(scene.eqLabelBackground) {
@@ -414,17 +418,17 @@ import SpriteKit
 					//Se eu encontrar um X com um valor anterior a ele, eu adiciono um "*" entre a sacola do número e a sacola do x
 					if index != 0{
 						if  equation[index-1].isNumber{
-							scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "*", imageNamed: "operacoes", color: .clear, width: 21, height: 22))
+							scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "*", imageNamed: "operacoes", color: .clear, width: 31.3, height: 30.73))
 							addHitBoxAtTheEnd(scene: scene)
 						}
 					}
 					scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: true, isOperator: false, operatorr: "", imageNamed: "seedbag", color: .clear, width: seedBagWidth, height: seedBagHeight))
 					
 				}else if char == "="{
-					scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: String(char), imageNamed: "igual", color: .clear, width: 21, height: 22))
+					scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: String(char), imageNamed: "igual", color: .clear, width: 22.45, height: 30.73))
 				}
 				else {
-					scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: String(char), imageNamed: "operacoes", color: .clear, width: 21, height: 22))
+					scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: String(char), imageNamed: "operacoes", color: .clear, width: 31.3, height: 30.73))
 				}
 			}
 			//Depois de preparar o vetor, adiciono na cena
