@@ -10,7 +10,7 @@ import SwiftUI
 
 struct EndGameView: View {
     var tag: PhasesFrases
-    var points: Int = 8002
+    var points: Int
     
     var body: some View {
         HStack(alignment: .top, spacing: 70) {
@@ -75,5 +75,5 @@ struct EndGameView: View {
 }
 
 #Preview {
-    EndGameView(tag: .uncoverd)
+    EndGameView(tag: .failed, points: 0)
 }

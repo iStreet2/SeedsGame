@@ -25,7 +25,6 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            
             SpriteView(scene: scene)
                 .ignoresSafeArea()
             
@@ -36,6 +35,17 @@ struct ContentView: View {
                 }
                 Spacer()
             }
+			  
+			  VStack(spacing: 0) {
+				  if GameEngine.shared.endOfPhase {
+					  ZStack {
+						  Color.black.opacity(0.5)
+						  EndGameView(tag: .win, points: UserEngine.shared.score)
+					  }
+				  }
+			  }
+			  .ignoresSafeArea()
+			  
         }
     }
 }

@@ -10,27 +10,50 @@ import Foundation
 import SpriteKit
 
 class UserEngine: ObservableObject{
-    static let shared = UserEngine()
-    
-    @Published var life: Int = 3
-    @Published var score: Int = 0
-    
-//    init(life: Int = 3, score: Int = 0) {
-//        self.life = life
-//        self.score = score
-//    }
-    
-    func wrongAnswer() {
-        life -= 1
-    }
-    func wrongAnswerRose(){
-        life -= 3
-    }
-    
-    func rightAnswer(){
-        score += 100
-    }
-    func rightAnswerRose(){
-        score += 200
-    }
+	
+	static let shared = UserEngine()
+	
+	@Published var life: Int = 3
+	@Published var score: Int = 0
+	@Published var lost: Bool = false
+	
+	
+	//    init(life: Int = 3, score: Int = 0) {
+	//        self.life = life
+	//        self.score = score
+	//    }
+	
+	
+	func wrongAnswer() {
+		life -= 1
+	}
+	
+	
+	func wrongAnswerRose() {
+		life = 0
+	}
+	
+	
+	func rightAnswer() {
+		score += 100
+	}
+	
+	
+	func rightAnswerRose() {
+		score += 200
+	}
+	
+	
+	func bhasIsLost() {
+		self.lost = true
+	}
+	
+	
+	func resetUser() {
+		self.life = 3
+		self.score = 0
+		self.lost = false
+	}
+
+	
 }
