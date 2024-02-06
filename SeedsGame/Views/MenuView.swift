@@ -41,7 +41,7 @@ struct MenuView: View {
                                     .frame(width: 500, height: 110)
                                     .bold()
                                     .font(.custom("Troika", size: 49))
-                                    .foregroundStyle(Color("fontLightBrown"))
+                                    .foregroundStyle(Color("FontLightBrown"))
                                     .multilineTextAlignment(.center)
                                     .padding()
                                     
