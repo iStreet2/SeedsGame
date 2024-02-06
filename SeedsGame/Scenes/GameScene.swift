@@ -40,52 +40,61 @@ class GameScene: SKScene {
 	
 	
 	func startup() {
-        let width = frame.size.width
-        let height = frame.size.height
-    
-		//nextPhaseButton.position = CGPoint(x: frame.size.width - 100, y: 50)
-		//nextPhaseButton.zPosition = 12
-		
-		//nextQuestionButton.position = CGPoint(x: frame.size.width - 200, y: 50)
-		//nextQuestionButton.zPosition = 12
-		
-        joinSideButton.position = CGPoint(x: frame.size.width - 80, y: frame.size.height / 3)
-        joinSideButton.size = CGSize(width: 209.73, height: 160.24)
-        joinSideButton.zPosition = 12
-		
-
-		blackHole.position = CGPoint(x: frame.size.width / 2, y: 38)
-        blackHole.size = CGSize(width: 327, height: 92)
-        blackHole.zPosition = 12
-        
-        deliveryPlace.position = CGPoint(x: (width/2)-10, y: (height/2)+150)
-        deliveryPlace.zPosition = 12
-        deliveryPlace.size = CGSize(width: 125.71, height: 260)
-        deliveryPlace.color = .clear
-		
-		//addChild(nextPhaseButton)
-		//addChild(nextQuestionButton)
-		addChild(joinSideButton)
-		addChild(blackHole)
-        addChild(deliveryPlace)
-		
-		bottomBackground.position = CGPoint(x: width / 2, y: frame.size.height / 4)
-		bottomBackground.zPosition = 11
-		addChild(bottomBackground)
-		
-		topBackground.position = CGPoint(x: width / 2, y: frame.size.height - frame.size.height / 4)
-		topBackground.zPosition = -1
-		addChild(topBackground)
-		
-		restartEquationButton.position = CGPoint(x: 10, y: 50)
-		restartEquationButton.size = CGSize(width: 170.74, height: 63.19)
-		restartEquationButton.zPosition = 12
-		addChild(restartEquationButton)
-		
-		undoButton.position = CGPoint(x: 15, y: 140)
-		undoButton.size = CGSize(width: 167.66, height: 94.78)
-		undoButton.zPosition = 12
-		addChild(undoButton)
+		if children.isEmpty {
+			print("Sem filhos!")
+			let width = frame.size.width
+			let height = frame.size.height
+			
+			//nextPhaseButton.position = CGPoint(x: frame.size.width - 100, y: 50)
+			//nextPhaseButton.zPosition = 12
+			
+			//nextQuestionButton.position = CGPoint(x: frame.size.width - 200, y: 50)
+			//nextQuestionButton.zPosition = 12
+			
+			joinSideButton.position = CGPoint(x: frame.size.width - 80, y: frame.size.height / 3)
+			joinSideButton.size = CGSize(width: 209.73, height: 160.24)
+			joinSideButton.zPosition = 12
+			
+			
+			blackHole.position = CGPoint(x: frame.size.width / 2, y: 38)
+			blackHole.size = CGSize(width: 327, height: 92)
+			blackHole.zPosition = 12
+			
+			deliveryPlace.position = CGPoint(x: (width/2)-10, y: (height/2)+150)
+			deliveryPlace.zPosition = 12
+			deliveryPlace.size = CGSize(width: 125.71, height: 260)
+			deliveryPlace.color = .clear
+			
+			//addChild(nextPhaseButton)
+			//addChild(nextQuestionButton)
+			addChild(joinSideButton)
+			addChild(blackHole)
+			addChild(deliveryPlace)
+			
+			bottomBackground.position = CGPoint(x: width / 2, y: frame.size.height / 4)
+			bottomBackground.zPosition = 11
+			addChild(bottomBackground)
+			
+			topBackground.position = CGPoint(x: width / 2, y: frame.size.height - frame.size.height / 4)
+			topBackground.zPosition = -1
+			addChild(topBackground)
+			
+			restartEquationButton.position = CGPoint(x: 10, y: 50)
+			restartEquationButton.size = CGSize(width: 170.74, height: 63.19)
+			restartEquationButton.zPosition = 12
+			addChild(restartEquationButton)
+			
+			undoButton.position = CGPoint(x: 15, y: 140)
+			undoButton.size = CGSize(width: 167.66, height: 94.78)
+			undoButton.zPosition = 12
+			addChild(undoButton)
+		}
+		else {
+			print("Tem filhos!:")
+			for child in children {
+				print("Filho: \(child.description)")
+			}
+		}
 	}
 	
 	func animateLever() {

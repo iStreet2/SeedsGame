@@ -62,6 +62,10 @@ struct SpriteSceneView: View {
 				
 			}
 		}
+		.navigationBarBackButtonHidden()
+		.onAppear {
+			GameEngine.shared.phases[GameEngine.shared.currentPhase].startup()
+		}
 	}
 }
 
