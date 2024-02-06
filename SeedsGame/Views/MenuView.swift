@@ -10,8 +10,8 @@ import SwiftUI
 
 struct MenuView: View {
     var body: some View {
-            NavigationStack {
-                GeometryReader { geo in
+        NavigationStack {
+            GeometryReader { geo in
                 ZStack {
 							  
 
@@ -27,25 +27,25 @@ struct MenuView: View {
                     VStack {
                         HStack() {
                             // Personagem Sr.Bhas
-                             
+                            
                             Spacer()
                             Image("Sr.Bhas")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 187, height: 353)
                                 .padding(.top, 160)
-
-
+                            
+                            
                             VStack(spacing: 50) {
                                 // Título do Jogo
                                 Text("Sr.Bhas e as\n Sementes Siderais")
-                                    .frame(width: 500, height: 110)
+                                    .frame(width: geo.size.width*2 , height: geo.size.height*0.4)
                                     .bold()
                                     .font(.custom("Troika", size: 49))
                                     .foregroundStyle(Color("FontLightBrown"))
                                     .multilineTextAlignment(.center)
-                                    .padding()
-                                    
+                                    .padding(.vertical)
+                                
                                 
                                 // Botão Modo História
                                 NavigationLink {
@@ -54,18 +54,19 @@ struct MenuView: View {
                                 } label: {
                                     Text("Modo História")
                                 } .buttonStyle(RectangleButtonStyle(tag: .story))
-                                    
-
+                                
+                                
                                 
                                 // Botão do Modo Infinito
                                 Button("INFINITO"){
                                     print("")
                                 }
                                 .buttonStyle(RectangleButtonStyle(tag: .type2))
-
+                                
                             }
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .frame(width: 400)
                             .padding(.bottom, 100)
+                            
                             
                             // Personagem Rose
                             VStack() {
@@ -77,11 +78,11 @@ struct MenuView: View {
                                     .frame(width: 568/3, height: 1007/3)
                                     .padding(.bottom, 90)
                                 
-
-                                    
+                                
+                                
                             }
-                            .edgesIgnoringSafeArea(.bottom)
                         }
+                        .padding(.trailing,40)
                     } .frame(width: geo.size.width*1, height: geo.size.height * 1.2)
 						 
 						 if GameEngine.shared.configurationPopUpIsPresented {

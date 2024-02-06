@@ -15,10 +15,11 @@ struct MusicToggleStyle: ToggleStyle {
     func makeBody(configuration: Configuration) -> some View {
         HStack {
             Image(systemName: configuration.isOn
-                  ? "music.note"
-                  : "music.note.list")
+                  ? "speaker"
+                  : "speaker.slash")
             .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
             .frame(width: 15)
+            .foregroundStyle(.black)
             
             configuration.label
             Spacer()
