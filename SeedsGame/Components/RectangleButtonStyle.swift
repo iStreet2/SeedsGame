@@ -14,7 +14,7 @@ struct RectangleButtonStyle: ButtonStyle {
         configuration.label
             .background(configuration.isPressed ? Image(tag.pressed): Image(tag.rawValue))
             .font(.custom("Troika", size: 32))
-            .foregroundStyle(Color("fontLightBrown"))
+            .foregroundStyle(Color("FontLightBrown"))
     }
 }
 
