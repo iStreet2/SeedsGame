@@ -62,6 +62,8 @@ import SpriteKit
 	// MARK: variáveis de controle de vida e fim de fase
 	var endOfPhase: Bool = false
 	var gameOver: Bool = false
+	var gameIsPaused: Bool = false
+	var configurationPopUpIsPresented: Bool = false
     
     init() {
         let phases = [PhaseScene(phase: 1, width: width, height: height), PhaseScene(phase: 2, width: width, height: height), PhaseScene(phase: 3, width: width, height: height)]
@@ -953,7 +955,28 @@ import SpriteKit
         }
         return false
     }
+	
+	
+	func setGameIsPausedTRUE() {
+		self.gameIsPaused = true
+	}
+	
+	
+	func setGameIsPausedFALSE() {
+		self.gameIsPaused = false
+	}
+	
+	
+	func setConfigurationPopUpIsPresentedIsTRUE() {
+		self.configurationPopUpIsPresented = true
+	}
     
+	
+	func setConfigurationPopUpIsPresentedIsFALSE() {
+		self.configurationPopUpIsPresented = false
+	}
+	
+	
 }
 
 
