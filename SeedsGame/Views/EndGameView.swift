@@ -75,5 +75,5 @@ struct EndGameView: View {
 }
 
 #Preview {
-    EndGameView(tag: .failed)
+    EndGameView(tag: .uncoverd)
 }

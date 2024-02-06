@@ -19,42 +19,29 @@ struct PhaseSelectionView: View {
                 VStack(alignment: .center, spacing: 0) {
                     HStack(alignment: .center) {
                         
-                        NavigationLink {
-                            MenuView()
-                                .navigationBarBackButtonHidden(true)
-                                .ignoresSafeArea()
+                        Button {
+                            dismiss()
                         } label: {
                             Text("")
-                            
-                        } .buttonStyle(SquareButtonStyle(tag: .back))
+                        }
+                        .buttonStyle(SquareButtonStyle(tag: .back))
+                        
                         
                         Spacer()
                         Text("Selecione o Capítulo")
                             .font(.custom("AlegreyaSans-Black", size: 32))
                             .foregroundStyle(Color("fontLightBrown"))
-                            .frame(width: geometry.size.width*1, height: geometry.size.height*0.1)
-//                            .padding(.trailing, geometry.size.width/3)
+                            .frame(width: geometry.size.width*1, height: 0)
+                        //                            .padding(.trailing, geometry.size.width/3)
                     }
+                    .padding(.top, geometry.size.height*0.1)
                     
-                    .padding(.top, geometry.size.height*0.05)
                     PhaseViewer(phasesName: ["fase3", "fase2", "fase3"])
-                        .frame(width: geometry.size.width*1, height: geometry.size.height/1.5)
-                    
-                    
+//                        .padding(.bottom)
+                        .frame(width: 400, height: 198)
+
                     
                 }
-                //                    .toolbar {
-                //                        ToolbarItem(placement: .topBarLeading) {
-                //                            Button {
-                //                                dismiss()
-                //
-                //                            } label: {
-                //                                Text("")
-                //                            }
-                //                            .buttonStyle(SquareButtonStyle(tag: .back))
-                //                            .padding(.top, 50)
-                //                        }
-                //                    }
             } .background(Image("Fundo"))
         }
     }

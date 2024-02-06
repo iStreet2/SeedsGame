@@ -833,7 +833,7 @@ import SpriteKit
 		var leftString = ""
 		var rightString = ""
 		
-		while equation[i] != "=" {
+ 		while equation[i] != "=" {
 			leftString += String(equation[i])
 			i += 1
 		}

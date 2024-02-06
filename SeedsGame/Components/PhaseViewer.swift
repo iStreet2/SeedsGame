@@ -98,7 +98,7 @@ struct PhaseViewer: View {
                         .offset(y: 140)
                     }
                 }
-            }
+            } .background(Image("Fundo"))
         }
     }
 }

@@ -14,6 +14,7 @@ struct SeedsGameApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView().environmentObject(userEngine)
+                .persistentSystemOverlays(.hidden)
         }
     }
 }

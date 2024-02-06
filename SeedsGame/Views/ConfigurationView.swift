@@ -10,6 +10,8 @@ import SwiftUI
 
 struct ConfigurationView: View {
     
+    @Environment(\.openURL) var openURL
+    @Environment(\.dismiss) private var dismiss
     @State var isMusic = true
     var body: some View {
      
@@ -23,7 +25,7 @@ struct ConfigurationView: View {
                         .padding(.horizontal, 120)
                     
                         Button(action: {
-                            print("")
+                            dismiss()
                         }) {
                             Text("")
                         }
@@ -38,6 +40,7 @@ struct ConfigurationView: View {
                                 .toggleStyle(MusicToggleStyle())
                                 .padding()
                             Button("SOBRE NÓS"){
+                                openURL(URL(string: "https://www.instagram.com/srbhas.app?igsh=M2F3OWg2dW0zM2Mz")!)
                             }
                             .buttonStyle(RectangleButtonStyle(tag: .type2))
                            
