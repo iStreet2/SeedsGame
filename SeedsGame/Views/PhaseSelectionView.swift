@@ -15,34 +15,27 @@ struct PhaseSelectionView: View {
     
     var body: some View {
         NavigationStack {
-            GeometryReader { geometry in
-                VStack(alignment: .center, spacing: 0) {
-                    HStack(alignment: .center) {
-                        
-                        Button {
-                            dismiss()
-                        } label: {
-                            Text("")
-                        }
-                        .buttonStyle(SquareButtonStyle(tag: .back))
-                        
-                        
-                        Spacer()
-                        Text("Selecione o Capítulo")
-                            .font(.custom("AlegreyaSans-Black", size: 32))
-                            .foregroundStyle(Color("fontLightBrown"))
-                            .frame(width: geometry.size.width*1, height: 0)
-                        //                            .padding(.trailing, geometry.size.width/3)
+            VStack(alignment: .center, spacing: -50) {
+                HStack(alignment: .center) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("")
                     }
-                    .padding(.top, geometry.size.height*0.1)
+                    .buttonStyle(SquareButtonStyle(tag: .back))
                     
-                    PhaseViewer(phasesName: ["fase3", "fase2", "fase3"])
-//                        .padding(.bottom)
-                        .frame(width: 400, height: 198)
-
-                    
+                    Spacer()
+                    Text("Selecione o Capítulo")
+                        .font(.custom("AlegreyaSans-Black", size: 32))
+                        .foregroundStyle(Color("FontLightBrown"))
+                    Spacer()
                 }
-            } .background(Image("Fundo"))
+  
+                PhaseViewer(phasesName: ["fase3", "fase2", "fase3"])
+
+            }
+            .padding(.top,30)
+            .background(Image("Fundo"))
         }
     }
 }

@@ -68,7 +68,7 @@ struct PhaseViewer: View {
 							 }
 						 }
 					 }
-					 .frame(height: 300)
+					 .frame(height: 250)
 					 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
 					 .ignoresSafeArea()
 					 
