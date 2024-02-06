@@ -10,67 +10,80 @@ import SwiftUI
 
 struct MenuView: View {
     var body: some View {
-        GeometryReader { geo in
             NavigationStack {
+                GeometryReader { geo in
                 ZStack {
+                    NavigationLink {
+                        ConfigurationView()
+                            .navigationBarBackButtonHidden(true)
+                    } label: {
+                        Text("")
+                        
+                    } .buttonStyle(SquareButtonStyle(tag: .config))
+                        .padding()
+                        .frame(width: geo.size.width/1, height: geo.size.height*1, alignment: .topTrailing)
                     
-                    Button(action: {
-                        print("foii")
-                    }) {
-                        Image("")
-                    }
-                    .buttonStyle(SquareButtonStyle(tag: .config))
-                    .padding()
-                    .frame(width: geo.size.width/0.96, height: geo.size.height/1.3, alignment: .topTrailing)
-                    
-                    HStack {
-                        // Personagem Sr.Bhas
-                        
-                        Image("Sr.Bhas")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 187, height: 353)
-                            .padding(.top, 250)
-                            .edgesIgnoringSafeArea(.bottom)
-                        
-                        VStack(spacing: 50) {
-                            // Título do Jogo
-                            Text("Sr.Bhas e as Sementes Siderais")
-                                .frame(width: 400)
-                                .bold()
-                                .font(.custom("Troika", size: 49))
-                                .foregroundStyle(Color("fontLightBrown"))
-                                .multilineTextAlignment(.center)
-                            
-                            
-                            // Botão do Modo História
-                            Button("MODO HISTÓRIA"){
-                                print("")
-                            }
-                            .buttonStyle(RectangleButtonStyle(tag: .story))
-                            
-                            // Botão do Modo Infinito
-                            Button("INFINITO"){
-                                print("")
-                            }
-                            .buttonStyle(RectangleButtonStyle(tag: .type2))
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        
-                        // Personagem Rose
-                        VStack {
-                            Spacer(minLength: 250)
-                            
-                            Image("Rose - Neutro")
+                    VStack {
+                        HStack() {
+                            // Personagem Sr.Bhas
+                             
+                            Spacer()
+                            Image("Sr.Bhas")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 568/3, height: 1007/3)
+                                .frame(width: 187, height: 353)
+                                .padding(.top, 160)
+
+
+                            VStack(spacing: 50) {
+                                // Título do Jogo
+                                Text("Sr.Bhas e as\n Sementes Siderais")
+                                    .frame(width: 500, height: 110)
+                                    .bold()
+                                    .font(.custom("Troika", size: 49))
+                                    .foregroundStyle(Color("fontLightBrown"))
+                                    .multilineTextAlignment(.center)
+                                    .padding()
+                                    
+                                
+                                // Botão Modo História
+                                NavigationLink {
+                                    PhaseSelectionView()
+                                        .navigationBarBackButtonHidden(true)
+                                } label: {
+                                    Text("Modo História")
+                                } .buttonStyle(RectangleButtonStyle(tag: .story))
+                                    
+
+                                
+                                // Botão do Modo Infinito
+                                Button("INFINITO"){
+                                    print("")
+                                }
+                                .buttonStyle(RectangleButtonStyle(tag: .type2))
+
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .padding(.bottom, 100)
                             
+                            // Personagem Rose
+                            VStack() {
+                                Spacer(minLength: 250)
+                                
+                                Image("Rose - Neutro")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 568/3, height: 1007/3)
+                                    .padding(.bottom, 90)
+                                
+
+                                    
+                            }
+                            .edgesIgnoringSafeArea(.bottom)
                         }
-                        .edgesIgnoringSafeArea(.bottom)
-                    }
-                } .background(Image("Fundo"))
-            }
+                    } .frame(width: geo.size.width*1, height: geo.size.height * 1.2)
+                }
+            } .background(Image("Fundo"))
         }
         
     }
