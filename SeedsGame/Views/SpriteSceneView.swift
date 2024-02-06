@@ -1,25 +1,19 @@
 //
-// ContentView.swift
-// SeedsGame
+//  SpriteSceneView.swift
+//  SeedsGame
 //
-// Created by Gabriel Vicentin Negro on 18/01/24.
+//  Created by Paulo Sonzzini Ribeiro de Souza on 06/02/24.
 //
+
+import Foundation
 import SwiftUI
 import SpriteKit
-struct ContentView: View {
-	let width = UIScreen.main.bounds.width
-	let height = UIScreen.main.bounds.height
+
+struct SpriteSceneView: View {
 	
-	var gameEngine = GameEngine.shared
-	
+	var scene: PhaseScene
 	@EnvironmentObject var userEngine: UserEngine
 	
-	var scene: SKScene {
-		gameEngine.userEngine = userEngine
-		let scene = gameEngine.phases[gameEngine.currentPhase]
-		scene.scaleMode = .fill
-		return scene
-	}
 	
 	var body: some View {
 		NavigationStack {
@@ -73,6 +67,6 @@ struct ContentView: View {
 
 
 #Preview {
-	ContentView()
+	SpriteSceneView(scene: PhaseScene(phase: 1, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
 		.environmentObject(UserEngine())
 }

@@ -32,6 +32,7 @@
 		DCA7EF282B6AE79F00FCE555 /* ButtonEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA7EF272B6AE79F00FCE555 /* ButtonEnum.swift */; };
 		DCEB03092B6179D900025ABA /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCEB03082B6179D900025ABA /* MenuView.swift */; };
 		E92A6F1A2B60354B003A4C1E /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92A6F192B60354B003A4C1E /* Stack.swift */; };
+		E9A1235E2B72CABD00870077 /* SpriteSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A1235D2B72CABD00870077 /* SpriteSceneView.swift */; };
 		E9D5E6FE2B6D8A7C00069CC9 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D5E6FD2B6D8A7C00069CC9 /* Queue.swift */; };
 		E9E2212C2B59B596001FE22A /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E2212B2B59B596001FE22A /* GameEngine.swift */; };
 		E9E2212E2B59B5C6001FE22A /* ActionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E2212D2B59B5C6001FE22A /* ActionModel.swift */; };
@@ -71,6 +72,7 @@
 		DCA7EF272B6AE79F00FCE555 /* ButtonEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonEnum.swift; sourceTree = "<group>"; };
 		DCEB03082B6179D900025ABA /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		E92A6F192B60354B003A4C1E /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
+		E9A1235D2B72CABD00870077 /* SpriteSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteSceneView.swift; sourceTree = "<group>"; };
 		E9D5E6FD2B6D8A7C00069CC9 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		E9E2212B2B59B596001FE22A /* GameEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
 		E9E2212D2B59B5C6001FE22A /* ActionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionModel.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 				DC8208DF2B6AB4AC00A0172C /* ConfigurationView.swift */,
 				DC4FBADF2B6D6874007E3B6E /* PauseView.swift */,
 				19A023392B6C35C0003B4E16 /* EndGameView.swift */,
+				E9A1235D2B72CABD00870077 /* SpriteSceneView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -302,6 +305,7 @@
 				3BB1AF9D2B59B15F00E61276 /* SeedsGameApp.swift in Sources */,
 				E9D5E6FE2B6D8A7C00069CC9 /* Queue.swift in Sources */,
 				DC8208CC2B61993400A0172C /* SquareButtonStyle.swift in Sources */,
+				E9A1235E2B72CABD00870077 /* SpriteSceneView.swift in Sources */,
 				DC8208D22B682FCB00A0172C /* LifeScore.swift in Sources */,
 				9FA11D182B6C3CB80098C7A9 /* UserEngine.swift in Sources */,
 				E9E221372B59B975001FE22A /* OperationActionModel.swift in Sources */,
@@ -442,7 +446,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SeedsGame/Preview Content\"";
-				DEVELOPMENT_TEAM = 6S6995TY46;
+				DEVELOPMENT_TEAM = YHC26T5B2D;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SeedsGame/Info.plist;
@@ -457,7 +461,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.GabrielNegro.SeedsGame;
+				PRODUCT_BUNDLE_IDENTIFIER = com.GabrielNegro3.SeedsGame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -477,7 +481,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SeedsGame/Preview Content\"";
-				DEVELOPMENT_TEAM = 6S6995TY46;
+				DEVELOPMENT_TEAM = YHC26T5B2D;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SeedsGame/Info.plist;
@@ -492,7 +496,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.GabrielNegro.SeedsGame;
+				PRODUCT_BUNDLE_IDENTIFIER = com.GabrielNegro3.SeedsGame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

@@ -19,14 +19,12 @@ struct PhaseSelectionView: View {
                 VStack(alignment: .center, spacing: 0) {
                     HStack(alignment: .center) {
                         
-                        NavigationLink {
-                            MenuView()
-                                .navigationBarBackButtonHidden(true)
-                                .ignoresSafeArea()
-                        } label: {
-                            Text("")
+                        
+									Button("") {
+										dismiss()
+									}
                             
-                        } .buttonStyle(SquareButtonStyle(tag: .back))
+                         .buttonStyle(SquareButtonStyle(tag: .back))
                         
                         Spacer()
                         Text("Selecione o Capítulo")
