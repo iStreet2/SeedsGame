@@ -38,11 +38,12 @@ struct ContentView: View {
             }
 			  
 			  VStack(spacing: 0) {
-				  Color.blue
-				  if !GameEngine.shared.endOfPhase {
-					  EndGameView(tag: .win)
+				  if GameEngine.shared.endOfPhase {
+					  ZStack {
+						  Color.black.opacity(0.5)
+						  EndGameView(tag: .win, points: UserEngine.shared.score)
+					  }
 				  }
-				  Color.red
 			  }
 			  .ignoresSafeArea()
 			  
