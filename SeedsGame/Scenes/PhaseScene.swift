@@ -26,6 +26,7 @@ class PhaseScene: GameScene {
 	//var eqLabelBackground = SKSpriteNode(color: .gray, size: CGSize(width: 400, height: 50))
 	var currentClientNumber = 0
 	
+    var openedEquation = false
 	
 	
 	init(phase: Int, width: Double, height: Double) {
@@ -92,23 +93,25 @@ class PhaseScene: GameScene {
 //		if nextPhaseButton.contains(touch.location(in: self)) {
 //			GameEngine.shared.nextPhase(scene: self)
 //		}
-		
-		if joinSideButton.contains(touch.location(in: self)) {
-			let opAction = OperationAction(eq: currentEqLabel.text!.contains("!") ? "" : currentEqLabel.text!)
-			GameEngine.shared.mementoStack.push(currentEqLabel.text!)
-      if GameEngine.shared.resultIsReady(self){
-          GameEngine.shared.createFinalSeedBag(self)
-      }else{
-          GameEngine.shared.receiveAction(opAction)
-      }
-			animateLever()
-		}
+        if openedEquation{
+            if joinSideButton.contains(touch.location(in: self)) {
+                let opAction = OperationAction(eq: currentEqLabel.text!.contains("!") ? "" : currentEqLabel.text!)
+                GameEngine.shared.mementoStack.push(currentEqLabel.text!)
+                if GameEngine.shared.resultIsReady(self){
+                    GameEngine.shared.createFinalSeedBag(self)
+                }else{
+                    GameEngine.shared.receiveAction(opAction)
+                }
+                animateLever()
+            }
+        }
 		
 //		if blackHole.contains(touch.location(in: self)) {
 //			GameEngine.shared.renderClientResponse(self)
 //		}
 		
 		if eqLabelBackground.contains(touch.location(in: self)) {
+            openedEquation = true
 			GameEngine.shared.moveFirstClientToFront(self)
 			GameEngine.shared.addSeedBags(scene: self)
 			GameEngine.shared.addHitBoxesFromEquation(scene: self)

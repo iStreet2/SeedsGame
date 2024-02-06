@@ -113,7 +113,7 @@ import SpriteKit
 		 
 		
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { //Essa função atrasa uma quantidade de segundos específicos
+         //Essa função atrasa uma quantidade de segundos específicos
             
             self.mementoStack.clear()
             
@@ -121,7 +121,7 @@ import SpriteKit
             
             let nQuestions = scene.clients.count
             
-            for (index, client) in scene.clients.enumerated() {
+        for (_, client) in scene.clients.enumerated() {
                 
                 // Aumenta
                 //			let scaleFactor = 1
@@ -191,7 +191,7 @@ import SpriteKit
             }
           self.finalSeedCreated = false
 
-        }
+        
     }
 
 	
@@ -312,17 +312,18 @@ import SpriteKit
                         scene.movableNode = nil
                         
                     }else if finalSeedCreated{ //Se a semente final esta criada
-                        if !finalSeedTransformed{
-                            if transformSeed(touches, scene){ //Transformar
-                                resetPosition(scene: scene)
-                            }else{
-                                resetPosition(scene: scene)
+                        if !finalSeedTransformed{ //Se ela nao esta transformada
+                            transformSeed(touches, scene) //Transformar
+                            if isRose(scene){ //Se for a rose
+                                if grabResult(touches,scene){ //Ela pode receber o resultado sem a semente estar transformada
+                                    renderClientResponse(scene) //Renderiza a resposta
+                                }
                             }
-                        }else{
+                        }else{ //Se ela esta transformada
                             if grabResult(touches, scene){ //Resultado é recebido
-                                renderClientResponse(scene)
+                                renderClientResponse(scene) //Renderizar resposta do cliente
                             }else{
-                                resetPosition(scene: scene)
+                                resetPosition(scene: scene) //Se nao receber o resultado, resetar a posição
                             }
                         }
                         
@@ -587,10 +588,19 @@ import SpriteKit
                     //Adiciono os parênteses!
                     addParenthesesLeft(scene)
                 }
+                realocateToOtherSide(getMovableNodePosition(scene)-1,scene) //Eu pego o sinal, realoco ele pra esquerda
+                realocateToOtherSide(getMovableNodePosition(scene), scene)  //Realoco o número
+                
+            }else if scene.currentSeedBags[getMovableNodePosition(scene)-1].label.text! == "-" && scene.currentSeedBags[getMovableNodePosition(scene)+1].label.text! == "*"{ //Se antes do numero tiver um "-" e depois um "*"
+                realocateToOtherSide(getMovableNodePosition(scene)+1, scene) //Realoco o vezes
+                realocateToOtherSide(getMovableNodePosition(scene)-1, scene) //Realoco o menos
+                realocateToOtherSide(getMovableNodePosition(scene), scene) //Realoco o número
+                addParentheses(open: getMovableNodePosition(scene)-1, close: getMovableNodePosition(scene)+2, scene) //Adiciono um parênteses entre o menos e o final do numero
+                
+            }else{
+                realocateToOtherSide(getMovableNodePosition(scene)-1,scene) //Eu pego o sinal, realoco ele pra esquerda
+                realocateToOtherSide(getMovableNodePosition(scene), scene)  //Realoco o número
             }
-            
-            realocateToOtherSide(getMovableNodePosition(scene)-1,scene) //Eu pego o sinal, realoco ele pra esquerda
-            realocateToOtherSide(getMovableNodePosition(scene), scene)  //Realoco o número
             
         }else if getMovableNodePosition(scene) != scene.currentSeedBags.count-1{ //Se não for a ultima posição do vetor
             if scene.currentSeedBags[getMovableNodePosition(scene)+1].label.text! == "*" || scene.currentSeedBags[getMovableNodePosition(scene)+1].label.text! == "/"{ //Se depois do numero tiver um * ou um "/"
@@ -760,6 +770,7 @@ import SpriteKit
     
     func renderClientResponse(_ scene: PhaseScene) {
         
+        
         let client = scene.clients[scene.currentClientNumber]
         let clientSprite = client.clientSprites[client.clientSpriteID] // String
         let rose = client.clientSpriteID == 11
@@ -769,8 +780,16 @@ import SpriteKit
 		 
 		 let refactoredClientAnswer = refactorClientAnswer(answer: clientAnswer, scene)
 		 
+        
+        //Entregou semente mágica para a rose
+        if finalSeedTransformed && rose{
+            let resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Feliz (erro)")
+            userEngine?.wrongAnswerRose()
+            client.texture = SKTexture(imageNamed: resultSprite)
+            print("entrou aqui")
+        }
 		// ACERTOU!
-        if Float(refactoredClientAnswer) == Float(correctAnswer) {
+        else if Float(refactoredClientAnswer) == Float(correctAnswer) {
             var resultSprite: String = ""
             if rose {
                 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo (acerto)")
@@ -788,7 +807,7 @@ import SpriteKit
             var resultSprite: String = ""
             if rose {
                 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Feliz (erro)")
-                userEngine?.wrongAnswerRose()
+                userEngine?.wrongAnswer()
             }
             else {
                 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo")
@@ -797,7 +816,16 @@ import SpriteKit
             
             client.texture = SKTexture(imageNamed: resultSprite)
         }
-        nextQuestion(scene: scene)
+        
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            if self.userEngine?.life == 0{
+                self.gameOver = true
+            }
+            else{
+                self.nextQuestion(scene: scene)
+            }
+        }
     }
     
     func getParenthesesLocation(_ scene: PhaseScene) -> (Int,Int,Bool){
@@ -870,18 +898,33 @@ import SpriteKit
             }else if scene.currentSeedBags[2].label.text! == "?" && scene.currentSeedBags[0].label.text!.isNumber{
                 return true
             }
+        }else if scene.currentSeedBags.count == 4{ //Trata resultados negativos
+            if scene.currentSeedBags[0].label.text! == "?" && scene.currentSeedBags[2].label.text! == "-" && scene.currentSeedBags[3].label.text!.isNumber {
+                return true
+            }else if scene.currentSeedBags[3].label.text! == "?" && scene.currentSeedBags[0].label.text == "-" && scene.currentSeedBags[1].label.text!.isNumber {
+                return true
+            }
         }
         return false
     }
     
     func createFinalSeedBag(_ scene: PhaseScene){
         
-        for seedBag in scene.currentSeedBags{ //Varro o vetor de sementes
+        for (index,seedBag) in scene.currentSeedBags.enumerated(){ //Varro o vetor de sementes
             if seedBag.label.text!.isNumber{ //Se for um numero o saco atual
-                scene.currentEqLabel = seedBag.label //A equação atual se torna apenas esse número
-                addSeedBags(scene: scene) //E o vetor vira esse número
-                
-                finalSeedCreated = true
+                if scene.currentSeedBags.count == 4{
+                    scene.currentEqLabel.text = scene.currentSeedBags[index-1].label.text! + seedBag.label.text!
+                    seedBag.label.text = scene.currentEqLabel.text
+                    clearSeedsOfScene(scene)
+                    clearSeedOfList(scene)
+                    scene.currentSeedBags.append(seedBag)
+                    finalSeedCreated = true
+                    showEquation(scene: scene)
+                }else{
+                    scene.currentEqLabel = seedBag.label //A equação atual se torna apenas esse número
+                    addSeedBags(scene: scene) //E o vetor vira esse número
+                    finalSeedCreated = true
+                }
             }
         }
     }
@@ -889,7 +932,7 @@ import SpriteKit
 	
 	func refactorClientAnswer(answer: String, _ scene: PhaseScene) -> String {
 
-      if OperationAction.joinAllNumbers(answer).count > 1 {
+        if OperationAction.joinAllNumbers(answer).count > 1 && !answer.contains("-") {
 
 			var i = 0
 			let equation = Array(scene.currentEqLabel.text!)
@@ -926,7 +969,7 @@ import SpriteKit
 		}
 	}
 	
-    func transformSeed(_ touches: Set<UITouch>, _ scene: PhaseScene) -> Bool{
+    func transformSeed(_ touches: Set<UITouch>, _ scene: PhaseScene){
         if let touch = touches.first{
             if scene.movableNode != nil{
                 let location = touch.location(in: scene.self)
@@ -934,12 +977,9 @@ import SpriteKit
                     //transformar a semente
                     resetPosition(scene: scene)
                     finalSeedTransformed = true
-                    print("semente transformada")
-                    return true
                 }
             }
         }
-        return false
     }
     
     func grabResult(_ touches: Set<UITouch>, _ scene: PhaseScene) -> Bool{
@@ -953,6 +993,7 @@ import SpriteKit
                 }
             }
         }
+        resetPosition(scene: scene)
         return false
     }
 	
@@ -970,16 +1011,26 @@ import SpriteKit
 	func setConfigurationPopUpIsPresentedIsTRUE() {
 		self.configurationPopUpIsPresented = true
 	}
-    
-	
+   
 	func setConfigurationPopUpIsPresentedIsFALSE() {
 		self.configurationPopUpIsPresented = false
 	}
-	
-	
+  
+  func isRose(_ scene: PhaseScene) -> Bool{
+        if scene.clients[scene.currentClientNumber].clientSpriteID == 11{
+            return true
+        }else{
+            return false
+        }
+    }
 }
 
 
 
 
+
+
+
+//Entregar numeros negativos
+//Bug de -5 = -2*x
 

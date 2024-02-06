@@ -7,6 +7,7 @@
 import SwiftUI
 import SpriteKit
 struct ContentView: View {
+
 	let width = UIScreen.main.bounds.width
 	let height = UIScreen.main.bounds.height
 	
