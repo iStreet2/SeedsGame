@@ -528,16 +528,25 @@ import SpriteKit
                     if scene.currentSeedBags[getMovableNodePosition(scene)-2].label.text! == ")"{ //se antes do sinal de multiplicação for um parenteses fechando
                         removeParentheses(scene) //Precisaria remover parenteses certo, tipo, saber de onde estou tirando o numero
                     }
-                
+                    
                     if getNumRightEqual(scene) > 1{ //Se a quantidade de numeros do lado direito da equação for maior que 1
                         //Adiciono os parênteses!
                         addParenthesesRight(scene) //Precisaria adicionar parenteses certo
                     }
+                    realocateToOtherSide(getMovableNodePosition(scene)-1,scene) //Realoco o sinal, que esta uma posição anterior ao numero
+                    realocateToOtherSide(getMovableNodePosition(scene), scene) //Realoco o número
+                    
                 }
                 
-                realocateToOtherSide(getMovableNodePosition(scene)-1,scene) //Realoco o sinal, que esta uma posição anterior ao numero
-                realocateToOtherSide(getMovableNodePosition(scene), scene) //Realoco o número
-                
+                else if scene.currentSeedBags[getMovableNodePosition(scene)-1].label.text! == "-" && scene.currentSeedBags[getMovableNodePosition(scene)+1].label.text! == "*"{ //Se antes tiver um menos e depois um vezes
+                    realocateToOtherSide(getMovableNodePosition(scene)+1, scene) //Realoco o vezes
+                    realocateToOtherSide(getMovableNodePosition(scene)-1, scene) //Realoco o menos
+                    realocateToOtherSide(getMovableNodePosition(scene), scene) //Realoco o número
+                    addParentheses(open: getMovableNodePosition(scene)-1, close: getMovableNodePosition(scene)+2, scene) //Adiciono um parênteses entre o menos e o final do numero
+                }else{
+                    realocateToOtherSide(getMovableNodePosition(scene)-1,scene) //Realoco o sinal, que esta uma posição anterior ao numero
+                    realocateToOtherSide(getMovableNodePosition(scene), scene) //Realoco o número
+                }
             }
         }else if scene.currentSeedBags[getMovableNodePosition(scene)+1].label.text! == "*" || scene.currentSeedBags[getMovableNodePosition(scene)+1].label.text! == "/"{ //Se depois do numero tiver um * ou um "/"
             if getNumRightEqual(scene) > 1{ //Se a quantidade de numeros do lado direito da equação for maior que 1
@@ -719,6 +728,14 @@ import SpriteKit
         let equalPosition = getEqual(scene: scene) //pego a posição do igual
         scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: ")", imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight), at: equalPosition)
         addHitBoxAtTheEnd(scene: scene)
+    }
+    
+    func addParentheses(open: Int, close: Int, _ scene: PhaseScene){
+        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "(", imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight), at: open)
+        addHitBoxAtTheEnd(scene: scene)
+        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: ")", imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight), at: close)
+        addHitBoxAtTheEnd(scene: scene)
+        
     }
     
     func removeParentheses(_ scene: PhaseScene){ //Remove os parenteses
@@ -922,7 +939,7 @@ import SpriteKit
                 let location = touch.location(in: scene.self)
                 if scene.deliveryPlace.contains(location){ //Se o usuário arrastar para entregar o resultado
                     scene.movableNode!.position = scene.deliveryPlace.position
-                    scene.movableNode!.position.y = scene.deliveryPlace.position.y - 100
+                    scene.movableNode!.position.y = scene.deliveryPlace.position.y - 86
                     return true
                 }
             }
@@ -931,6 +948,8 @@ import SpriteKit
     }
     
 }
+
+
 
 
 
