@@ -40,7 +40,7 @@ class PhaseScene: GameScene {
 		
 		//Para cada cliente no mapa
 		for n in 0..<clientMap[phase]! {
-			let client = ClientModel(eqs![n].0, imageNamed: "ClientSprite", color: .clear, size: CGSize(width: 135, height: 274))
+			let client = ClientModel(eqs![n].0, imageNamed: "ClientSprite", color: .clear) //CGSize(width: 135, height: 274) -> Size antigo
 			clients.append(client)
 		}
 		self.isUserInteractionEnabled = true

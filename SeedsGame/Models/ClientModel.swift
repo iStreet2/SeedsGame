@@ -25,8 +25,9 @@ class ClientModel: SKSpriteNode {
 	
 	let clientSpriteID: Int
 	
-	init(_ eq: String, imageNamed: String, color: UIColor, size: CGSize) {
+	init(_ eq: String, imageNamed: String, color: UIColor, size: CGSize = CGSize(width: 364.22, height: 651.83)) {
 		self.eq = eq
+		
 		
 		// 10 clientes + Rose
 		let randomTexture = Int.random(in: 1...11)
@@ -34,7 +35,15 @@ class ClientModel: SKSpriteNode {
 		let texture = SKTexture(imageNamed: clientSprites[randomTexture]!)
 		
 		//let texture = SKTexture(imageNamed: imageNamed)
-		super.init(texture: texture, color: color, size: size)
+		if randomTexture <= 10 {
+			super.init(texture: texture, color: color, size: CGSize(width: 364.22, height: 651.83))
+			self.size = CGSize(width: 364.22, height: 651.83)
+		}
+		else {
+			super.init(texture: texture, color: color, size: CGSize(width: 567.33, height: 1006.56))
+			self.size = CGSize(width: 567.33, height: 1006.56)
+		}
+		
 	}
 	
 	

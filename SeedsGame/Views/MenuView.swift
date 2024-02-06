@@ -85,6 +85,7 @@ struct MenuView: View {
                 }
             } .background(Image("Fundo"))
         }
+				.navigationBarBackButtonHidden()
         
     }
 }
