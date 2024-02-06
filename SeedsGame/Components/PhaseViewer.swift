@@ -38,68 +38,71 @@ struct PhaseViewer: View {
     }
     
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                Color.clear
-                    .ignoresSafeArea()
-                
-                TabView(selection: $phaseIndex) {
-                    ForEach(0..<phases.count, id: \.self) { index in
-                        ZStack {
-                            NavigationLink {
-                                SpriteView(scene: getScene(phaseIndex: phaseIndex))
-                                    .navigationBarBackButtonHidden(true)
-                                    .ignoresSafeArea()
-                                
-                            } label: {
-                                Image("\(phasesName[index])")
-                                    .resizable()
-                                    .frame(width: 315, height: 198)
-                                
-                                    .overlay {
-                                        Image("Moldura do  Nivel")
-                                            .resizable()
-                                            .tag(index)
-                                            .frame(width: 342.73, height: 221.46)
-                                    }
-                            }
-                        }
-                    }
-                }
-                .frame(height: 300)
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                .ignoresSafeArea()
-                
-                // Nome de cada fase
-                VStack {
-                    if phaseIndex == 0 {
-                        Text("Tutorial")
-                            .font(.custom("troika", size: 40))
-                            .foregroundStyle(.fontLightBrown)
-                            .offset(y: 160)
-                        
-                    } else {
-                        Text("Fase \(phaseIndex)")
-                            .font(.custom("troika", size: 40))
-                            .foregroundStyle(.fontLightBrown)
-                            .offset(y: 160)
-                    }
-                    
-                    
-                    HStack {
-                        ForEach(0..<phasesName.count, id: \.self) { index in
-                            Circle()
-                                .fill(phaseIndex == index ? Color.fontLightBrown : Color.indexDarkBrown)
-                                .frame(width: 10)
-                                .onTapGesture {
-                                    phaseIndex = index
-                                }
-                        }
-                        .offset(y: 140)
-                    }
-                }
-            } .background(Image("Fundo"))
-        }
+		 NavigationStack {
+			 GeometryReader { geometry in
+				 ZStack {
+					 Color.clear
+						 .ignoresSafeArea()
+					 
+					 TabView(selection: $phaseIndex) {
+						 ForEach(0..<phases.count, id: \.self) { index in
+							 ZStack {
+								 NavigationLink {
+									 //                                SpriteView(scene: getScene(phaseIndex: phaseIndex))
+									 //                                    .navigationBarBackButtonHidden(true)
+									 //                                    .ignoresSafeArea()
+									 SpriteSceneView(scene: getScene(phaseIndex: phaseIndex))
+									 
+								 } label: {
+									 Image("\(phasesName[index])")
+										 .resizable()
+										 .frame(width: 315, height: 198)
+									 
+										 .overlay {
+											 Image("Moldura do  Nivel")
+												 .resizable()
+												 .tag(index)
+												 .frame(width: 342.73, height: 221.46)
+										 }
+								 }
+							 }
+						 }
+					 }
+					 .frame(height: 300)
+					 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+					 .ignoresSafeArea()
+					 
+					 // Nome de cada fase
+					 VStack {
+						 if phaseIndex == 0 {
+							 Text("Tutorial")
+								 .font(.custom("troika", size: 40))
+								 .foregroundStyle(.fontLightBrown)
+								 .offset(y: 160)
+							 
+						 } else {
+							 Text("Fase \(phaseIndex)")
+								 .font(.custom("troika", size: 40))
+								 .foregroundStyle(.fontLightBrown)
+								 .offset(y: 160)
+						 }
+						 
+						 
+						 HStack {
+							 ForEach(0..<phasesName.count, id: \.self) { index in
+								 Circle()
+									 .fill(phaseIndex == index ? Color.fontLightBrown : Color.indexDarkBrown)
+									 .frame(width: 10)
+									 .onTapGesture {
+										 phaseIndex = index
+									 }
+							 }
+							 .offset(y: 140)
+						 }
+					 }
+				 }
+			 }
+		 }
     }
 }
 

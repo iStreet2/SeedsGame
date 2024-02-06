@@ -48,10 +48,13 @@ struct EndGameView: View {
                 // Botões
                 VStack(spacing: 60) {
                     HStack(spacing: 140) {
-                        Button("") {
-                            print("aaa")
-                        }
-                        .buttonStyle(SquareButtonStyle(tag: .home))
+							  NavigationLink {
+								  MenuView()
+							  } label: {
+								  Text("")
+							  }
+							  .buttonStyle(SquareButtonStyle(tag: .home))
+                        
                         
                         Button("") {
                             print("aaa")
@@ -60,7 +63,8 @@ struct EndGameView: View {
                     }
                     
                     Button("Próxima fase") {
-                        print("aaa")
+							  GameEngine.shared.nextPhase(scene: GameEngine.shared.phases[GameEngine.shared.currentPhase])
+							  
                     }
                     .buttonStyle(RectangleButtonStyle(tag: .type2))
                 }

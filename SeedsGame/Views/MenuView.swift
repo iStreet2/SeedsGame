@@ -13,15 +13,16 @@ struct MenuView: View {
         NavigationStack {
             GeometryReader { geo in
                 ZStack {
-                    NavigationLink {
-                        ConfigurationView()
-                            .navigationBarBackButtonHidden(true)
-                    } label: {
-                        Text("")
-                        
-                    } .buttonStyle(SquareButtonStyle(tag: .config))
-                        .padding()
-                        .frame(width: geo.size.width/1, height: geo.size.height*1, alignment: .topTrailing)
+							  
+
+							 Button {
+								 GameEngine.shared.setConfigurationPopUpIsPresentedIsTRUE()
+							 } label: {
+								 Text("")
+							 }
+							 .buttonStyle(SquareButtonStyle(tag: .config))
+							 .padding()
+							 .frame(width: geo.size.width/1, height: geo.size.height*1, alignment: .topTrailing)
                     
                     VStack {
                         HStack() {
@@ -41,7 +42,7 @@ struct MenuView: View {
                                     .frame(width: geo.size.width*2 , height: geo.size.height*0.4)
                                     .bold()
                                     .font(.custom("Troika", size: 49))
-                                    .foregroundStyle(Color("fontLightBrown"))
+                                    .foregroundStyle(Color("FontLightBrown"))
                                     .multilineTextAlignment(.center)
                                     .padding(.vertical)
                                 
@@ -83,9 +84,14 @@ struct MenuView: View {
                         }
                         .padding(.trailing,40)
                     } .frame(width: geo.size.width*1, height: geo.size.height * 1.2)
+						 
+						 if GameEngine.shared.configurationPopUpIsPresented {
+							 ConfigurationView()
+						 }
                 }
             } .background(Image("Fundo"))
         }
+				.navigationBarBackButtonHidden()
         
     }
 }
