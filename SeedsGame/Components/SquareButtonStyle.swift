@@ -22,5 +22,5 @@ struct SquareButtonStyle: ButtonStyle {
     }) {
         Text("")
     }
-    .buttonStyle(SquareButtonStyle(tag: .config))
+    .buttonStyle(SquareButtonStyle(tag: .back))
 }
