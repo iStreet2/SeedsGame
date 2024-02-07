@@ -34,10 +34,6 @@ class GameScene: SKScene {
 	let restartEquationButton = SKSpriteNode(imageNamed: "DestructiveButton")
 	var destructiveButtonTextureAtlas: SKTextureAtlas = SKTextureAtlas(named: "DestructiveButtonAssets")
 	
-	override func didMove(to view: SKView) {
-		startup()
-	}
-	
 	
 	func startup() {
 		if children.isEmpty {
@@ -88,6 +84,7 @@ class GameScene: SKScene {
 			undoButton.size = CGSize(width: 167.66, height: 94.78)
 			undoButton.zPosition = 12
 			addChild(undoButton)
+
 		}
 		else {
 			print("Tem filhos!:")

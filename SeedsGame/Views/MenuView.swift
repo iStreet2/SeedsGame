@@ -93,9 +93,6 @@ struct MenuView: View {
 		}
 		.navigationBarBackButtonHidden()
 		.onAppear {
-			for phase in GameEngine.shared.phases { // remove todos os filhos de todas as fases
-				GameEngine.shared.removeAllChildren(phase)
-			}
 			GameEngine.shared.setGameIsPausedFALSE()
 		}
 	}

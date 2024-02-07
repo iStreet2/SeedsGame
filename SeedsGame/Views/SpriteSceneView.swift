@@ -41,13 +41,13 @@ struct SpriteSceneView: View {
 					if GameEngine.shared.gameOver{
 						ZStack{
 							Color.black.opacity(0.5)
-							EndGameView(tag: .failed, points: userEngine.score)
+                            EndGameView(scene: scene, tag: .failed, points: userEngine.score)
 						}
 					}
 					else if GameEngine.shared.endOfPhase {
 						ZStack {
 							Color.black.opacity(0.5)
-							EndGameView(tag: .win, points: userEngine.score)
+                            EndGameView(scene: scene, tag: .win, points: userEngine.score)
 						}
 					}
 					else if GameEngine.shared.gameIsPaused {
@@ -63,9 +63,6 @@ struct SpriteSceneView: View {
 			}
 		}
 		.navigationBarBackButtonHidden()
-		.onAppear {
-			GameEngine.shared.phases[GameEngine.shared.currentPhase].startup()
-		}
 	}
 }
 
