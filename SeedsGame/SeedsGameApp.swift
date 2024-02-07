@@ -13,7 +13,7 @@ struct SeedsGameApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(userEngine)
+            MenuView().environmentObject(userEngine)
                 .persistentSystemOverlays(.hidden)
         }
     }

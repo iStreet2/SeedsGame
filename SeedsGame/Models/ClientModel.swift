@@ -24,6 +24,7 @@ class ClientModel: SKSpriteNode {
 								11: "Rose - Neutro"]
 	
 	let clientSpriteID: Int
+	let wantsGalacticSeeds: Bool
 	
 	init(_ eq: String, imageNamed: String, color: UIColor, size: CGSize = CGSize(width: 130, height: 233)) {
 		self.eq = eq
@@ -33,6 +34,14 @@ class ClientModel: SKSpriteNode {
 		let randomTexture = Int.random(in: 1...11)
 		self.clientSpriteID = randomTexture
 		let texture = SKTexture(imageNamed: clientSprites[randomTexture]!)
+		
+		// Se for a Rose, sempre quer as sementes galáticas
+		if randomTexture == 11 {
+			self.wantsGalacticSeeds = true
+		} else {
+			let doesHeWantSeedBag = Bool.random()
+			self.wantsGalacticSeeds = doesHeWantSeedBag
+		}
 		
 		//let texture = SKTexture(imageNamed: imageNamed)
 		if randomTexture <= 5 { // FÊMEA
