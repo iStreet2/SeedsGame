@@ -746,26 +746,26 @@ import SpriteKit
     func addParenthesesRight(_ scene: PhaseScene){
         
         let equalPosition = getEqual(scene: scene) //Acho a posição do "="
-        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "(", imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight), at: equalPosition+1)//Adiciono o parenteses logo depois do igual
+        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "(", imageNamed: "parenteses esq", color: .clear, width: seedBagWidth, height: seedBagHeight), at: equalPosition+1)//Adiciono o parenteses logo depois do igual
         addHitBoxAtTheEnd(scene: scene) //adiciono uma hitbox no final para aguentar a adição de 1 elemento
         addHitBoxAtTheEnd(scene: scene) //adiciono outra hitbox para o parenteses do final
-        scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: ")", imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight)) //adiciono o parenteses no final :D
+        scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: ")", imageNamed: "parenteses dir", color: .clear, width: seedBagWidth, height: seedBagHeight)) //adiciono o parenteses no final :D
     }
     
     func addParenthesesLeft(_ scene: PhaseScene){
         
-        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "(", imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight), at: 0) //Insiro na primeira posição um parênteses fechando
+        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "(", imageNamed: "parenteses esq", color: .clear, width: seedBagWidth, height: seedBagHeight), at: 0) //Insiro na primeira posição um parênteses fechando
         addHitBoxAtTheEnd(scene: scene) //Adiciono uma hitBox
         
         let equalPosition = getEqual(scene: scene) //pego a posição do igual
-        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: ")", imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight), at: equalPosition)
+        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: ")", imageNamed: "parenteses dir", color: .clear, width: seedBagWidth, height: seedBagHeight), at: equalPosition)
         addHitBoxAtTheEnd(scene: scene)
     }
     
     func addParentheses(open: Int, close: Int, _ scene: PhaseScene){
-        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "(", imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight), at: open)
+        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "(", imageNamed: "parenteses esq", color: .clear, width: seedBagWidth, height: seedBagHeight), at: open)
         addHitBoxAtTheEnd(scene: scene)
-        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: ")", imageNamed: "nothing", color: .clear, width: seedBagWidth, height: seedBagHeight), at: close)
+        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: ")", imageNamed: "parenteses dir", color: .clear, width: seedBagWidth, height: seedBagHeight), at: close)
         addHitBoxAtTheEnd(scene: scene)
         
     }

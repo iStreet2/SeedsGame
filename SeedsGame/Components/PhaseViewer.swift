@@ -86,7 +86,7 @@ struct PhaseViewer: View {
 						 HStack {
 							 ForEach(0..<phasesName.count, id: \.self) { index in
 								 Circle()
-									 .fill(phaseIndex == index ? Color("FontLightBrown") : Color("indexDarkBrown"))
+                                     .fill(phaseIndex == index ? Color("FontLightBrown") : Color("IndexDarkBrown"))
 									 .frame(width: 10)
 									 .onTapGesture {
 										 phaseIndex = index
