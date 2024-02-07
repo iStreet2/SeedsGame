@@ -26,16 +26,11 @@ var gameEngine = GameEngine.shared
 
 // MARK: Códido do Carrosel
 struct PhaseViewer: View {
-    var phases: [PhaseScene] = GameEngine.shared.phases
+
     var phasesName: [String]
     
     @State private var phaseIndex: Int = 0
-    
-    func getScene(phaseIndex: Int) -> PhaseScene {
-        let scene = phases[phaseIndex]
-        scene.scaleMode = .fill
-        return scene
-    }
+
     
     var body: some View {
 		 NavigationStack {
@@ -45,13 +40,13 @@ struct PhaseViewer: View {
 						 .ignoresSafeArea()
 					 
 					 TabView(selection: $phaseIndex) {
-						 ForEach(0..<phases.count, id: \.self) { index in
+						 ForEach(0..<3, id: \.self) { index in
 							 ZStack {
 								 NavigationLink {
 									 //                                SpriteView(scene: getScene(phaseIndex: phaseIndex))
 									 //                                    .navigationBarBackButtonHidden(true)
 									 //                                    .ignoresSafeArea()
-									 SpriteSceneView(scene: getScene(phaseIndex: phaseIndex))
+									 SpriteSceneView(scene: PhaseScene(phase: index+1, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
 									 
 								 } label: {
 									 Image("\(phasesName[index])")
@@ -91,7 +86,7 @@ struct PhaseViewer: View {
 						 HStack {
 							 ForEach(0..<phasesName.count, id: \.self) { index in
 								 Circle()
-									 .fill(phaseIndex == index ? Color.FontLightBrown : Color.indexDarkBrown)
+									 .fill(phaseIndex == index ? Color.fontLightBrown : Color.indexDarkBrown)
 									 .frame(width: 10)
 									 .onTapGesture {
 										 phaseIndex = index

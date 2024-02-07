@@ -40,7 +40,7 @@ import SpriteKit
     var emptySeedBag = SeedBagModel(numero: 0, incognita: false, isOperator: false, operatorr: "", imageNamed: "nothing", color: .clear, width: 50, height: 70)
     
     var actions: [Action] = []
-    var phases: [PhaseScene] = []
+    //var phases: [PhaseScene] = []
     var currentPhase = 0
     
     var phaseFirstSetup = true
@@ -66,18 +66,16 @@ import SpriteKit
 	var configurationPopUpIsPresented: Bool = false
     
     init() {
-        let phases = [PhaseScene(phase: 1, width: width, height: height), PhaseScene(phase: 2, width: width, height: height), PhaseScene(phase: 3, width: width, height: height)]
-        self.phases = phases
     }
     
     
-    func receiveAction(_ action: Action) {
+    func receiveAction(_ action: Action, _ scene: PhaseScene) {
         actions.append(action)
         let res = action.execute()
         if res.contains("=") {
-            phases[currentPhase].currentEqLabel.text = res
-            addSeedBags(scene: phases[currentPhase])
-            addHitBoxesFromEquation(scene: phases[currentPhase])
+            scene.currentEqLabel.text = res
+            addSeedBags(scene: scene)
+            addHitBoxesFromEquation(scene: scene)
         }
     }
     
@@ -95,10 +93,9 @@ import SpriteKit
     func nextPhase(scene: PhaseScene) {
         let reveal = SKTransition.reveal(with: .left, duration: 1)
         
-        if currentPhase != phases.count - 1 {
-            currentPhase += 1
-            
-            scene.scene?.view?.presentScene(GameEngine.shared.phases[GameEngine.shared.currentPhase], transition: reveal)
+        
+        if scene.phase < 2{
+            scene.scene?.view?.presentScene(PhaseScene(phase: scene.phase+1, width: width, height: height), transition: reveal)
         }
         else {
             // cena após as 3 fases
@@ -259,6 +256,14 @@ import SpriteKit
 		firstClient.run(action)
 	}
     
+    func initialMove(_ scene: PhaseScene){
+        let firstClient = scene.clients[scene.currentClientNumber]
+        
+        let rotateAction1 = SKAction.rotate(byAngle: 0.1, duration: 0.3)
+        let rotateAction2 = SKAction.rotate(byAngle: -0.1, duration: 0.3)
+        let rotateSequence = SKAction.sequence([rotateAction1, rotateAction2])
+        firstClient.run(rotateSequence)
+    }
     
     // Função para mexer seeBagModels
     func moveSeedBag(_ node: SeedBagModel, _ touches: Set<UITouch>, stage: Int, initialPosition: Int, scene: PhaseScene){
@@ -591,7 +596,7 @@ import SpriteKit
                 realocateToOtherSide(getMovableNodePosition(scene)-1,scene) //Eu pego o sinal, realoco ele pra esquerda
                 realocateToOtherSide(getMovableNodePosition(scene), scene)  //Realoco o número
                 
-            }else if scene.currentSeedBags[getMovableNodePosition(scene)-1].label.text! == "-" && scene.currentSeedBags[getMovableNodePosition(scene)+1].label.text! == "*"{ //Se antes do numero tiver um "-" e depois um "*"
+            }else if scene.currentSeedBags[getMovableNodePosition(scene)-1].label.text! == "-" && getMovableNodePosition(scene) != scene.currentSeedBags.count-1 && scene.currentSeedBags[getMovableNodePosition(scene)+1].label.text! == "*"{ //Se antes do numero tiver um "-" e depois um "*", e ele nâo for o ultimo elemento do vetor
                 realocateToOtherSide(getMovableNodePosition(scene)+1, scene) //Realoco o vezes
                 realocateToOtherSide(getMovableNodePosition(scene)-1, scene) //Realoco o menos
                 realocateToOtherSide(getMovableNodePosition(scene), scene) //Realoco o número
@@ -1026,9 +1031,7 @@ import SpriteKit
 	
 	
 	func removeAllChildren(_ scene: PhaseScene) {
-		for child in scene.children {
-			scene.removeChildren(in: [child])
-		}
+        scene.removeAllChildren()
 	}
 	
 	

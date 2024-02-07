@@ -10,6 +10,8 @@ import SwiftUI
 
 class PhaseScene: GameScene {
 	
+    var phase: Int = 0
+    
 	var clients: [ClientModel] = []
 	
 	//Vetor que vai armazenar todos os as hitboxes invisiveis
@@ -33,6 +35,8 @@ class PhaseScene: GameScene {
 		
 		super.init(size: CGSize(width: width, height: height))
 		
+        self.phase = phase
+        
 		eqLabelBackground.size = CGSize(width: 330, height: 110)
 		
 		let clientMap: [Int: Int] = [1: phaseMap[1]!.count, 2: phaseMap[2]!.count, 3: phaseMap[3]!.count] //Inicializa as equações dos clientes
@@ -49,8 +53,8 @@ class PhaseScene: GameScene {
 	
 	
 	
-	override func didMove(to view: SKView) {
-		
+    override func didMove(to view: SKView) {
+        
 		startup()
 		
 		currentEqLabel.position = CGPoint(x: frame.size.width / 2, y: 325)
@@ -69,10 +73,6 @@ class PhaseScene: GameScene {
 		
 		// MARK: Renderiza os 3 clientes
 		GameEngine.shared.renderClients(scene: self)
-	 //Adiciono o pacote de sementes na cena
-	 //GameEngine.shared.addSeedBags(scene: self)
-	 //Para cada caracter na string da equação, eu crio um quadrado que ira receber sacos dentro dele
-	 //GameEngine.shared.addHitBoxesFromEquation(scene: self)
 	}
 	
 	
@@ -83,7 +83,7 @@ class PhaseScene: GameScene {
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 		
 		let hapticAction = HapticAction(1, 1)
-		GameEngine.shared.receiveAction(hapticAction)
+		GameEngine.shared.receiveAction(hapticAction,self)
 		
 		guard let touch = touches.first else { return }
 		
@@ -100,15 +100,11 @@ class PhaseScene: GameScene {
                 if GameEngine.shared.resultIsReady(self){
                     GameEngine.shared.createFinalSeedBag(self)
                 }else{
-                    GameEngine.shared.receiveAction(opAction)
+                    GameEngine.shared.receiveAction(opAction,self)
                 }
                 animateLever()
             }
         }
-		
-//		if blackHole.contains(touch.location(in: self)) {
-//			GameEngine.shared.renderClientResponse(self)
-//		}
 		
 		if eqLabelBackground.contains(touch.location(in: self)) {
             openedEquation = true

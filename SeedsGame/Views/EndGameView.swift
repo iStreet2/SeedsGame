@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct EndGameView: View {
+    var scene: PhaseScene
     var tag: PhasesFrases
     var points: Int
     
@@ -63,7 +64,7 @@ struct EndGameView: View {
                     }
                     
                     Button("Próxima fase") {
-							  GameEngine.shared.nextPhase(scene: GameEngine.shared.phases[GameEngine.shared.currentPhase])
+							  GameEngine.shared.nextPhase(scene: scene)
 							  
                     }
                     .buttonStyle(RectangleButtonStyle(tag: .type2))
@@ -79,5 +80,5 @@ struct EndGameView: View {
 }
 
 #Preview {
-    EndGameView(tag: .failed, points: 0)
+    EndGameView(scene: PhaseScene(phase: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height), tag: .failed, points: 0)
 }
