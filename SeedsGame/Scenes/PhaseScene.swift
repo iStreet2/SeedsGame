@@ -127,6 +127,7 @@ class PhaseScene: GameScene {
 		if undoButton.contains(touch.location(in: self)) {
 			if GameEngine.shared.mementoStack.top() != "" {
 				self.currentEqLabel.text = GameEngine.shared.mementoStack.pop()
+                GameEngine.shared.finalSeedTransformed = false
 				GameEngine.shared.addSeedBags(scene: self)
 				GameEngine.shared.addHitBoxesFromEquation(scene: self)
 			}
