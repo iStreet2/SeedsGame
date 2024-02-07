@@ -106,97 +106,96 @@ import SpriteKit
     }
     
     
-    func nextQuestion(scene: PhaseScene) {
-		 
+	func nextQuestion(scene: PhaseScene) {
 		
-        
-         //Essa função atrasa uma quantidade de segundos específicos
-            
-            self.mementoStack.clear()
-            
-            self.phaseFirstSetup = true
-            
-            let nQuestions = scene.clients.count
-            
-        for (_, client) in scene.clients.enumerated() {
-                
-                // Aumenta
-                //			let scaleFactor = 1
-                //
-                //			let scaleAction = SKAction.scale(by: CGFloat(scaleFactor)/100, duration: 0.5)
-                //			client.run(scaleAction)
-                //			if scene.currentClientNumber+index < scene.clients.count {
-                //				scene.clients[scene.currentClientNumber+index].run(SKAction.scale(by: 1 + 0.05*CGFloat(index), duration: 0.5))
-                //			}
-                let scaleAction = SKAction.scale(by: 1.05, duration: 0.5)
-                client.run(scaleAction)
-                
-                // Move
-                let moveAction = SKAction.moveTo(x: client.position.x - 75, duration: 0.5)
-                client.run(moveAction)
-                
-                // Animação Lara
-                let moveAction1 = SKAction.moveBy(x: 0, y: 100 * 0.02, duration: 0.5)
-                let moveAction2 = SKAction.moveBy(x: 0, y: 100 * (-0.02), duration: 0.5)
-                let moveSequence = SKAction.sequence([moveAction1, moveAction2])
-                client.run(moveSequence)
-                
-                let rotateAction1 = SKAction.rotate(byAngle: 0.1, duration: 0.3)
-                let rotateAction2 = SKAction.rotate(byAngle: -0.1, duration: 0.3)
-                let rotateSequence = SKAction.sequence([rotateAction1, rotateAction2])
-                client.run(rotateSequence)
-                
-			  // Escurecer o cliente
-                for c in scene.currentClientNumber..<scene.clients.count {
-                    scene.clients[c].run(self.darknessMap[c - scene.currentClientNumber - 1] ?? SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 0.5))
-                }
-                
-			  // remove o cliente atual
-                if client.eq == scene.clients[scene.currentClientNumber].eq {
-                    // Cliente da pergunta atual é despachado
-                    scene.removeChildren(in: [client])
-                }
-            }
-            
-            // Remove os sacos e hitboxes da tela
-            self.removeSeedBagsAndHitboxes(scene)
-            
-            // renderiza o sprite do próximo cliente no final da fila
-            if (scene.currentClientNumber + 3) <= (nQuestions - 1) {
-                scene.addChild(scene.clients[scene.currentClientNumber + 3])
-            }
-            
-            // não deixa o número do cliente atual ser maior do que o número de clientes e vê se a pergunta é galática
-            if scene.currentClientNumber != nQuestions - 1 {
-                scene.currentClientNumber += 1
-                scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)"
-					if scene.clients[scene.currentClientNumber].wantsGalacticSeeds {
-						scene.eqLabelBackground.texture = SKTexture(imageNamed: "GalacticEquationLabelBackground")
-					} else {
-						scene.eqLabelBackground.texture = SKTexture(imageNamed: "equationLabelBackground")
-					}
-            }
-            
-            // se todos os clientes tiverem as suas perguntas resolvidas
-            else {
-                scene.currentEqLabel.text = "All questions done!"
-					self.endOfPhase = true
-            }
-            
-            if !scene.children.contains(scene.currentEqLabel) || !scene.children.contains(scene.eqLabelBackground) {
-					scene.currentEqLabel.position = CGPoint(x: scene.frame.size.width / 2, y: 325)
-					scene.currentEqLabel.zPosition = 12
-					
-                scene.addChild(scene.eqLabelBackground)
-					scene.addChild(scene.currentEqLabel)
-					print(scene.currentEqLabel.position)
-					print(scene.currentEqLabel.zPosition)
-					print("nova equação: ", scene.currentEqLabel.text!)
-            }
-          self.finalSeedCreated = false
-
-        
-    }
+		scene.removeChildren(in: [scene.brilhinho])
+		//Essa função atrasa uma quantidade de segundos específicos
+		
+		self.mementoStack.clear()
+		
+		self.phaseFirstSetup = true
+		
+		let nQuestions = scene.clients.count
+		
+		for (_, client) in scene.clients.enumerated() {
+			
+			// Aumenta
+			//			let scaleFactor = 1
+			//
+			//			let scaleAction = SKAction.scale(by: CGFloat(scaleFactor)/100, duration: 0.5)
+			//			client.run(scaleAction)
+			//			if scene.currentClientNumber+index < scene.clients.count {
+			//				scene.clients[scene.currentClientNumber+index].run(SKAction.scale(by: 1 + 0.05*CGFloat(index), duration: 0.5))
+			//			}
+			let scaleAction = SKAction.scale(by: 1.05, duration: 0.5)
+			client.run(scaleAction)
+			
+			// Move
+			let moveAction = SKAction.moveTo(x: client.position.x - 75, duration: 0.5)
+			client.run(moveAction)
+			
+			// Animação Lara
+			let moveAction1 = SKAction.moveBy(x: 0, y: 100 * 0.02, duration: 0.5)
+			let moveAction2 = SKAction.moveBy(x: 0, y: 100 * (-0.02), duration: 0.5)
+			let moveSequence = SKAction.sequence([moveAction1, moveAction2])
+			client.run(moveSequence)
+			
+			let rotateAction1 = SKAction.rotate(byAngle: 0.1, duration: 0.3)
+			let rotateAction2 = SKAction.rotate(byAngle: -0.1, duration: 0.3)
+			let rotateSequence = SKAction.sequence([rotateAction1, rotateAction2])
+			client.run(rotateSequence)
+			
+			// Escurecer o cliente
+			for c in scene.currentClientNumber..<scene.clients.count {
+				scene.clients[c].run(self.darknessMap[c - scene.currentClientNumber - 1] ?? SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 0.5))
+			}
+			
+			// remove o cliente atual
+			if client.eq == scene.clients[scene.currentClientNumber].eq {
+				// Cliente da pergunta atual é despachado
+				scene.removeChildren(in: [client])
+			}
+		}
+		
+		// Remove os sacos e hitboxes da tela
+		self.removeSeedBagsAndHitboxes(scene)
+		
+		// renderiza o sprite do próximo cliente no final da fila
+		if (scene.currentClientNumber + 3) <= (nQuestions - 1) {
+			scene.addChild(scene.clients[scene.currentClientNumber + 3])
+		}
+		
+		// não deixa o número do cliente atual ser maior do que o número de clientes e vê se a pergunta é galática
+		if scene.currentClientNumber != nQuestions - 1 {
+			scene.currentClientNumber += 1
+			scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)"
+			if scene.clients[scene.currentClientNumber].wantsGalacticSeeds {
+				scene.eqLabelBackground.texture = SKTexture(imageNamed: "GalacticEquationLabelBackground")
+			} else {
+				scene.eqLabelBackground.texture = SKTexture(imageNamed: "equationLabelBackground")
+			}
+		}
+		
+		// se todos os clientes tiverem as suas perguntas resolvidas
+		else {
+			scene.currentEqLabel.text = "All questions done!"
+			self.endOfPhase = true
+		}
+		
+		if !scene.children.contains(scene.currentEqLabel) || !scene.children.contains(scene.eqLabelBackground) {
+			scene.currentEqLabel.position = CGPoint(x: scene.frame.size.width / 2, y: 325)
+			scene.currentEqLabel.zPosition = 12
+			
+			scene.addChild(scene.eqLabelBackground)
+			scene.addChild(scene.currentEqLabel)
+			print(scene.currentEqLabel.position)
+			print(scene.currentEqLabel.zPosition)
+			print("nova equação: ", scene.currentEqLabel.text!)
+		}
+		self.finalSeedCreated = false
+		
+		
+	}
 
 	
 	
@@ -260,12 +259,10 @@ import SpriteKit
 		firstClient.run(rotateSequence)
 		
 		if firstClient.wantsGalacticSeeds {
-			let brilhinho = SKSpriteNode(imageNamed: "Brilhinho")
-			brilhinho.size = CGSize(width: 159.68, height: 42.1)
-			brilhinho.zPosition = 14
-			brilhinho.position = CGPoint(x: scene.frame.size.width / 2 - 10, y: scene.frame.size.height / 2 + scene.frame.size.height / 4)
+			scene.brilhinho.zPosition = 14
+			scene.brilhinho.position = CGPoint(x: scene.frame.size.width / 2 - 10, y: scene.frame.size.height / 2 + scene.frame.size.height / 4)
 			DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-				scene.addChild(brilhinho)
+				scene.addChild(scene.brilhinho)
 			}
 		}
 		
@@ -746,26 +743,26 @@ import SpriteKit
     func addParenthesesRight(_ scene: PhaseScene){
         
         let equalPosition = getEqual(scene: scene) //Acho a posição do "="
-        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "(", imageNamed: "parenteses esq", color: .clear, width: seedBagWidth, height: seedBagHeight), at: equalPosition+1)//Adiciono o parenteses logo depois do igual
+		 scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "(", imageNamed: "parenteses esq", color: .clear, width: 31.3, height: 44.44), at: equalPosition+1)//Adiciono o parenteses logo depois do igual
         addHitBoxAtTheEnd(scene: scene) //adiciono uma hitbox no final para aguentar a adição de 1 elemento
         addHitBoxAtTheEnd(scene: scene) //adiciono outra hitbox para o parenteses do final
-        scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: ")", imageNamed: "parenteses dir", color: .clear, width: seedBagWidth, height: seedBagHeight)) //adiciono o parenteses no final :D
+        scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: ")", imageNamed: "parenteses dir", color: .clear, width: 31.3, height: 44.44)) //adiciono o parenteses no final :D
     }
     
     func addParenthesesLeft(_ scene: PhaseScene){
         
-        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "(", imageNamed: "parenteses esq", color: .clear, width: seedBagWidth, height: seedBagHeight), at: 0) //Insiro na primeira posição um parênteses fechando
+        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "(", imageNamed: "parenteses esq", color: .clear, width: 31.3, height: 44.44), at: 0) //Insiro na primeira posição um parênteses fechando
         addHitBoxAtTheEnd(scene: scene) //Adiciono uma hitBox
         
         let equalPosition = getEqual(scene: scene) //pego a posição do igual
-        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: ")", imageNamed: "parenteses dir", color: .clear, width: seedBagWidth, height: seedBagHeight), at: equalPosition)
+        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: ")", imageNamed: "parenteses dir", color: .clear, width: 31.3, height: 44.44), at: equalPosition)
         addHitBoxAtTheEnd(scene: scene)
     }
     
     func addParentheses(open: Int, close: Int, _ scene: PhaseScene){
-        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "(", imageNamed: "parenteses esq", color: .clear, width: seedBagWidth, height: seedBagHeight), at: open)
+        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "(", imageNamed: "parenteses esq", color: .clear, width: 31.3, height: 44.44), at: open)
         addHitBoxAtTheEnd(scene: scene)
-        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: ")", imageNamed: "parenteses dir", color: .clear, width: seedBagWidth, height: seedBagHeight), at: close)
+        scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: ")", imageNamed: "parenteses dir", color: .clear, width: 31.3, height: 44.44), at: close)
         addHitBoxAtTheEnd(scene: scene)
         
     }

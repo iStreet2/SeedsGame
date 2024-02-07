@@ -30,6 +30,8 @@ class PhaseScene: GameScene {
 	
     var openedEquation = false
 	
+	let brilhinho = SKSpriteNode(imageNamed: "Brilhinho")
+	
 	
 	init(phase: Int, width: Double, height: Double) {
 		
@@ -38,6 +40,7 @@ class PhaseScene: GameScene {
         self.phase = phase
         
 		eqLabelBackground.size = CGSize(width: 330, height: 110)
+		brilhinho.size = CGSize(width: 159.68, height: 42.1)
 		
 		let clientMap: [Int: Int] = [1: phaseMap[1]!.count, 2: phaseMap[2]!.count, 3: phaseMap[3]!.count] //Inicializa as equações dos clientes
 		
