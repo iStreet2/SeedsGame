@@ -63,6 +63,9 @@ class PhaseScene: GameScene {
 		eqLabelBackground.position.y = currentEqLabel.position.y - 5
 		eqLabelBackground.zPosition = 0
 		
+		if clients[0].wantsGalacticSeeds {
+			eqLabelBackground.texture = SKTexture(imageNamed: "GalacticEquationLabelBackground")
+		}
 		addChild(currentEqLabel)
 		addChild(eqLabelBackground)
 		

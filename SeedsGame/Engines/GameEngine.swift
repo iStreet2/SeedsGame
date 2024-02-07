@@ -146,10 +146,12 @@ import SpriteKit
                 let rotateSequence = SKAction.sequence([rotateAction1, rotateAction2])
                 client.run(rotateSequence)
                 
+			  // Escurecer o cliente
                 for c in scene.currentClientNumber..<scene.clients.count {
                     scene.clients[c].run(self.darknessMap[c - scene.currentClientNumber - 1] ?? SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 0.5))
                 }
                 
+			  // remove o cliente atual
                 if client.eq == scene.clients[scene.currentClientNumber].eq {
                     // Cliente da pergunta atual é despachado
                     scene.removeChildren(in: [client])
@@ -164,10 +166,15 @@ import SpriteKit
                 scene.addChild(scene.clients[scene.currentClientNumber + 3])
             }
             
-            // não deixa o número do cliente atual ser maior do que o número de clientes
+            // não deixa o número do cliente atual ser maior do que o número de clientes e vê se a pergunta é galática
             if scene.currentClientNumber != nQuestions - 1 {
                 scene.currentClientNumber += 1
                 scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)"
+					if scene.clients[scene.currentClientNumber].wantsGalacticSeeds {
+						scene.eqLabelBackground.texture = SKTexture(imageNamed: "GalacticEquationLabelBackground")
+					} else {
+						scene.eqLabelBackground.texture = SKTexture(imageNamed: "equationLabelBackground")
+					}
             }
             
             // se todos os clientes tiverem as suas perguntas resolvidas
@@ -252,6 +259,16 @@ import SpriteKit
 		let rotateSequence = SKAction.sequence([rotateAction1, rotateAction2])
 		firstClient.run(rotateSequence)
 		
+		if firstClient.wantsGalacticSeeds {
+			let brilhinho = SKSpriteNode(imageNamed: "Brilhinho")
+			brilhinho.size = CGSize(width: 159.68, height: 42.1)
+			brilhinho.zPosition = 14
+			brilhinho.position = CGPoint(x: scene.frame.size.width / 2 - 10, y: scene.frame.size.height / 2 + scene.frame.size.height / 4)
+			DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+				scene.addChild(brilhinho)
+			}
+		}
+		
 		scene.removeChildren(in: [scene.currentEqLabel, scene.eqLabelBackground])
 		firstClient.run(action)
 	}
@@ -317,20 +334,11 @@ import SpriteKit
                         scene.movableNode = nil
                         
                     }else if finalSeedCreated{ //Se a semente final esta criada
-                        if !finalSeedTransformed{ //Se ela nao esta transformada
-                            transformSeed(touches, scene) //Transformar
-                            if isRose(scene){ //Se for a rose
-                                if grabResult(touches,scene){ //Ela pode receber o resultado sem a semente estar transformada
-                                    renderClientResponse(scene) //Renderiza a resposta
-                                }
-                            }
-                        }else{ //Se ela esta transformada
-                            if grabResult(touches, scene){ //Resultado é recebido
-                                renderClientResponse(scene) //Renderizar resposta do cliente
-                            }else{
-                                resetPosition(scene: scene) //Se nao receber o resultado, resetar a posição
-                            }
-                        }
+							
+							transformSeed(touches, scene) //Transformar
+							if grabResult(touches, scene){
+								  renderClientResponse(scene)
+							}
                         
                     }
                     else{ //Se nao ele só volta para sua posição inicial
@@ -784,43 +792,62 @@ import SpriteKit
 		 let correctAnswer = String(scene.phaseMap[currentPhase+1]![scene.currentClientNumber].1)
 		 
 		 let refactoredClientAnswer = refactorClientAnswer(answer: clientAnswer, scene)
+		
 		 
-        
-        //Entregou semente mágica para a rose
-        if finalSeedTransformed && rose{
-            let resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Feliz (erro)")
-            userEngine?.wrongAnswerRose()
-            client.texture = SKTexture(imageNamed: resultSprite)
-            print("entrou aqui")
-        }
-		// ACERTOU!
-        else if Float(refactoredClientAnswer) == Float(correctAnswer) {
-            var resultSprite: String = ""
-            if rose {
-                resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo (acerto)")
-                userEngine?.rightAnswerRose()
-            }
-            else {
-                resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Feliz")
-                userEngine?.rightAnswer()
-            }
-            
-            client.texture = SKTexture(imageNamed: resultSprite)
-        }
-        // errou...
-        else {
-            var resultSprite: String = ""
-            if rose {
-                resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Feliz (erro)")
-                userEngine?.wrongAnswer()
-            }
-            else {
-                resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo")
-                userEngine?.wrongAnswer()
-            }
-            
-            client.texture = SKTexture(imageNamed: resultSprite)
-        }
+		// ACERTOU a conta
+		 if Float(refactoredClientAnswer) == Float(correctAnswer) {
+			 var resultSprite: String = ""
+			 
+			 // Deu as sementes galáticas pra Rose
+			 if rose && finalSeedTransformed {
+				 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Feliz (erro)")
+				 UserEngine.shared.gaveGalacticSeedsToRose()
+			 }
+			 // Acertou a conta e não deu as sementes galáticas pra Rose
+			 else if rose && !finalSeedTransformed {
+				 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo (acerto)")
+				 UserEngine.shared.rightAnswerRoseNoGalactic()
+			 }
+			 // Acertou a conta e deu o tipo de sementes certo
+			 else if !rose && finalSeedTransformed == client.wantsGalacticSeeds {
+				 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Feliz")
+				 UserEngine.shared.rightAnswerRightGalactic()
+			 }
+			 // Acertou a conta mas deu o tipo de sementes errado
+			 else if !rose && finalSeedTransformed != client.wantsGalacticSeeds {
+				 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo")
+				 UserEngine.shared.rightAnswerWrongGalactic()
+			 }
+			 
+			 client.texture = SKTexture(imageNamed: resultSprite)
+		 }
+		 // errou a conta
+		 else {
+			 var resultSprite: String = ""
+			 
+			 // Deu as sementes galáticas pra Rose
+			 if rose && finalSeedTransformed {
+				 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Feliz (erro)")
+				 UserEngine.shared.gaveGalacticSeedsToRose()
+			 }
+			 // Errou a conta mas não deu as sementes galáticas pra Rose
+			 else if rose && !finalSeedTransformed {
+				 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo (acerto)")
+				 UserEngine.shared.wrongAnswerRoseNoGalactic()
+			 }
+			 // Errou a conta mas acertou o tipo das sementes
+			 else if !rose && finalSeedTransformed == client.wantsGalacticSeeds {
+				 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo")
+				 UserEngine.shared.wrongAnswerRightGalactic()
+			 }
+			 // Errou a conta e errou o tipo das sementes
+			 else if !rose && finalSeedTransformed != client.wantsGalacticSeeds {
+				 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo")
+				 UserEngine.shared.wrongAnswerWrongGalactic()
+			 }
+			 
+			 client.texture = SKTexture(imageNamed: resultSprite)
+		 }
         
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -833,6 +860,7 @@ import SpriteKit
         }
     }
     
+	
     func getParenthesesLocation(_ scene: PhaseScene) -> (Int,Int,Bool){
         var open = 0
         var close = 0
@@ -982,6 +1010,7 @@ import SpriteKit
                     //transformar a semente
                     resetPosition(scene: scene)
                     finalSeedTransformed = true
+						 scene.currentSeedBags[0].texture = SKTexture(imageNamed: "GalacticSeedBag")
                 }
             }
         }

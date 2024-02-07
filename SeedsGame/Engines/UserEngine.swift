@@ -18,29 +18,30 @@ class UserEngine: ObservableObject{
 	@Published var lost: Bool = false
 	
 	
-	//    init(life: Int = 3, score: Int = 0) {
-	//        self.life = life
-	//        self.score = score
-	//    }
-	
-	
-	func wrongAnswer() {
+	func rightAnswerRightGalactic() {
+		score += 100
+	}
+	func rightAnswerWrongGalactic() {
+		score += 75
+	}
+	func wrongAnswerWrongGalactic() {
+		life -= 1
+	}
+	func wrongAnswerRightGalactic() {
+		score += 25
 		life -= 1
 	}
 	
 	
-	func wrongAnswerRose() {
-		life = 0
-	}
-	
-	
-	func rightAnswer() {
-		score += 100
-	}
-	
-	
-	func rightAnswerRose() {
+	func rightAnswerRoseNoGalactic() {
 		score += 200
+	}
+	func wrongAnswerRoseNoGalactic() {
+		score += 25
+		life -= 1
+	}
+	func gaveGalacticSeedsToRose() {
+		life = 0
 	}
 	
 	
