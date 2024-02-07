@@ -1023,6 +1023,15 @@ import SpriteKit
             return false
         }
     }
+	
+	
+	func removeAllChildren(_ scene: PhaseScene) {
+		for child in scene.children {
+			scene.removeChildren(in: [child])
+		}
+	}
+	
+	
 }
 
 
