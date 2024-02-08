@@ -11,12 +11,6 @@ import CoreData
 
 class PhaseScene: GameScene {
 	
-    //Coisas do CoreData
-    @Environment(\.managedObjectContext) var context //Contexto, DataController
-    var myDataController: MyDataController
-    @FetchRequest(sortDescriptors: []) var myData: FetchedResults<MyData>
-        
-    
     var phase: Int = 0
     
 	var clients: [ClientModel] = []
@@ -40,10 +34,8 @@ class PhaseScene: GameScene {
 	let brilhinho = SKSpriteNode(imageNamed: "Brilhinho")
 	
 	
-    init(context: NSManagedObjectContext, myDataController: MyDataController, phase: Int, width: Double, height: Double) {
-		
-        self.myDataController = MyDataController(context: context)
-        
+    init(phase: Int, width: Double, height: Double) {
+		        
 		super.init(size: CGSize(width: width, height: height))
 		
         self.phase = phase

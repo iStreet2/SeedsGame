@@ -40,7 +40,7 @@ class MyDataController: ObservableObject{
         
         for _ in 0..<3{ //Inicalizo tres MyData's com highscore igual a 0, aqui conta a partir do myData[1]
             let myData = MyData(context: context)
-            initPhase(myData: myData)
+            initPhaseHighScore(myData: myData)
         }
         
         
@@ -76,7 +76,7 @@ class MyDataController: ObservableObject{
         saveContext()
     }
     
-    func initPhase(myData: MyData){
+    func initPhaseHighScore(myData: MyData){
         myData.phase = 0
         saveContext()
     }

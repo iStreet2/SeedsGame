@@ -16,6 +16,8 @@ struct MenuView: View {
     @ObservedObject var myDataController: MyDataController
     @FetchRequest(sortDescriptors: []) var myData: FetchedResults<MyData>
     
+    @EnvironmentObject var userEngine: UserEngine
+    
     init(context: NSManagedObjectContext) {
         self.myDataController = MyDataController(context: context)
     }
@@ -103,6 +105,7 @@ struct MenuView: View {
 		.onAppear {
 			GameEngine.shared.setGameIsPausedFALSE()
             GameEngine.shared.setEndOGPhaseFALSE()
+            GameEngine.shared.userEngine = self.userEngine
 		}
 	}
 }

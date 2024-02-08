@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import SpriteKit
+import CoreData
 
 
 @Observable class GameEngine {
@@ -91,13 +92,12 @@ import SpriteKit
     
     
     func nextPhase(scene: PhaseScene) {
-        let context = DataController().container.viewContext
         
         let reveal = SKTransition.reveal(with: .left, duration: 1)
         
         
         if scene.phase < 2{
-            scene.scene?.view?.presentScene(PhaseScene(context: context, myDataController: MyDataController(context: context), phase: scene.phase+1, width: width, height: height), transition: reveal)
+            scene.scene?.view?.presentScene(PhaseScene(phase: scene.phase+1, width: width, height: height), transition: reveal)
         }
         else {
             // cena após as 3 fases
@@ -801,22 +801,22 @@ import SpriteKit
 			 // Deu as sementes galáticas pra Rose
 			 if rose && finalSeedTransformed {
 				 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Feliz (erro)")
-                 userEngine!.gaveGalacticSeedsToRose()
+                 userEngine?.gaveGalacticSeedsToRose()
 			 }
 			 // Acertou a conta e não deu as sementes galáticas pra Rose
 			 else if rose && !finalSeedTransformed {
 				 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo (acerto)")
-                 userEngine!.rightAnswerRoseNoGalactic()
+                 userEngine?.rightAnswerRoseNoGalactic()
 			 }
 			 // Acertou a conta e deu o tipo de sementes certo
 			 else if !rose && finalSeedTransformed == client.wantsGalacticSeeds {
 				 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Feliz")
-                 userEngine!.rightAnswerRightGalactic()
+                 userEngine?.rightAnswerRightGalactic()
 			 }
 			 // Acertou a conta mas deu o tipo de sementes errado
 			 else if !rose && finalSeedTransformed != client.wantsGalacticSeeds {
 				 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo")
-                 userEngine!.rightAnswerWrongGalactic()
+                 userEngine?.rightAnswerWrongGalactic()
 			 }
 			 
 			 client.texture = SKTexture(imageNamed: resultSprite)
@@ -828,22 +828,22 @@ import SpriteKit
 			 // Deu as sementes galáticas pra Rose
 			 if rose && finalSeedTransformed {
 				 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Feliz (erro)")
-                 userEngine!.gaveGalacticSeedsToRose()
+                 userEngine?.gaveGalacticSeedsToRose()
 			 }
 			 // Errou a conta mas não deu as sementes galáticas pra Rose
 			 else if rose && !finalSeedTransformed {
 				 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo (acerto)")
-                 userEngine!.wrongAnswerRoseNoGalactic()
+                 userEngine?.wrongAnswerRoseNoGalactic()
 			 }
 			 // Errou a conta mas acertou o tipo das sementes
 			 else if !rose && finalSeedTransformed == client.wantsGalacticSeeds {
 				 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo")
-                 userEngine!.wrongAnswerRightGalactic()
+                 userEngine?.wrongAnswerRightGalactic()
 			 }
 			 // Errou a conta e errou o tipo das sementes
 			 else if !rose && finalSeedTransformed != client.wantsGalacticSeeds {
 				 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo")
-                 userEngine!.wrongAnswerWrongGalactic()
+                 userEngine?.wrongAnswerWrongGalactic()
 			 }
 			 
 			 client.texture = SKTexture(imageNamed: resultSprite)

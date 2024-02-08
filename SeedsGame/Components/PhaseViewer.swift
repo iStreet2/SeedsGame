@@ -53,7 +53,7 @@ struct PhaseViewer: View {
 						 ForEach(0..<3, id: \.self) { index in
 							 ZStack {
 								 NavigationLink {
-                                     SpriteSceneView(context: context, scene: PhaseScene(context: context, myDataController: myDataController, phase: index+1, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+                                     SpriteSceneView(context: context, scene: PhaseScene(phase: index+1, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
                                          
                                  } label: {
                                      if myData[0].phase < Double(index){
