@@ -54,11 +54,13 @@ struct EndGameView: View {
                     // Aqui teria que ter a lógica de ver se é New High Score mesmo
                     HStack(spacing: 5) {
                         if points > Int(myData[scene.phase].highscores){ //Se a minha pontuação recebida for maior que a do core data
-                            Text("NEW")
-                                .font(.custom("AlegreyaSans-Medium", size: 24))
-                            
-                            Text("High Score: \(points)")
-                                .font(.custom("AlegreyaSans-Medium", size: 20))
+                            HStack{
+                                Text("NEW")
+                                    .font(.custom("AlegreyaSans-Medium", size: 24))
+                                
+                                Text("High Score: \(points)")
+                                    .font(.custom("AlegreyaSans-Medium", size: 20))
+                            }
                         }else{
                             Text("High Score: \(Int(myData[scene.phase].highscores))")
                                 .font(.custom("AlegreyaSans-Medium", size: 20))
@@ -83,11 +85,13 @@ struct EndGameView: View {
                         .buttonStyle(SquareButtonStyle(tag: .gameCenter))
                     }
                     
-                    Button("Próxima fase") {
-							  GameEngine.shared.nextPhase(scene: scene)
-							  
+                    NavigationLink {
+                        SpriteSceneView(context: context, scene: PhaseScene(phase: scene.phase+1, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+                    } label: {
+                        Text("Proxima Fase")
                     }
                     .buttonStyle(RectangleButtonStyle(tag: .type2))
+
                 }
                 .padding(.top, 25)
                 

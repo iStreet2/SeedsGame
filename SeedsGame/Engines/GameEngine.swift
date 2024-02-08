@@ -1023,6 +1023,7 @@ import CoreData
                 if scene.deliveryPlace.contains(location){ //Se o usuário arrastar para entregar o resultado
                     scene.movableNode!.position = scene.deliveryPlace.position
                     scene.movableNode!.position.y = scene.deliveryPlace.position.y - 86
+                    scene.openedEquation = false
                     return true
                 }
             }

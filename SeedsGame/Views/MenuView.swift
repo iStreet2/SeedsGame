@@ -102,11 +102,6 @@ struct MenuView: View {
 			} .background(Image("Fundo"))
 		}
 		.navigationBarBackButtonHidden()
-		.onAppear {
-			GameEngine.shared.setGameIsPausedFALSE()
-            GameEngine.shared.setEndOGPhaseFALSE()
-            GameEngine.shared.userEngine = self.userEngine
-		}
 	}
 }
 

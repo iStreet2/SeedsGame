@@ -79,6 +79,12 @@ struct SpriteSceneView: View {
 				
 			}
 		}
+        .onAppear {
+            GameEngine.shared.setGameIsPausedFALSE()
+            GameEngine.shared.setEndOGPhaseFALSE()
+            GameEngine.shared.userEngine = self.userEngine
+            userEngine.resetUser()
+        }
 		.navigationBarBackButtonHidden()
 	}
 }
