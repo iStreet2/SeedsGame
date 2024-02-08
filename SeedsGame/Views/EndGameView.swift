@@ -7,11 +7,26 @@
 
 import Foundation
 import SwiftUI
+import CoreData
 
 struct EndGameView: View {
+    
+    //Coisas do CoreData
+    @Environment(\.managedObjectContext) var context //Contexto, DataController
+    @ObservedObject var myDataController: MyDataController
+    @FetchRequest(sortDescriptors: []) var myData: FetchedResults<MyData>
+    
     var scene: PhaseScene
     var tag: PhasesFrases
     var points: Int
+    
+    init(context: NSManagedObjectContext, scene: PhaseScene, tag: PhasesFrases, points: Int) {
+        self.myDataController = MyDataController(context: context)
+        self.scene = scene
+        self.tag = tag
+        self.points = points
+    }
+    
     
     var body: some View {
         HStack(alignment: .top, spacing: 70) {
@@ -38,11 +53,16 @@ struct EndGameView: View {
                     // Texto de High Score
                     // Aqui teria que ter a lógica de ver se é New High Score mesmo
                     HStack(spacing: 5) {
-                        Text("NEW")
-                            .font(.custom("AlegreyaSans-Medium", size: 24))
-                        
-                        Text("High Score: \(points)")
-                            .font(.custom("AlegreyaSans-Medium", size: 20))
+                        if points > Int(myData[scene.phase].highscores){ //Se a minha pontuação recebida for maior que a do core data
+                            Text("NEW")
+                                .font(.custom("AlegreyaSans-Medium", size: 24))
+                            
+                            Text("High Score: \(points)")
+                                .font(.custom("AlegreyaSans-Medium", size: 20))
+                        }else{
+                            Text("High Score: \(Int(myData[scene.phase].highscores))")
+                                .font(.custom("AlegreyaSans-Medium", size: 20))
+                        }
                     }
                 }
                                 
@@ -50,7 +70,7 @@ struct EndGameView: View {
                 VStack(spacing: 60) {
                     HStack(spacing: 140) {
 							  NavigationLink {
-								  MenuView()
+								  MenuView(context: context)
 							  } label: {
 								  Text("")
 							  }
@@ -79,6 +99,6 @@ struct EndGameView: View {
     }
 }
 
-#Preview {
-    EndGameView(scene: PhaseScene(phase: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height), tag: .failed, points: 0)
-}
+//#Preview {
+//    EndGameView(context: DataController().container.viewContext,scene: PhaseScene(phase: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height), tag: .failed, points: 0)
+//}

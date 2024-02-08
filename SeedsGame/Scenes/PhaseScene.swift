@@ -7,9 +7,16 @@
 import Foundation
 import SpriteKit
 import SwiftUI
+import CoreData
 
 class PhaseScene: GameScene {
 	
+    //Coisas do CoreData
+    @Environment(\.managedObjectContext) var context //Contexto, DataController
+    var myDataController: MyDataController
+    @FetchRequest(sortDescriptors: []) var myData: FetchedResults<MyData>
+        
+    
     var phase: Int = 0
     
 	var clients: [ClientModel] = []
@@ -33,8 +40,10 @@ class PhaseScene: GameScene {
 	let brilhinho = SKSpriteNode(imageNamed: "Brilhinho")
 	
 	
-	init(phase: Int, width: Double, height: Double) {
+    init(context: NSManagedObjectContext, myDataController: MyDataController, phase: Int, width: Double, height: Double) {
 		
+        self.myDataController = MyDataController(context: context)
+        
 		super.init(size: CGSize(width: width, height: height))
 		
         self.phase = phase
@@ -53,7 +62,6 @@ class PhaseScene: GameScene {
 		}
 		self.isUserInteractionEnabled = true
 	}
-	
 	
 	
     override func didMove(to view: SKView) {

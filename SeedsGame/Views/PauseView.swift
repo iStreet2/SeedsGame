@@ -7,9 +7,20 @@
 
 import Foundation
 import SwiftUI
+import CoreData
 
 struct PauseView: View {
-	@State var isMusic = true
+    //Coisas do CoreData
+    @Environment(\.managedObjectContext) var context //Contexto, DataController
+    @ObservedObject var myDataController: MyDataController
+    @FetchRequest(sortDescriptors: []) var myData: FetchedResults<MyData>
+    
+    @State var isMusic: Bool = true
+    
+    init(context: NSManagedObjectContext) {
+        self.myDataController = MyDataController(context: context)
+        self.isMusic = true
+    }
 	
 	var body: some View {
 		NavigationStack {
@@ -19,7 +30,7 @@ struct PauseView: View {
 					.padding(.bottom, 50)
 				HStack(spacing: 150) {
 					NavigationLink {
-						MenuView()
+						MenuView(context: context)
 					} label: {
 						Text("")
 					}
@@ -32,7 +43,7 @@ struct PauseView: View {
 					} .buttonStyle(SquareButtonStyle(tag: .play))
 				}
 				Toggle("", isOn: $isMusic)
-					.toggleStyle(MusicToggleStyle())
+					.toggleStyle(MusicToggleStyle(context: context))
 					.padding(.top, 60)
 			}
 			.background(Image("Fundo Pause"))
@@ -41,5 +52,5 @@ struct PauseView: View {
 }
 
 #Preview {
-	PauseView()
+    PauseView(context: DataController().container.viewContext)
 }
