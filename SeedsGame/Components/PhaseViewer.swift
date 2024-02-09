@@ -70,7 +70,7 @@ struct PhaseViewer: View {
                                                  }
                                              Image(systemName: "lock.fill")
                                                  .font(.system(size: 50))
-                                                 .foregroundStyle(.black)
+                                                 .foregroundStyle(Color("FontDarkBrown"))
                                          }
                                      }else{
                                          Image("\(phasesName[index])")
