@@ -1412,13 +1412,3 @@ import CoreData
     }
     
 }
-
-
-
-
-
-
-
-//Entregar numeros negativos
-//Bug de -5 = -2*x
-
