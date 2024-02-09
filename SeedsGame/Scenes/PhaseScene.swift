@@ -60,6 +60,7 @@ class PhaseScene: GameScene {
     }
     
     
+
     override func didMove(to view: SKView) {
         
         startup()
@@ -154,7 +155,7 @@ class PhaseScene: GameScene {
                 if !GameEngine.shared.operators.contains(seedBag.label.text!){ //Se não for um operador
                     if seedBag.label.text! != "="{ //Se não for um igual
                         if seedBag.label.text! != "0"{ //Se não for zero
-                            GameEngine.shared.moveSeedBag(seedBag, touches, stage: 0,initialPosition: index, scene: self)
+									GameEngine.shared.moveSeedBag(seedBag, touches, stage: 0,initialPosition: index, scene: self, isTutorial: false)
                         }
                     }
                 }
@@ -170,18 +171,18 @@ class PhaseScene: GameScene {
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for (index,seedBag) in currentSeedBags.enumerated(){
-            GameEngine.shared.moveSeedBag(seedBag, touches, stage: 1, initialPosition: index, scene: self)
+			  GameEngine.shared.moveSeedBag(seedBag, touches, stage: 1, initialPosition: index, scene: self, isTutorial: false)
         }
-        
-    }
-    
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for (index,seedBag) in currentSeedBags.enumerated(){
-            GameEngine.shared.moveSeedBag(seedBag, touches, stage: 2, initialPosition: index, scene: self)
-        }
-        
-    }
-    
-    
+	}
+	
+	
+	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+		for (index,seedBag) in currentSeedBags.enumerated(){
+			GameEngine.shared.moveSeedBag(seedBag, touches, stage: 2, initialPosition: index, scene: self, isTutorial: false)
+		}
+		
+	}
+	
+	
+
 }

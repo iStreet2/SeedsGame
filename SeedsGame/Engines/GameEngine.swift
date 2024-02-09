@@ -70,15 +70,25 @@ import CoreData
     }
     
     
-    func receiveAction(_ action: Action, _ scene: PhaseScene) {
-        actions.append(action)
-        let res = action.execute()
-        if res.contains("=") {
-            scene.currentEqLabel.text = res
-            addSeedBags(scene: scene)
-            addHitBoxesFromEquation(scene: scene)
-        }
-    }
+	func receiveAction(_ action: Action, _ scene: PhaseScene, isTutorial: Bool = false) {
+		actions.append(action)
+		let res = action.execute()
+		if res.contains("=") {
+			scene.currentEqLabel.text = res
+			addSeedBags(scene: scene)
+			addHitBoxesFromEquation(scene: scene)
+		}
+	}
+	
+	func tutorialReceiveAction(_ action: Action, _ scene: TutorialPhase, isTutorial: Bool = true) {
+		actions.append(action)
+		let res = action.execute()
+		if res.contains("=") {
+			scene.tutorialClient.eq = res
+			tutorialAddSeedBags(scene: scene)
+			addHitBoxesFromEquation(scene: scene)
+		}
+	}
     
     
     func clearActions() {
@@ -108,18 +118,19 @@ import CoreData
     }
     
     
-	func nextQuestion(scene: PhaseScene) {
+	func nextQuestion(scene: PhaseScene, isTutorial: Bool) {
 		
-		scene.removeChildren(in: [scene.brilhinho])
-		//Essa função atrasa uma quantidade de segundos específicos
-		
-		self.mementoStack.clear()
-		
-		self.phaseFirstSetup = true
-		
-		let nQuestions = scene.clients.count
-		
-		for (_, client) in scene.clients.enumerated() {
+		if !isTutorial {
+				scene.removeChildren(in: [scene.brilhinho])
+				//Essa função atrasa uma quantidade de segundos específicos
+				
+				self.mementoStack.clear()
+				
+				self.phaseFirstSetup = true
+				
+				let nQuestions = scene.clients.count
+				
+				for (_, client) in scene.clients.enumerated() {
 			
 			// Aumenta
 			//			let scaleFactor = 1
@@ -190,12 +201,12 @@ import CoreData
 			
 			scene.addChild(scene.eqLabelBackground)
 			scene.addChild(scene.currentEqLabel)
-			print(scene.currentEqLabel.position)
-			print(scene.currentEqLabel.zPosition)
-			print("nova equação: ", scene.currentEqLabel.text!)
 		}
 		self.finalSeedCreated = false
 		
+
+	}
+
 	}
     
     func nextQuestionWithDelay(_ scene: PhaseScene){
@@ -221,38 +232,40 @@ import CoreData
 	}
     
     
-	func renderClients(scene: PhaseScene) {
+	func renderClients(scene: PhaseScene, isTutorial: Bool = false) {
 		
 		let sceneWidth = scene.size.width
 		let sceneHeight = scene.size.height
 		
-		for (index, client) in scene.clients.enumerated() {
-			// se forem os três primeiros
-			if index < 3 {
-				let positionX = Int(0.786 * sceneWidth)
-				let positionY = Int(0.602 * sceneHeight)
-				client.position = CGPoint(x: positionX + (75*index), y: positionY)
-			}
-			// restante dos clientes
-			else {
-				let positionX = Int(sceneWidth + client.size.width / 2)
-				let positionY = Int(0.602 * sceneHeight)
-				client.position = CGPoint(x: positionX, y: positionY)
+		if !isTutorial {
+			for (index, client) in scene.clients.enumerated() {
+				// se forem os três primeiros
+				if index < 3 {
+					let positionX = Int(0.786 * sceneWidth)
+					let positionY = Int(0.602 * sceneHeight)
+					client.position = CGPoint(x: positionX + (75*index), y: positionY)
+				}
+				// restante dos clientes
+				else {
+					let positionX = Int(sceneWidth + client.size.width / 2)
+					let positionY = Int(0.602 * sceneHeight)
+					client.position = CGPoint(x: positionX, y: positionY)
+				}
+				
+				client.setScale(1 - (0.05*CGFloat(index))) // diminui os clientes
+				client.zPosition = CGFloat(scene.clients.count - index)  // deixa um cliente atrás do outro
+				
+				client.run(darknessMap[index] ?? SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 0))  // escurece o cliente
+				
+				// se forem os três clientes, eles são renderizados
+				if index<3 {
+					scene.addChild(client)
+				}
 			}
 			
-			client.setScale(1 - (0.05*CGFloat(index))) // diminui os clientes
-			client.zPosition = CGFloat(scene.clients.count - index)  // deixa um cliente atrás do outro
-			
-			client.run(darknessMap[index] ?? SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 0))  // escurece o cliente
-			
-			// se forem os três clientes, eles são renderizados
-			if index<3 {
-				scene.addChild(client)
-			}
+			//
+			scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)"
 		}
-		
-		//
-		scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)"
 	}
 	
 	
@@ -292,75 +305,155 @@ import CoreData
     }
     
     // Função para mexer seeBagModels
-    func moveSeedBag(_ node: SeedBagModel, _ touches: Set<UITouch>, stage: Int, initialPosition: Int, scene: PhaseScene){
-        if stage == 0{
-            if let touch = touches.first{
-                let location = touch.location(in: scene.self)
-                if node.contains(location){
-                    self.initialNodePosition = node.position
-                    scene.movableNode = node
-                    if inParentheses(initialPosition, scene){
-                        scene.movableNode = nil
-                    }else{
-                        scene.movableNode!.position = location
-                        scene.movableNode!.zPosition = 30
-                    }
-                }
-            }
-        }else if stage == 1{
-            if let touch = touches.first {
-                if scene.movableNode != nil{
-                    scene.movableNode!.position = touch.location(in: scene.self)
-                }
-            }
-        }else if stage == 2{ //TOUCHES ENDED!!!!!
-            if let touch = touches.first {
-                if scene.movableNode != nil{
-                    scene.movableNode!.position = touch.location(in: scene.self)
-                    
-                    //Antes de deixar o movableNode em nil, eu chamo o grabNode, para que se o nó que o usuário estiver movendo, se prenda ao quadrado, se esse nó estive em cima do quadrado
-                    
-                    if grabNode(touches: touches, scene: scene){ //Se o nó foi soltado em alguma hitBox que consiga segurar ele
-                        
-                        //Eu preciso checar se ele deixar o saco em algum lado que tem um zero, o zero tem que sumir
-                        
-                        removeZeroIfItNeedsTo(scene: scene)
-                        
-                        let fromLeft = fromLeft(scene) //Checa se o elemento esta sendo arrastado da esquerda
-                        
-                        if fromLeft{ //Se o usuário estiver arrastando da esquerda para a direita
-                            realocateFromLeft(scene: scene) //Função que realoca os sinais também a partir da esquerda
-                        }else{ //Se o usuário estiver arrastando da direita para a esquerda
-                            realocateFromRight(scene: scene) //Função que realoca os sinais também a partir da direita
-                        }
-                        //Depois de realocar preciso checar se não tem algum lado sem nada
-                        addZeroIfItNeedsTo(scene: scene)
-                        
-                        
-                        //Depois de realocar preciso atualizar as equações na tela
-                        showEquation(scene: scene)
-                        
-                        scene.movableNode = nil
-                        
-                    }else if finalSeedCreated{ //Se a semente final esta criada
-							
-							transformSeed(touches, scene) //Transformar
-							if grabResult(touches, scene){
-								  renderClientResponse(scene)
+	func moveSeedBag(_ node: SeedBagModel, _ touches: Set<UITouch>, stage: Int, initialPosition: Int, scene: PhaseScene, isTutorial: Bool){
+		
+		if stage == 0{
+			if let touch = touches.first{
+				let location = touch.location(in: scene.self)
+				if node.contains(location){
+					self.initialNodePosition = node.position
+					scene.movableNode = node
+					if inParentheses(initialPosition, scene){
+						scene.movableNode = nil
+					}else{
+						scene.movableNode!.position = location
+						scene.movableNode!.zPosition = 30
+					}
+				}
+			}
+		}else if stage == 1{
+			if let touch = touches.first {
+				if scene.movableNode != nil{
+					scene.movableNode!.position = touch.location(in: scene.self)
+				}
+			}
+		}else if stage == 2{ //TOUCHES ENDED!!!!!
+			if let touch = touches.first {
+				if scene.movableNode != nil{
+					scene.movableNode!.position = touch.location(in: scene.self)
+					
+					//Antes de deixar o movableNode em nil, eu chamo o grabNode, para que se o nó que o usuário estiver movendo, se prenda ao quadrado, se esse nó estive em cima do quadrado
+					
+					if grabNode(touches: touches, scene: scene){ //Se o nó foi soltado em alguma hitBox que consiga segurar ele
+						
+						//Eu preciso checar se ele deixar o saco em algum lado que tem um zero, o zero tem que sumir
+						
+						removeZeroIfItNeedsTo(scene: scene)
+						
+						let fromLeft = fromLeft(scene) //Checa se o elemento esta sendo arrastado da esquerda
+						
+						if fromLeft{ //Se o usuário estiver arrastando da esquerda para a direita
+							realocateFromLeft(scene: scene) //Função que realoca os sinais também a partir da esquerda
+						}else{ //Se o usuário estiver arrastando da direita para a esquerda
+							realocateFromRight(scene: scene) //Função que realoca os sinais também a partir da direita
+						}
+						//Depois de realocar preciso checar se não tem algum lado sem nada
+						addZeroIfItNeedsTo(scene: scene)
+						
+						
+						//Depois de realocar preciso atualizar as equações na tela
+						showEquation(scene: scene, isTutorial: isTutorial)
+						
+						scene.movableNode = nil
+						
+					}else if finalSeedCreated{ //Se a semente final esta criada
+						
+						transformSeed(touches, scene) //Transformar
+						if grabResult(touches, scene){
+							renderClientResponse(scene, isTutorial: isTutorial)
+						}
+						
+					}
+					else{ //Se nao ele só volta para sua posição inicial
+						resetPosition(scene: scene)
+						scene.movableNode = nil
+					}
+				}
+			}
+		}
+		
+	}
+	
+	
+	func tutorialMoveSeedBag(_ node: SeedBagModel, _ touches: Set<UITouch>, stage: Int, initialPosition: Int, scene: TutorialPhase, isTutorial: Bool){
+		
+		if stage == 0{
+			if let touch = touches.first{
+				let location = touch.location(in: scene.self)
+				if node.contains(location){
+					self.initialNodePosition = node.position
+					scene.movableNode = node
+					if inParentheses(initialPosition, scene){
+						scene.movableNode = nil
+					}else{
+						scene.movableNode!.position = location
+						scene.movableNode!.zPosition = 30
+					}
+				}
+			}
+		}else if stage == 1{
+			if let touch = touches.first {
+				if scene.movableNode != nil{
+					scene.movableNode!.position = touch.location(in: scene.self)
+				}
+			}
+		}else if stage == 2{ //TOUCHES ENDED!!!!!
+			if let touch = touches.first {
+				if scene.movableNode != nil{
+					scene.movableNode!.position = touch.location(in: scene.self)
+					
+					//Antes de deixar o movableNode em nil, eu chamo o grabNode, para que se o nó que o usuário estiver movendo, se prenda ao quadrado, se esse nó estive em cima do quadrado
+					
+					if grabNode(touches: touches, scene: scene){ //Se o nó foi soltado em alguma hitBox que consiga segurar ele
+						
+						//Eu preciso checar se ele deixar o saco em algum lado que tem um zero, o zero tem que sumir
+						
+						removeZeroIfItNeedsTo(scene: scene)
+						
+						let fromLeft = fromLeft(scene) //Checa se o elemento esta sendo arrastado da esquerda
+						
+						if fromLeft{ //Se o usuário estiver arrastando da esquerda para a direita
+							realocateFromLeft(scene: scene) //Função que realoca os sinais também a partir da esquerda
+						}else{ //Se o usuário estiver arrastando da direita para a esquerda
+							realocateFromRight(scene: scene) //Função que realoca os sinais também a partir da direita
+						}
+						//Depois de realocar preciso checar se não tem algum lado sem nada
+						addZeroIfItNeedsTo(scene: scene)
+						
+						
+						//Depois de realocar preciso atualizar as equações na tela
+						tutorialShowEquation(scene: scene, isTutorial: isTutorial)
+						
+						scene.movableNode = nil
+						
+					}else if finalSeedCreated{ //Se a semente final esta criada
+						
+						transformSeed(touches, scene) //Transformar
+						if grabResult(touches, scene){
+							if scene.currentFala == 11 {
+								tutorialRenderClientResponse(scene, node: scene.tutorialClient)
+							} else if scene.currentFala > 11 && scene.isPlaying {
+								tutorialRenderGalacticClientResponse(scene, node: scene.tutorialClient)
+								DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+									GameEngine.shared.removeSeedBagsAndHitboxes(scene)
+								}
+								scene.isPlaying = false
 							}
-                        
-                    }
-                    else{ //Se nao ele só volta para sua posição inicial
-                        resetPosition(scene: scene)
-                        scene.movableNode = nil
-                    }
-                }
-            }
-        }
-    }
+						}
+						
+					}
+					else{ //Se nao ele só volta para sua posição inicial
+						resetPosition(scene: scene)
+						scene.movableNode = nil
+					}
+				}
+			}
+		}
+		
+	}
     
     
-    func invertOperator(_ node: SeedBagModel, _ touches: Set<UITouch>, _ position: Int, _ scene: PhaseScene){
+	func invertOperator(_ node: SeedBagModel, _ touches: Set<UITouch>, _ position: Int, _ scene: PhaseScene, isTutorial: Bool = false){
         
         if let touch = touches.first{
             let location = touch.location(in: scene.self)
@@ -377,12 +470,34 @@ import CoreData
                         scene.currentSeedBags[position].label.text = "*"
                     }
                     //Atualizo na tela
-                    showEquation(scene: scene)
+                    showEquation(scene: scene, isTutorial: isTutorial)
                 }
             }
         }
         
     }
+	
+	func tutorialInvertOperator(_ node: SeedBagModel, _ touches: Set<UITouch>, _ position: Int, _ scene: TutorialPhase, isTutorial: Bool = true) {
+		if let touch = touches.first{
+			 let location = touch.location(in: scene.self)
+			 if scene.movableNode == nil{
+				  if node.contains(location){
+						//Inverto o sinal na label do laço
+						if node.label.text == "+"{
+							 scene.currentSeedBags[position].label.text = "-"
+						}else if node.label.text == "-"{
+							 scene.currentSeedBags[position].label.text = "+"
+						}else if node.label.text == "*"{
+							 scene.currentSeedBags[position].label.text = "/"
+						}else if node.label.text == "/"{
+							 scene.currentSeedBags[position].label.text = "*"
+						}
+						//Atualizo na tela
+						tutorialShowEquation(scene: scene, isTutorial: isTutorial)
+				  }
+			 }
+		}
+	}
     
     
     //Adiciona hitBoxes com base no tamanho da equação dada pelo cliente!
@@ -430,14 +545,14 @@ import CoreData
         scene.hitBoxes.removeFirst() //removo do vetor
     }
     
-	func addSeedBags(scene: PhaseScene){
+	func addSeedBags(scene: PhaseScene, isTutorial: Bool = false){
 		
         clearSeedsOfScene(scene)
         clearSeedOfList(scene)
 		
 		if !scene.currentEqLabel.text!.contains("!") {
 			//Transformo a string da equação em um vetor de caracteres
-			let equation = OperationAction.joinAllNumbers(scene.currentEqLabel.text!)
+			let equation = isTutorial ? OperationAction.joinAllNumbers(TutorialClientModel.shared.eq) : OperationAction.joinAllNumbers(scene.currentEqLabel.text!)
 			
 			for (index,char) in equation.enumerated(){
 				if char.isNumber{
@@ -460,11 +575,47 @@ import CoreData
 				}
 			}
 			//Depois de preparar o vetor, adiciono na cena
-			showEquation(scene: scene)
+			showEquation(scene: scene, isTutorial: isTutorial)
+			
+		}
+	}
+	
+	func tutorialAddSeedBags(scene: TutorialPhase, isTutorial: Bool = true) {
+		
+		clearSeedsOfScene(scene)
+		clearSeedOfList(scene)
+		
+		if !scene.currentEqLabel.text!.contains("!") {
+			//Transformo a string da equação em um vetor de caracteres
+			let equation = isTutorial ? OperationAction.joinAllNumbers(scene.tutorialClient.eq) : OperationAction.joinAllNumbers(scene.currentEqLabel.text!)
+			
+			for (index,char) in equation.enumerated(){
+				if char.isNumber{
+					scene.currentSeedBags.append(SeedBagModel(numero: Int(String(char)) ?? 300, incognita: false, isOperator: false, operatorr: "", imageNamed: "seedbag", color: .clear, width: seedBagWidth, height: seedBagHeight))
+				}else if char == "x"{
+					//Se eu encontrar um X com um valor anterior a ele, eu adiciono um "*" entre a sacola do número e a sacola do x
+					if index != 0{
+						if  equation[index-1].isNumber{
+							scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "*", imageNamed: "operacoes", color: .clear, width: 31.3, height: 30.73))
+							addHitBoxAtTheEnd(scene: scene)
+						}
+					}
+					scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: true, isOperator: false, operatorr: "", imageNamed: "seedbag", color: .clear, width: seedBagWidth, height: seedBagHeight))
+					
+				}else if char == "="{
+					scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: String(char), imageNamed: "igual", color: .clear, width: 22.45, height: 30.73))
+				}
+				else {
+					scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: String(char), imageNamed: "operacoes", color: .clear, width: 31.3, height: 30.73))
+				}
+			}
+			//Depois de preparar o vetor, adiciono na cena
+			tutorialShowEquation(scene: scene, isTutorial: isTutorial)
+			
 		}
 	}
     
-	func updateCurrentEqLabel(scene: PhaseScene) {
+	func updateCurrentEqLabel(scene: PhaseScene, isTutorial: Bool = false) {
 		var equation = ""
 		for (index, seedBag) in scene.currentSeedBags.enumerated() {
 			if seedBag.label.text == "?" {
@@ -479,15 +630,57 @@ import CoreData
 				equation += seedBag.label.text!
 			}
 		}
-		scene.currentEqLabel.text = equation
+		if isTutorial {
+			TutorialClientModel.shared.eq = equation
+		} else {
+			scene.currentEqLabel.text = equation
+		}
+	}
+	
+	
+	func tutorialUpdateCurrentEqLabel(scene: TutorialPhase, isTutorial: Bool = true) {
+		var equation = ""
+		for (index, seedBag) in scene.currentSeedBags.enumerated() {
+			if seedBag.label.text == "?" {
+				equation += "x"
+			}
+			else if seedBag.label.text! == "*" {
+				if scene.currentSeedBags[index+1].label.text! != "?" {
+					equation += "*"
+				}
+			}
+			else {
+				equation += seedBag.label.text!
+			}
+		}
+		scene.tutorialClient.eq = equation
 	}
     
-	func showEquation(scene: PhaseScene){
-		updateCurrentEqLabel(scene: scene)
+	func showEquation(scene: PhaseScene, isTutorial: Bool = false){
+		
+		
+		updateCurrentEqLabel(scene: scene, isTutorial: isTutorial)
+		
 		
 		clearSeedsOfScene(scene)
 		
 		for (index,seedBag) in scene.currentSeedBags.enumerated(){
+			seedBag.position = CGPoint(x: initialBagPosition.x+CGFloat((bagSpacing*index)), y: initialBagPosition.y) //Posicao da sacola com o numero, mexo com o index para colocar na posição certa da equação
+			
+			seedBag.zPosition = 11
+			
+			scene.addChild(seedBag)
+		}
+	}
+	
+	
+	func tutorialShowEquation(scene: TutorialPhase, isTutorial: Bool = true) {
+		
+		tutorialUpdateCurrentEqLabel(scene: scene, isTutorial: isTutorial)
+		
+		clearSeedsOfScene(scene)
+		
+		for (index, seedBag) in scene.currentSeedBags.enumerated() {
 			seedBag.position = CGPoint(x: initialBagPosition.x+CGFloat((bagSpacing*index)), y: initialBagPosition.y) //Posicao da sacola com o numero, mexo com o index para colocar na posição certa da equação
 			
 			seedBag.zPosition = 11
@@ -591,7 +784,7 @@ import CoreData
         }
         else{ //Se não houver um sinal antes, eu preciso criar um sinal de mais, criar uma hitbox, e realocar
             addHitBoxAtTheEnd(scene: scene) //adiciono uma hitbox ao final
-            scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 21, height: 22)) //adiciono ao final do vetor um sinal de mais
+			  scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 31.3, height: 30.73)) //adiciono ao final do vetor um sinal de mais
             realocateToOtherSide(getMovableNodePosition(scene), scene) //Realoco o nó que esta sendo mexido
         }
     }
@@ -637,7 +830,7 @@ import CoreData
             }
             else{ //Se não houver um sinal antes, eu preciso criar um sinal de mais, criar uma hitbox, e realocar
                 addHitBoxAtTheEnd(scene: scene) //adiciono uma hitbox ao final
-                scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 21, height: 22)) //adiciono ao final do vetor um sinal de mais
+					scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 31.3, height: 30.73)) //adiciono ao final do vetor um sinal de mais
                 //            self.initialPosition += 1
                 realocateToOtherSide(scene.currentSeedBags.count-1,scene) //realoco o sinal que eu acabei de inserir na ultima posição
                 realocateToOtherSide(getMovableNodePosition(scene), scene) //realoco o elemento que o usuario passou
@@ -645,7 +838,7 @@ import CoreData
         }
         else{ //Se não houver um sinal antes, eu preciso criar um sinal de mais, criar uma hitbox, e realocar
             addHitBoxAtTheEnd(scene: scene) //adiciono uma hitbox ao final
-            scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 21, height: 22)) //adiciono ao final do vetor um sinal de mais
+			  scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 31.3, height: 30.73)) //adiciono ao final do vetor um sinal de mais
             //            self.initialPosition += 1
             realocateToOtherSide(scene.currentSeedBags.count-1,scene) //realoco o sinal que eu acabei de inserir na ultima posição
             realocateToOtherSide(getMovableNodePosition(scene), scene) //realoco o elemento que o usuario passou
@@ -790,6 +983,47 @@ import CoreData
     }
 
     
+
+	func tutorialRenderClientResponse(_ scene: TutorialPhase, node: SKSpriteNode) {
+		
+		let correctAnswer = 2
+		let yourAnswer = scene.tutorialClient.eq
+		print("Resposta: ", yourAnswer)
+		
+		var resultSprite = ""
+		
+		if Float(refactorClientAnswer(answer: yourAnswer, scene, isTutorial: true)) == Float(correctAnswer) {
+			resultSprite = TutorialClientModel.shared.sprite.replacingOccurrences(of: "Neutro", with: "Feliz")
+			scene.currentEqLabel.text! = scene.tutorialClient.rightAnswerFala
+		}
+		else {
+			resultSprite = TutorialClientModel.shared.sprite.replacingOccurrences(of: "Neutro", with: "Bravo")
+			scene.currentEqLabel.text! = scene.tutorialClient.wrongAnswerFala
+		}
+		node.texture = SKTexture(imageNamed: resultSprite)
+		
+		DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+			
+		}
+	}
+	
+	
+	func tutorialRenderGalacticClientResponse(_ scene: TutorialPhase, node: SKSpriteNode) {
+		
+		var resultSprite = ""
+		if self.finalSeedTransformed {
+			resultSprite = TutorialClientModel.shared.sprite.replacingOccurrences(of: "Neutro", with: "Feliz")
+			resultSprite = TutorialClientModel.shared.sprite.replacingOccurrences(of: "Bravo", with: "Feliz")
+			scene.currentEqLabel.text! = scene.tutorialClient.rightSideralFala
+		}
+		else {
+			resultSprite = TutorialClientModel.shared.sprite.replacingOccurrences(of: "Neutro", with: "Bravo")
+			resultSprite = TutorialClientModel.shared.sprite.replacingOccurrences(of: "Feliz", with: "Bravo")
+			scene.currentEqLabel.text! = scene.tutorialClient.wrongSideralFala
+		}
+		node.texture = SKTexture(imageNamed: resultSprite)
+	}
+
     func renderClientResponse(_ scene: PhaseScene) {
         
         
@@ -952,34 +1186,65 @@ import CoreData
         return false
     }
     
-    func createFinalSeedBag(_ scene: PhaseScene){
+	func createFinalSeedBag(_ scene: PhaseScene, isTutorial: Bool = false){
         
         for (index,seedBag) in scene.currentSeedBags.enumerated(){ //Varro o vetor de sementes
             if seedBag.label.text!.isNumber{ //Se for um numero o saco atual
                 if scene.currentSeedBags.count == 4{
-                    scene.currentEqLabel.text = scene.currentSeedBags[index-1].label.text! + seedBag.label.text!
-                    seedBag.label.text = scene.currentEqLabel.text
-                    clearSeedsOfScene(scene)
-                    clearSeedOfList(scene)
-                    scene.currentSeedBags.append(seedBag)
-                    finalSeedCreated = true
-                    showEquation(scene: scene)
+						 
+						 if isTutorial {
+							 TutorialClientModel.shared.eq = scene.currentSeedBags[index-1].label.text! + seedBag.label.text!
+							 seedBag.label.text = TutorialClientModel.shared.eq
+						 } else {
+							 scene.currentEqLabel.text = scene.currentSeedBags[index-1].label.text! + seedBag.label.text!
+							 seedBag.label.text = scene.currentEqLabel.text
+						 }
+						 clearSeedsOfScene(scene)
+						 clearSeedOfList(scene)
+						 scene.currentSeedBags.append(seedBag)
+						 finalSeedCreated = true
+						 showEquation(scene: scene, isTutorial: isTutorial)
+						 
                 }else{
                     scene.currentEqLabel = seedBag.label //A equação atual se torna apenas esse número
-                    addSeedBags(scene: scene) //E o vetor vira esse número
+						 addSeedBags(scene: scene, isTutorial: isTutorial) //E o vetor vira esse número
                     finalSeedCreated = true
                 }
             }
         }
     }
 	
+	func tutorialCreateFinalSeedBag(scene: TutorialPhase, isTutorial: Bool = true) {
+		
+		for (index,seedBag) in scene.currentSeedBags.enumerated(){ //Varro o vetor de sementes
+			if seedBag.label.text!.isNumber{ //Se for um numero o saco atual
+				if scene.currentSeedBags.count == 4{
+					
+					scene.tutorialClient.eq = scene.currentSeedBags[index-1].label.text! + seedBag.label.text!
+					seedBag.label.text = scene.tutorialClient.eq
+
+					clearSeedsOfScene(scene)
+					clearSeedOfList(scene)
+					scene.currentSeedBags.append(seedBag)
+					finalSeedCreated = true
+					tutorialShowEquation(scene: scene, isTutorial: isTutorial)
+					
+				} else {
+					scene.tutorialClient.eq = seedBag.label.text!
+					tutorialAddSeedBags(scene: scene, isTutorial: isTutorial) //E o vetor vira esse número
+					finalSeedCreated = true
+				}
+			}
+		}
+	}
 	
-	func refactorClientAnswer(answer: String, _ scene: PhaseScene) -> String {
-
-        if OperationAction.joinAllNumbers(answer).count > 1 && !answer.contains("-") {
-
+	
+	func refactorClientAnswer(answer: String, _ scene: PhaseScene, isTutorial: Bool = false) -> String {
+		
+		if OperationAction.joinAllNumbers(answer).count > 1 && !answer.contains("-") {
+			
 			var i = 0
-			let equation = Array(scene.currentEqLabel.text!)
+			let equation = isTutorial ? Array(TutorialClientModel.shared.eq) : Array(scene.currentEqLabel.text!)
 			
 			var leftString = ""
 			var rightString = ""
@@ -1005,12 +1270,26 @@ import CoreData
 	}
 	
 	
-	func resetCurrentEquation(_ scene: PhaseScene) {
-		if !scene.children.contains(scene.currentEqLabel) {
-			scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)" // Volta o label para a equação inicial
-			addSeedBags(scene: scene)
+	func resetCurrentEquation(_ scene: PhaseScene, isTutorial: Bool = false) {
+		if isTutorial {
+			TutorialClientModel.shared.eq = TutorialClientModel.shared.initialEq
+			addSeedBags(scene: scene, isTutorial: true)
 			addHitBoxesFromEquation(scene: scene)
 		}
+		else {
+			if !scene.children.contains(scene.currentEqLabel) {
+				scene.currentEqLabel.text = "\(scene.clients[scene.currentClientNumber].eq)" // Volta o label para a equação inicial
+				addSeedBags(scene: scene)
+				addHitBoxesFromEquation(scene: scene)
+			}
+		}
+			
+	}
+	
+	func tutorialResetCurrentEquation(scene: TutorialPhase, isTutorial: Bool = true) {
+		scene.tutorialClient.eq = scene.tutorialClient.initialEq
+		tutorialAddSeedBags(scene: scene, isTutorial: true)
+		addHitBoxesFromEquation(scene: scene)
 	}
 	
     func transformSeed(_ touches: Set<UITouch>, _ scene: PhaseScene){
