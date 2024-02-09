@@ -7,14 +7,25 @@
 
 import Foundation
 import SwiftUI
+import CoreData
 
 struct MenuView: View {
+    
+    //Coisa do CoreData
+    @Environment(\.managedObjectContext) var context //Contexto, DataController
+    @ObservedObject var myDataController: MyDataController
+    @FetchRequest(sortDescriptors: []) var myData: FetchedResults<MyData>
+    
+    @EnvironmentObject var userEngine: UserEngine
+    
+    init(context: NSManagedObjectContext) {
+        self.myDataController = MyDataController(context: context)
+    }
+    
 	var body: some View {
 		NavigationStack {
 			GeometryReader { geo in
 				ZStack {
-					
-					
 					Button {
 						GameEngine.shared.setConfigurationPopUpIsPresentedIsTRUE()
 					} label: {
@@ -27,7 +38,6 @@ struct MenuView: View {
 					VStack {
 						HStack() {
 							// Personagem Sr.Bhas
-							
 							Spacer()
 							Image("Sr.Bhas")
 								.resizable()
@@ -49,7 +59,7 @@ struct MenuView: View {
 								
 								// Botão Modo História
 								NavigationLink {
-									PhaseSelectionView()
+									PhaseSelectionView(context: context)
 										.navigationBarBackButtonHidden(true)
 								} label: {
 									Text("Modo História")
@@ -86,19 +96,16 @@ struct MenuView: View {
 					} .frame(width: geo.size.width*1, height: geo.size.height * 1.2)
 					
 					if GameEngine.shared.configurationPopUpIsPresented {
-						ConfigurationView()
+						ConfigurationView(context: context)
 					}
 				}
 			} .background(Image("Fundo"))
 		}
 		.navigationBarBackButtonHidden()
-		.onAppear {
-			GameEngine.shared.setGameIsPausedFALSE()
-		}
 	}
 }
 
 
 #Preview {
-	MenuView()
+	MenuView(context: DataController().container.viewContext)
 }

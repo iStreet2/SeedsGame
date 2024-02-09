@@ -19,29 +19,29 @@ class UserEngine: ObservableObject{
 	
 	
 	func rightAnswerRightGalactic() {
-		score += 100
+        self.score += 100
 	}
 	func rightAnswerWrongGalactic() {
-		score += 75
+        self.score += 75
 	}
 	func wrongAnswerWrongGalactic() {
-		life -= 1
+        self.life -= 1
 	}
 	func wrongAnswerRightGalactic() {
-		score += 25
-		life -= 1
+        self.score += 25
+        self.life -= 1
 	}
 	
 	
 	func rightAnswerRoseNoGalactic() {
-		score += 200
+        self.score += 200
 	}
 	func wrongAnswerRoseNoGalactic() {
-		score += 25
-		life -= 1
+        self.score += 25
+        self.life -= 1
 	}
 	func gaveGalacticSeedsToRose() {
-		life = 0
+        self.life = 0
 	}
 	
 	

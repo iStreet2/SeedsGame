@@ -48,5 +48,13 @@ enum PhasesFrases: String {
     case win = "Successo nas \nVendas!"
     case failed = "Você faliu!"
     case uncoverd = "Você foi \ndescoberto!"
+    
+    var imageFrases: String {
+        switch self {
+        case .win: return "Win"
+        case .failed: return "Lose"
+        case .uncoverd: return "LoseRose"
+        }
+    }
 }
 

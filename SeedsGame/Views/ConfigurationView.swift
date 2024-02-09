@@ -7,13 +7,23 @@
 
 import Foundation
 import SwiftUI
+import CoreData
 
 struct ConfigurationView: View {
+    
+    //Coisas do CoreData
+    @Environment(\.managedObjectContext) var context //Contexto, DataController
+    @ObservedObject var myDataController: MyDataController
+    @FetchRequest(sortDescriptors: []) var myData: FetchedResults<MyData>
 	
 	@Environment(\.dismiss) private var dismiss
 	@State var isMusic = true
 	
-	
+    init(context: NSManagedObjectContext){
+        self.myDataController = MyDataController(context: context)
+        self.isMusic = true
+    }
+    
 	var body: some View {
 		NavigationStack {
 			GeometryReader { geometry in
@@ -37,9 +47,11 @@ struct ConfigurationView: View {
 					}
 					VStack(spacing: 20) {
 						HStack(spacing: geometry.size.width*0.2) {
+                            
 							Toggle("", isOn: $isMusic)
-								.toggleStyle(MusicToggleStyle())
+								.toggleStyle(MusicToggleStyle(context: context))
 								.padding()
+                            
 							Button("SOBRE NÓS"){
 							}
 							.buttonStyle(RectangleButtonStyle(tag: .type2))
@@ -71,5 +83,5 @@ struct ConfigurationView: View {
 }
 
 #Preview {
-	ConfigurationView()
+    ConfigurationView(context: DataController().container.viewContext)
 }
