@@ -40,7 +40,7 @@ struct PhaseSelectionView: View {
                     Spacer()
                 }
   
-                PhaseViewer(context: context, phasesName: ["fase3", "fase2", "fase3"])
+                PhaseViewer(context: context, phasesName: ["fase1", "fase2", "fase3","fase4"])
 
             }
             .padding(.top,30)

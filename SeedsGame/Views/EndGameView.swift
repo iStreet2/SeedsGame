@@ -32,7 +32,7 @@ struct EndGameView: View {
         HStack(alignment: .top, spacing: 70) {
             VStack {
                 // Lado esquerdo do Pop Up
-                Image("Foto")
+                Image(tag.imageFrases)
                     .resizable()
                     .frame(width: 263, height: 264)
                     .overlay {
@@ -77,7 +77,6 @@ struct EndGameView: View {
 								  Text("")
 							  }
 							  .buttonStyle(SquareButtonStyle(tag: .home))
-                        
                         
                         Button("") {
                             print("aaa")
