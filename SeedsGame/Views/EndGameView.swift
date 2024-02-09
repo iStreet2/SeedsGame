@@ -17,7 +17,7 @@ struct EndGameView: View {
         HStack(alignment: .top, spacing: 70) {
             VStack {
                 // Lado esquerdo do Pop Up
-                Image("Foto")
+                Image(tag.imageFrases)
                     .resizable()
                     .frame(width: 263, height: 264)
                     .overlay {
@@ -49,12 +49,12 @@ struct EndGameView: View {
                 // Botões
                 VStack(spacing: 60) {
                     HStack(spacing: 140) {
-							  NavigationLink {
-								  MenuView()
-							  } label: {
-								  Text("")
-							  }
-							  .buttonStyle(SquareButtonStyle(tag: .home))
+                              NavigationLink {
+                                  MenuView()
+                              } label: {
+                                  Text("")
+                              }
+                              .buttonStyle(SquareButtonStyle(tag: .home))
                         
                         
                         Button("") {
@@ -64,8 +64,8 @@ struct EndGameView: View {
                     }
                     
                     Button("Próxima fase") {
-							  GameEngine.shared.nextPhase(scene: scene)
-							  
+                              GameEngine.shared.nextPhase(scene: scene)
+                              
                     }
                     .buttonStyle(RectangleButtonStyle(tag: .type2))
                 }

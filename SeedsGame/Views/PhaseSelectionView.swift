@@ -31,7 +31,7 @@ struct PhaseSelectionView: View {
                     Spacer()
                 }
   
-                PhaseViewer(phasesName: ["fase3", "fase2", "fase3"])
+                PhaseViewer(phasesName: ["fase1", "fase2", "fase3","fase4"])
 
             }
             .padding(.top,30)
