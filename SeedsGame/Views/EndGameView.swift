@@ -48,6 +48,7 @@ struct EndGameView: View {
                     Text("\(tag.rawValue)")
                         .multilineTextAlignment(.center)
                         .font(.custom("troika", size: 36))
+                        .foregroundStyle(.fontDarkBrown)
                         .frame(width: 220, height: 85)
                     
                     // Texto de High Score
@@ -57,13 +58,16 @@ struct EndGameView: View {
                             HStack{
                                 Text("NEW")
                                     .font(.custom("AlegreyaSans-Medium", size: 24))
+                                    .foregroundStyle(.fontDarkBrown)
                                 
                                 Text("High Score: \(points)")
                                     .font(.custom("AlegreyaSans-Medium", size: 20))
+                                    .foregroundStyle(.fontDarkBrown)
                             }
                         }else{
                             Text("High Score: \(Int(myData[scene.phase].highscores))")
                                 .font(.custom("AlegreyaSans-Medium", size: 20))
+                                .foregroundStyle(.fontDarkBrown)
                         }
                     }
                 }

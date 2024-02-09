@@ -62,7 +62,7 @@ struct MenuView: View {
 									PhaseSelectionView(context: context)
 										.navigationBarBackButtonHidden(true)
 								} label: {
-									Text("Modo História")
+									Text("Jogar")
 								} .buttonStyle(RectangleButtonStyle(tag: .story))
 								
 								
