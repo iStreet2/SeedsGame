@@ -112,7 +112,7 @@ class PhaseScene: GameScene {
             }
         }
         
-        if openedEquation{
+        if openedEquation && !GameEngine.shared.finalSeedCreated{
             if joinSideButton.contains(touch.location(in: self)) {
                 let opAction = OperationAction(eq: currentEqLabel.text!.contains("!") ? "" : currentEqLabel.text!)
                 GameEngine.shared.mementoStack.push(currentEqLabel.text!)
@@ -122,6 +122,7 @@ class PhaseScene: GameScene {
                     GameEngine.shared.receiveAction(opAction,self)
                 }
                 animateLever()
+                animateRegularPoof()
             }
         }
         
