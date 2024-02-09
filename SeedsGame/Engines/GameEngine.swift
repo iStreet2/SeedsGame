@@ -42,7 +42,7 @@ import CoreData
     
     var actions: [Action] = []
     //var phases: [PhaseScene] = []
-    var currentPhase = 0
+//    var currentPhase = 0
     
     var phaseFirstSetup = true
     
@@ -798,7 +798,7 @@ import CoreData
         let rose = client.clientSpriteID == 11
         
 		 let clientAnswer = scene.currentEqLabel.text!
-		 let correctAnswer = String(scene.phaseMap[currentPhase+1]![scene.currentClientNumber].1)
+        let correctAnswer = String(scene.phaseMap[scene.phase]![scene.currentClientNumber].1)
 		 
 		 let refactoredClientAnswer = refactorClientAnswer(answer: clientAnswer, scene)
 		
@@ -830,6 +830,8 @@ import CoreData
 			 }
 			 
 			 client.texture = SKTexture(imageNamed: resultSprite)
+             
+             nextQuestionWithDelay(scene) //Se o cliente acertou, vai para a proxima perguntar normal
 		 }
 		 // errou a conta
 		 else {
@@ -856,7 +858,7 @@ import CoreData
                  userEngine?.wrongAnswerWrongGalactic()
 			 }
              
-             if rose{
+             if rose{ //Mas se ele errou, tem toda a logica de mostrar a resposta certa e o usuario ter que clicar
                  showRightAnswer(scene, glow: true, correctAnswer: Float(correctAnswer)!)
              }
              if client.wantsGalacticSeeds{
