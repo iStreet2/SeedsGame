@@ -317,7 +317,7 @@ import CoreData
 						scene.movableNode = nil
 					}else{
 						scene.movableNode!.position = location
-						scene.movableNode!.zPosition = 30
+						scene.movableNode!.zPosition = 12
 					}
 				}
 			}
@@ -1300,7 +1300,8 @@ import CoreData
                     //transformar a semente
                     resetPosition(scene: scene)
                     finalSeedTransformed = true
-						 scene.currentSeedBags[0].texture = SKTexture(imageNamed: "GalacticSeedBag")
+                    scene.currentSeedBags[0].texture = SKTexture(imageNamed: "GalacticSeedBag")
+                    scene.animatePurplePoof()
                 }
             }
         }

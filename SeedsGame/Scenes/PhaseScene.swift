@@ -64,6 +64,7 @@ class PhaseScene: GameScene {
     override func didMove(to view: SKView) {
         
         startup()
+        animateBlackHole()
         
         currentEqLabel.position = CGPoint(x: frame.size.width / 2, y: 325)
         currentEqLabel.zPosition = 1
@@ -84,6 +85,8 @@ class PhaseScene: GameScene {
         
         // MARK: Renderiza os 3 clientes
         GameEngine.shared.renderClients(scene: self)
+        
+        
     }
     
     
@@ -115,6 +118,8 @@ class PhaseScene: GameScene {
         
         if openedEquation && !GameEngine.shared.finalSeedCreated{
             if joinSideButton.contains(touch.location(in: self)) {
+                let oldEquation = currentEqLabel.text
+                
                 let opAction = OperationAction(eq: currentEqLabel.text!.contains("!") ? "" : currentEqLabel.text!)
                 GameEngine.shared.mementoStack.push(currentEqLabel.text!)
                 if GameEngine.shared.resultIsReady(self){
@@ -123,7 +128,9 @@ class PhaseScene: GameScene {
                     GameEngine.shared.receiveAction(opAction,self)
                 }
                 animateLever()
-                animateRegularPoof()
+                if oldEquation != currentEqLabel.text{
+                    animateRegularPoof()
+                }
             }
         }
         
@@ -137,6 +144,8 @@ class PhaseScene: GameScene {
         if restartEquationButton.contains(touch.location(in: self)) {
             GameEngine.shared.resetCurrentEquation(self)
             animateDestructiveButton()
+            animateDestructivePoof()
+            GameEngine.shared.finalSeedCreated = false
         }
         
         if undoButton.contains(touch.location(in: self)) {
@@ -145,8 +154,10 @@ class PhaseScene: GameScene {
                 GameEngine.shared.finalSeedTransformed = false
                 GameEngine.shared.addSeedBags(scene: self)
                 GameEngine.shared.addHitBoxesFromEquation(scene: self)
+                GameEngine.shared.finalSeedCreated = false
             }
             animateUndoButton()
+            animateDestructivePoof()
         }
         
         //movimento do sprite de semente
