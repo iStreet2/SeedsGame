@@ -32,6 +32,14 @@ class GameScene: SKScene {
     
     var regularPoofAtlas: SKTextureAtlas = SKTextureAtlas(named: "PoofNormal")
     var regularPoof = SKSpriteNode(imageNamed: "nothing")
+    
+    var destructivePoofAtlas = SKTextureAtlas(named: "PoofDestrutivo")
+    var destructivePoof = SKSpriteNode(imageNamed: "nothing")
+    
+    var purplePoofAtlas = SKTextureAtlas(named: "PoofRoxo")
+    var purplePoof = SKSpriteNode(imageNamed: "nothing")
+    
+    var blackHoleAtlas = SKTextureAtlas(named: "PoofDestrutivo")
 	
 	
 	let restartEquationButton = SKSpriteNode(imageNamed: "DestructiveButton")
@@ -132,6 +140,28 @@ class GameScene: SKScene {
 	}
     
     func animateRegularPoof() {
+        let idleFrames: [SKTexture] = [regularPoofAtlas.textureNamed("poof1"),
+                                       regularPoofAtlas.textureNamed("poof2"),
+                                       regularPoofAtlas.textureNamed("poof3"),
+                                       regularPoofAtlas.textureNamed("poof4"),
+                                       regularPoofAtlas.textureNamed("poof5"),
+                                       regularPoofAtlas.textureNamed("poof6"),
+                                       regularPoofAtlas.textureNamed("poof7"),
+                                       regularPoofAtlas.textureNamed("poof8"),
+                                       regularPoofAtlas.textureNamed("poof9"),
+                                       regularPoofAtlas.textureNamed("poof10"),
+                                       regularPoofAtlas.textureNamed("poof11"),
+                                       regularPoofAtlas.textureNamed("poof12"),
+                                       regularPoofAtlas.textureNamed("poof13"),
+                                       regularPoofAtlas.textureNamed("poof14"),
+                                       regularPoofAtlas.textureNamed("poof15"),
+                                       regularPoofAtlas.textureNamed("nothing")
+                                    ]
+        let idleAction = SKAction.animate(with: idleFrames, timePerFrame: 0.07)
+        regularPoof.run(idleAction)
+    }
+    
+    func animateDestructivePoof() {
         let idleFrames: [SKTexture] = [regularPoofAtlas.textureNamed("poof1"),
                                        regularPoofAtlas.textureNamed("poof2"),
                                        regularPoofAtlas.textureNamed("poof3"),
