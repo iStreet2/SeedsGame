@@ -86,6 +86,10 @@ class TutorialPhase: PhaseScene {
 					eqLabelBackground.texture = SKTexture(imageNamed: "GalacticEquationLabelBackground")
 					currentEqLabel.fontColor = UIColor(Color("FontLightBrown"))
 				}
+                
+                if currentFala == tutorialClient.falas.count-1{
+                    GameEngine.shared.setEndOfPhaseTRUE()
+                }
 				
 				
 			}
@@ -115,6 +119,7 @@ class TutorialPhase: PhaseScene {
 				}
 			}
 			animateLever()
+            animateRegularPoof()
 		}
 		
 		
