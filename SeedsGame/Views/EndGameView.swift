@@ -78,10 +78,10 @@ struct EndGameView: View {
 							  }
 							  .buttonStyle(SquareButtonStyle(tag: .home))
                         
-                        Button("") {
-                            print("aaa")
-                        }
-                        .buttonStyle(SquareButtonStyle(tag: .gameCenter))
+//                        Button("") {
+//                            print("aaa")
+//                        }
+//                        .buttonStyle(SquareButtonStyle(tag: .gameCenter))
                     }
                     
                     if scene.phase < 3{

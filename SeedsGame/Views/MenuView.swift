@@ -68,10 +68,10 @@ struct MenuView: View {
 								
 								
 								// Botão do Modo Infinito
-								Button("INFINITO"){
-									print("")
-								}
-								.buttonStyle(RectangleButtonStyle(tag: .type2))
+//								Button("INFINITO"){
+//									print("")
+//								}
+//								.buttonStyle(RectangleButtonStyle(tag: .type2))
 								
 							}
 							.frame(width: 400)

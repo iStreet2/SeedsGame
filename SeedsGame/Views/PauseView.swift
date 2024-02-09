@@ -38,9 +38,9 @@ struct PauseView: View {
 					
 					
 					
-					Button("") {
-						GameEngine.shared.setGameIsPausedFALSE()
-					} .buttonStyle(SquareButtonStyle(tag: .play))
+//					Button("") {
+//						GameEngine.shared.setGameIsPausedFALSE()
+//					} .buttonStyle(SquareButtonStyle(tag: .play))
 				}
 				Toggle("", isOn: $isMusic)
 					.toggleStyle(MusicToggleStyle(context: context))
