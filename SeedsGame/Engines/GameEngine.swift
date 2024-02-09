@@ -215,7 +215,7 @@ import CoreData
                 self.gameOver = true
             }
             else{
-                self.nextQuestion(scene: scene)
+                self.nextQuestion(scene: scene, isTutorial: false)
             }
         }
     }
@@ -360,7 +360,7 @@ import CoreData
 						
 						transformSeed(touches, scene) //Transformar
 						if grabResult(touches, scene){
-							renderClientResponse(scene, isTutorial: isTutorial)
+							renderClientResponse(scene)
 						}
 						
 					}

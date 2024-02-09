@@ -52,7 +52,7 @@ class PhaseScene: GameScene {
         let eqs = phaseMap[phase]
         
         //Para cada cliente no mapa
-        for n in 0..<clientMap[phase]!{
+        for n in 0..<(clientMap[phase] ?? 0){
             let client = ClientModel(eqs![n].0, imageNamed: "ClientSprite", color: .clear) //CGSize(width: 135, height: 274) -> Size antigo
             clients.append(client)
         }
@@ -105,11 +105,11 @@ class PhaseScene: GameScene {
         //			GameEngine.shared.nextPhase(scene: self)
         //		}
         
-        if rightAnswerShowed{
+        if rightAnswerShowed{ //Se a resposta corriga pelo cliente estiver aparecendo
             if let _ = touches.first?.location(in: view){ //ao tocar na tela
                 //Remover o circulo de resposta e ir para a proxima questao
                 GameEngine.shared.removeRightAnswer(self)
-                GameEngine.shared.nextQuestion(scene: self)
+                GameEngine.shared.nextQuestion(scene: self, isTutorial: false)
             }
         }
         

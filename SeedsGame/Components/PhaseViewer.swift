@@ -50,10 +50,14 @@ struct PhaseViewer: View {
 						 .ignoresSafeArea()
 					 
 					 TabView(selection: $phaseIndex) {
-						 ForEach(0..<3, id: \.self) { index in //0,1,2
+						 ForEach(0..<4, id: \.self) { index in //0,1,2,3
 							 ZStack {
 								 NavigationLink {
-                                     SpriteSceneView(context: context, scene: PhaseScene(phase: index+1, width:  UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)) //1,2,3
+                                     if index == 0{
+                                         SpriteSceneView(context: context, scene: TutorialPhase(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)) //0
+                                     }else{
+                                         SpriteSceneView(context: context, scene: PhaseScene(phase: index, width:  UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)) //1,2,3
+                                     }
                                          
                                  } label: {
                                      if myData[0].phase < Double(index){
@@ -98,7 +102,7 @@ struct PhaseViewer: View {
 						 if phaseIndex == 0 {
 							 Text("Tutorial")
 								 .font(.custom("troika", size: 40))
-								 .foregroundStyle(.fontLightBrown)
+                                 .foregroundStyle(.fontLightBrown)
 								 .offset(y: 160)
 							 
 						 } else {
