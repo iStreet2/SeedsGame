@@ -58,20 +58,20 @@ struct ConfigurationView: View {
 							
 						}
 						
-						HStack(spacing: geometry.size.width*0.2){
-							Button(action: {
-								print("")
-							}) {
-								Text("")
-							}
-							.buttonStyle(SquareButtonStyle(tag: .gameCenter))
-							.padding()
-							
-							Button("SUPORTE"){
-							}
-							.buttonStyle(RectangleButtonStyle(tag: .type1))
-							.padding()
-						}
+//						HStack(spacing: geometry.size.width*0.2){
+//							Button(action: {
+//								print("")
+//							}) {
+//								Text("")
+//							}
+//							.buttonStyle(SquareButtonStyle(tag: .gameCenter))
+//							.padding()
+//							
+//							Button("SUPORTE"){
+//							}
+//							.buttonStyle(RectangleButtonStyle(tag: .type1))
+//							.padding()
+//						}
 					} .padding(.top, 60)
 					
 				}

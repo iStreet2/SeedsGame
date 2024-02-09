@@ -33,7 +33,7 @@ class TutorialPhase: PhaseScene {
 	
 	override func didMove(to view: SKView) {
 		startup()
-		
+		animateBlackHole()
 		currentEqLabel.position = CGPoint(x: frame.size.width / 2, y: 300)
 		currentEqLabel.zPosition = 1
 		eqLabelBackground.position = currentEqLabel.position
@@ -134,6 +134,7 @@ class TutorialPhase: PhaseScene {
 				}
 			}
 			animateUndoButton()
+            animateDestructivePoof()
 		}
 		
 		if restartEquationButton.contains(touch.location(in: self)) {
@@ -141,6 +142,7 @@ class TutorialPhase: PhaseScene {
 				GameEngine.shared.tutorialResetCurrentEquation(scene: self, isTutorial: true)
 			}
 			animateDestructiveButton()
+            animateDestructivePoof()
 		}
 		
 		//movimento do sprite de semente

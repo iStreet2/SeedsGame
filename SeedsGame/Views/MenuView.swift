@@ -62,16 +62,16 @@ struct MenuView: View {
 									PhaseSelectionView(context: context)
 										.navigationBarBackButtonHidden(true)
 								} label: {
-									Text("Modo História")
+									Text("Jogar")
 								} .buttonStyle(RectangleButtonStyle(tag: .story))
 								
 								
 								
 								// Botão do Modo Infinito
-								Button("INFINITO"){
-									print("")
-								}
-								.buttonStyle(RectangleButtonStyle(tag: .type2))
+//								Button("INFINITO"){
+//									print("")
+//								}
+//								.buttonStyle(RectangleButtonStyle(tag: .type2))
 								
 							}
 							.frame(width: 400)

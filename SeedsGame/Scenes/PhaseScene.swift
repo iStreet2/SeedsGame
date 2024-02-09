@@ -74,6 +74,9 @@ class PhaseScene: GameScene {
         
         if clients[0].wantsGalacticSeeds {
             eqLabelBackground.texture = SKTexture(imageNamed: "GalacticEquationLabelBackground")
+            currentEqLabel.fontColor = UIColor(Color("FontLightBrown"))
+        }else{
+            currentEqLabel.fontColor = UIColor(Color("FontDarkBrown"))
         }
         addChild(currentEqLabel)
         addChild(eqLabelBackground)
@@ -81,7 +84,6 @@ class PhaseScene: GameScene {
         currentEqLabel.text = "\(clients[currentClientNumber].eq)"
         currentEqLabel.fontName = "AlegreyaSans-Medium"
         currentEqLabel.fontSize = 32
-        currentEqLabel.fontColor = UIColor(Color("FontDarkBrown"))
         
         // MARK: Renderiza os 3 clientes
         GameEngine.shared.renderClients(scene: self)
