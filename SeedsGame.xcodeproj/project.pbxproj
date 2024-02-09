@@ -11,6 +11,9 @@
 		19A0233C2B6D7806003B4E16 /* CarouselViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A0233B2B6D7806003B4E16 /* CarouselViewer.swift */; };
 		19A4ADD42B6183B200E3E9F5 /* PhaseSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A4ADD32B6183B200E3E9F5 /* PhaseSelectionView.swift */; };
 		19A4ADD62B61865A00E3E9F5 /* RectangleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A4ADD52B61865A00E3E9F5 /* RectangleButtonStyle.swift */; };
+		3B0942192B7543B300A88E50 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3B0942172B7543B300A88E50 /* Model.xcdatamodeld */; };
+		3B09421B2B7543D200A88E50 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B09421A2B7543D200A88E50 /* DataController.swift */; };
+		3B09421D2B7543E500A88E50 /* MyDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B09421C2B7543E500A88E50 /* MyDataController.swift */; };
 		3B1949872B6C2DAB00BB107F /* PhaseViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1949862B6C2DAB00BB107F /* PhaseViewer.swift */; };
 		3B5F47C92B5B085600B09FBE /* SeedBagModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5F47C82B5B085500B09FBE /* SeedBagModel.swift */; };
 		3BB1AF9D2B59B15F00E61276 /* SeedsGameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB1AF9C2B59B15F00E61276 /* SeedsGameApp.swift */; };
@@ -49,6 +52,9 @@
 		19A0233B2B6D7806003B4E16 /* CarouselViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselViewer.swift; sourceTree = "<group>"; };
 		19A4ADD32B6183B200E3E9F5 /* PhaseSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhaseSelectionView.swift; sourceTree = "<group>"; };
 		19A4ADD52B61865A00E3E9F5 /* RectangleButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangleButtonStyle.swift; sourceTree = "<group>"; };
+		3B0942182B7543B300A88E50 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		3B09421A2B7543D200A88E50 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		3B09421C2B7543E500A88E50 /* MyDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDataController.swift; sourceTree = "<group>"; };
 		3B1949862B6C2DAB00BB107F /* PhaseViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhaseViewer.swift; sourceTree = "<group>"; };
 		3B5F47C82B5B085500B09FBE /* SeedBagModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedBagModel.swift; sourceTree = "<group>"; };
 		3BB1AF992B59B15F00E61276 /* SeedsGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeedsGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,9 +101,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3B0942162B7543A500A88E50 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				3B09421A2B7543D200A88E50 /* DataController.swift */,
+				3B09421C2B7543E500A88E50 /* MyDataController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		3BB1AF902B59B15F00E61276 = {
 			isa = PBXGroup;
 			children = (
+				3B0942172B7543B300A88E50 /* Model.xcdatamodeld */,
 				3BB1AF9B2B59B15F00E61276 /* SeedsGame */,
 				3BB1AF9A2B59B15F00E61276 /* Products */,
 			);
@@ -114,6 +130,7 @@
 		3BB1AF9B2B59B15F00E61276 /* SeedsGame */ = {
 			isa = PBXGroup;
 			children = (
+				3B0942162B7543A500A88E50 /* Controller */,
 				DC8208D42B6965D200A0172C /* Fonts */,
 				DC8208D32B69654500A0172C /* Info.plist */,
 				3BB1AF9C2B59B15F00E61276 /* SeedsGameApp.swift */,
@@ -291,11 +308,13 @@
 				DCA7EF282B6AE79F00FCE555 /* ButtonEnum.swift in Sources */,
 				E9E2213E2B5AE5C4001FE22A /* PhaseScene.swift in Sources */,
 				E9E221322B59B6B0001FE22A /* HapticActionModel.swift in Sources */,
+				3B09421D2B7543E500A88E50 /* MyDataController.swift in Sources */,
 				3B1949872B6C2DAB00BB107F /* PhaseViewer.swift in Sources */,
 				DC8208E02B6AB4AC00A0172C /* ConfigurationView.swift in Sources */,
 				DCA7EF262B6ADDC100FCE555 /* MusicToggleStyle.swift in Sources */,
 				E9E221302B59B5DD001FE22A /* SoundActionModel.swift in Sources */,
 				3BB1AF9F2B59B15F00E61276 /* ContentView.swift in Sources */,
+				3B09421B2B7543D200A88E50 /* DataController.swift in Sources */,
 				DC4FBAE02B6D6874007E3B6E /* PauseView.swift in Sources */,
 				DCEB03092B6179D900025ABA /* MenuView.swift in Sources */,
 				19A4ADD62B61865A00E3E9F5 /* RectangleButtonStyle.swift in Sources */,
@@ -303,6 +322,7 @@
 				3B5F47C92B5B085600B09FBE /* SeedBagModel.swift in Sources */,
 				19A0233C2B6D7806003B4E16 /* CarouselViewer.swift in Sources */,
 				3BB1AF9D2B59B15F00E61276 /* SeedsGameApp.swift in Sources */,
+				3B0942192B7543B300A88E50 /* Model.xcdatamodeld in Sources */,
 				E9D5E6FE2B6D8A7C00069CC9 /* Queue.swift in Sources */,
 				DC8208CC2B61993400A0172C /* SquareButtonStyle.swift in Sources */,
 				E9A1235E2B72CABD00870077 /* SpriteSceneView.swift in Sources */,
@@ -530,6 +550,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		3B0942172B7543B300A88E50 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				3B0942182B7543B300A88E50 /* Model.xcdatamodel */,
+			);
+			currentVersion = 3B0942182B7543B300A88E50 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 3BB1AF912B59B15F00E61276 /* Project object */;
 }

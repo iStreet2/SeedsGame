@@ -7,11 +7,20 @@
 
 import SwiftUI
 import SpriteKit
+import CoreData
 
 struct PhaseSelectionView: View {
-    @State var index: Int = 0
-    @State var gestureIsOn: Bool = true
+    
+    //Coisas do CoreData
+    @Environment(\.managedObjectContext) var context //Contexto, DataController
+    @ObservedObject var myDataController: MyDataController
+    @FetchRequest(sortDescriptors: []) var myData: FetchedResults<MyData>
+    
     @Environment(\.dismiss) private var dismiss
+    
+    init(context: NSManagedObjectContext) {
+        self.myDataController = MyDataController(context: context)
+    }
     
     var body: some View {
         NavigationStack {
@@ -31,7 +40,7 @@ struct PhaseSelectionView: View {
                     Spacer()
                 }
   
-                PhaseViewer(phasesName: ["fase1", "fase2", "fase3","fase4"])
+                PhaseViewer(context: context, phasesName: ["fase1", "fase2", "fase3","fase4"])
 
             }
             .padding(.top,30)
@@ -41,5 +50,5 @@ struct PhaseSelectionView: View {
 }
 
 #Preview {
-    PhaseSelectionView()
+    PhaseSelectionView(context: DataController().container.viewContext)
 }

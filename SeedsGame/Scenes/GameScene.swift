@@ -14,9 +14,9 @@ class GameScene: SKScene {
 	var topBackground = SKSpriteNode(imageNamed: "Fundo Provisorio")
 	
     var phaseMap: [Int : [(String, Float)]] = [
-        1: [("9-x=4", 5), ("2x=4", 2), ("x+2=3", 1), ("9-x=4", 5), ("x+6=15", 9), ("90-x=50", 40), ("5=-x+4", -1), ("20=x-40", 60), ("8+x=17",9), ("x+3=-12", -15)],
-        2: [("10+x=-30", -40), ("x+2=-4", -3), ("17-x=3", 7), ("30x-120=0", 4), ("2x+3x=15x-30", 3), ("14+2x=3+2", -4.5), ("5x-12=3", 3), ("3x+1=x-3", -2), ("5x+5=3x+7", 1), ("6x+3=-9", -2)],
-        3: [("4x-10=3x-3-4", 3), ("3x-6+10=4x+4+2", -2), ("3x+4x-40=x+20",10), ("2x+6x-15+4=x+6x-6-6", -1), ("3x+2=4x-1", 3), ("3x+2=29", 9), ("x+(x+1)+(x+2)=60", 19), ("x+5x=2x+40", 10), ("2x/4-5/3=x-7/2", 11/3), ("(4x+2)/3-(5x-7)/6=(3-x)/2", -1/3)]
+        1: [("x=3+2", 5), ("2x=4", 2), /*("x+2=3", 1), ("9-x=4", 5), ("x+6=15", 9), ("90-x=50", 40), ("5=-x+4", -1), ("20=x-40", 60), ("8+x=17",9), ("x+3=-12", -15)*/],
+        2: [("10+x=-30", -40), /*("x+2=-4", -3), ("17-x=3", 7), ("30x-120=0", 4), ("2x+3x=15x-30", 3), ("14+2x=3+2", -4.5), ("5x-12=3", 3), ("3x+1=x-3", -2), ("5x+5=3x+7", 1), ("6x+3=-9", -2)*/],
+        3: [("x=1", 1),/* ("3x-6+10=4x+4+2", -2), ("3x+4x-40=x+20",10), ("2x+6x-15+4=x+6x-6-6", -1), ("3x+2=4x-1", 3), ("3x+2=29", 9), ("x+(x+1)+(x+2)=60", 19), ("x+5x=2x+40", 10), ("2x/4-5/3=x-7/2", 11/3), ("(4x+2)/3-(5x-7)/6=(3-x)/2", -1/3)*/]
       ]
 	
 	//let nextPhaseButton = SKSpriteNode(color: .red, size: CGSize(width: 50, height: 50))
@@ -29,6 +29,9 @@ class GameScene: SKScene {
 	let undoButtonTextureAtlas = SKTextureAtlas(named: "UndoButtonAssets")
 	let blackHole = SKSpriteNode(imageNamed: "Buraco Negro Provisorio")
     var deliveryPlace = SKSpriteNode()
+    
+    var regularPoofAtlas: SKTextureAtlas = SKTextureAtlas(named: "PoofNormal")
+    var regularPoof = SKSpriteNode(imageNamed: "nothing")
 	
 	
 	let restartEquationButton = SKSpriteNode(imageNamed: "DestructiveButton")
@@ -50,6 +53,10 @@ class GameScene: SKScene {
 			joinSideButton.position = CGPoint(x: frame.size.width - 80, y: frame.size.height / 3)
 			joinSideButton.size = CGSize(width: 209.73, height: 160.24)
 			joinSideButton.zPosition = 12
+            
+            regularPoof.position = CGPoint(x: 400, y: 130)
+            regularPoof.size = CGSize(width: 739.88, height: 252.98)
+            regularPoof.zPosition = 12
 			
 			
 			blackHole.position = CGPoint(x: frame.size.width / 2, y: 38)
@@ -66,6 +73,7 @@ class GameScene: SKScene {
 			addChild(joinSideButton)
 			addChild(blackHole)
 			addChild(deliveryPlace)
+            addChild(regularPoof)
 			
 			bottomBackground.position = CGPoint(x: width / 2, y: frame.size.height / 4)
 			bottomBackground.zPosition = 11
@@ -96,32 +104,54 @@ class GameScene: SKScene {
 	
 	func animateLever() {
 		let idleFrames: [SKTexture] = [textureAtlas.textureNamed("Ala - Frame 2"),
-												 textureAtlas.textureNamed("Ala - Frame 3"),
-												 textureAtlas.textureNamed("Ala - Frame 4"),
-												 textureAtlas.textureNamed("Ala - Frame 5"),
-												 textureAtlas.textureNamed("Ala - Frame 6"),
-												 textureAtlas.textureNamed("Ala - Frame 7"),
-												 textureAtlas.textureNamed("Ala - Frame 8"),
-												 textureAtlas.textureNamed("Ala - Frame 9"),
-												 textureAtlas.textureNamed("Ala - Frame 10"),
-												 textureAtlas.textureNamed("Ala - Frame 11"),
-												 textureAtlas.textureNamed("Ala - Frame 12"),
-												 textureAtlas.textureNamed("Ala - Frame 12"),
-												 textureAtlas.textureNamed("Ala - Frame 11"),
-												 textureAtlas.textureNamed("Ala - Frame 10"),
-												 textureAtlas.textureNamed("Ala - Frame 9"),
-												 textureAtlas.textureNamed("Ala - Frame 8"),
-												 textureAtlas.textureNamed("Ala - Frame 7"),
-												 textureAtlas.textureNamed("Ala - Frame 6"),
-												 textureAtlas.textureNamed("Ala - Frame 5"),
-												 textureAtlas.textureNamed("Ala - Frame 4"),
-												 textureAtlas.textureNamed("Ala - Frame 3"),
-												 textureAtlas.textureNamed("Ala - Frame 2"),
-												 textureAtlas.textureNamed("Ala - Frame 1"),
+                                       textureAtlas.textureNamed("Ala - Frame 3"),
+                                       textureAtlas.textureNamed("Ala - Frame 4"),
+                                       textureAtlas.textureNamed("Ala - Frame 5"),
+                                       textureAtlas.textureNamed("Ala - Frame 6"),
+                                       textureAtlas.textureNamed("Ala - Frame 7"),
+                                       textureAtlas.textureNamed("Ala - Frame 8"),
+                                       textureAtlas.textureNamed("Ala - Frame 9"),
+                                       textureAtlas.textureNamed("Ala - Frame 10"),
+                                       textureAtlas.textureNamed("Ala - Frame 11"),
+                                       textureAtlas.textureNamed("Ala - Frame 12"),
+                                       textureAtlas.textureNamed("Ala - Frame 12"),
+                                       textureAtlas.textureNamed("Ala - Frame 11"),
+                                       textureAtlas.textureNamed("Ala - Frame 10"),
+                                       textureAtlas.textureNamed("Ala - Frame 9"),
+                                       textureAtlas.textureNamed("Ala - Frame 8"),
+                                       textureAtlas.textureNamed("Ala - Frame 7"),
+                                       textureAtlas.textureNamed("Ala - Frame 6"),
+                                       textureAtlas.textureNamed("Ala - Frame 5"),
+                                       textureAtlas.textureNamed("Ala - Frame 4"),
+                                       textureAtlas.textureNamed("Ala - Frame 3"),
+                                       textureAtlas.textureNamed("Ala - Frame 2"),
+                                       textureAtlas.textureNamed("Ala - Frame 1"),
 									]
 		let idleAction = SKAction.animate(with: idleFrames, timePerFrame: 0.041)
 		joinSideButton.run(idleAction)
 	}
+    
+    func animateRegularPoof() {
+        let idleFrames: [SKTexture] = [regularPoofAtlas.textureNamed("poof1"),
+                                       regularPoofAtlas.textureNamed("poof2"),
+                                       regularPoofAtlas.textureNamed("poof3"),
+                                       regularPoofAtlas.textureNamed("poof4"),
+                                       regularPoofAtlas.textureNamed("poof5"),
+                                       regularPoofAtlas.textureNamed("poof6"),
+                                       regularPoofAtlas.textureNamed("poof7"),
+                                       regularPoofAtlas.textureNamed("poof8"),
+                                       regularPoofAtlas.textureNamed("poof9"),
+                                       regularPoofAtlas.textureNamed("poof10"),
+                                       regularPoofAtlas.textureNamed("poof11"),
+                                       regularPoofAtlas.textureNamed("poof12"),
+                                       regularPoofAtlas.textureNamed("poof13"),
+                                       regularPoofAtlas.textureNamed("poof14"),
+                                       regularPoofAtlas.textureNamed("poof15"),
+                                       regularPoofAtlas.textureNamed("nothing")
+                                    ]
+        let idleAction = SKAction.animate(with: idleFrames, timePerFrame: 0.07)
+        regularPoof.run(idleAction)
+    }
 	
 	
 	func animateDestructiveButton() {
