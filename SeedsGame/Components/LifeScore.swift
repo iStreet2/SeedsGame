@@ -22,10 +22,12 @@ struct LifeScore: View {
                 Text("Pontos")
                     .font(.custom("troika", size: 25))
                     .bold()
+                    .foregroundStyle(Color("FontDarkBrown"))
                 
                 Text("\(userEngine.score)")
                     .contentTransition(.numericText())
                     .font(.custom("AlegreyaSans-Medium", size: 25))
+                    .foregroundStyle(Color("FontDarkBrown"))
                 
                 HStack {
                     ForEach(0..<userEngine.life, id: \.self) { index in

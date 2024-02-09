@@ -196,8 +196,18 @@ import CoreData
 		}
 		self.finalSeedCreated = false
 		
-		
 	}
+    
+    func nextQuestionWithDelay(_ scene: PhaseScene){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            if self.userEngine?.life == 0{
+                self.gameOver = true
+            }
+            else{
+                self.nextQuestion(scene: scene)
+            }
+        }
+    }
 
 	
 	
@@ -845,19 +855,18 @@ import CoreData
 				 resultSprite = clientSprite!.replacingOccurrences(of: "Neutro", with: "Bravo")
                  userEngine?.wrongAnswerWrongGalactic()
 			 }
+             
+             if rose{
+                 showRightAnswer(scene, glow: true, correctAnswer: Float(correctAnswer)!)
+             }
+             if client.wantsGalacticSeeds{
+                 showRightAnswer(scene, glow: true, correctAnswer: Float(correctAnswer)!)
+             }else{
+                 showRightAnswer(scene, glow: false, correctAnswer: Float(correctAnswer)!)
+             }
 			 
 			 client.texture = SKTexture(imageNamed: resultSprite)
 		 }
-        
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            if self.userEngine?.life == 0{
-                self.gameOver = true
-            }
-            else{
-                self.nextQuestion(scene: scene)
-            }
-        }
     }
     
 	
@@ -1072,7 +1081,55 @@ import CoreData
         scene.removeAllChildren()
 	}
 	
-	
+    func showRightAnswer(_ scene: PhaseScene, glow: Bool, correctAnswer: Float){
+        if glow{
+            //Background
+            scene.rightAnswerEqBackground.texture = SKTexture(imageNamed: "rightAnswerEqBackgroundGlow")
+            scene.rightAnswerEqBackground.position = CGPoint(x: 420, y: 180)
+            scene.rightAnswerEqBackground.zPosition = 12
+            scene.addChild(scene.rightAnswerEqBackground)
+            
+            //Label
+            addRightAnswerLabel(scene, correctAnswer: correctAnswer)
+            
+        }else{
+            //Background
+            scene.rightAnswerEqBackground.position = CGPoint(x: 420, y: 180)
+            scene.rightAnswerEqBackground.zPosition = 12
+            scene.addChild(scene.rightAnswerEqBackground)
+            //Label
+            addRightAnswerLabel(scene, correctAnswer: correctAnswer)
+            
+        }
+        
+        scene.rightAnswerShowed = true
+    }
+    
+    func addRightAnswerLabel(_ scene: PhaseScene, correctAnswer: Float){
+        //Label
+        scene.rightAnswerEqLabel.append(SeedBagModel(numero: 0, incognita: true, isOperator: false, operatorr: "", imageNamed: "seedbag", color: .clear, width: seedBagWidth, height: seedBagHeight))
+        scene.rightAnswerEqLabel.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "", imageNamed: "igual", color: .clear, width: 22.45, height: 30.73))
+        scene.rightAnswerEqLabel.append(SeedBagModel(numero: Int(correctAnswer), incognita: false, isOperator: false, operatorr: "", imageNamed: "seedbag", color: .clear, width: seedBagWidth, height: seedBagHeight))
+        
+        scene.removeChildren(in: [scene.currentSeedBags[0]]) //remover o saco entregue para o cliente
+        
+        for index in 0..<3{
+            scene.rightAnswerEqLabel[index].position = CGPoint(x: 360+CGFloat((bagSpacing*index)), y: 150) //Posicao da sacola com o numero, mexo com o index para colocar na posição certa da equação
+            
+            scene.rightAnswerEqLabel[index].zPosition = 14
+            
+            scene.addChild(scene.rightAnswerEqLabel[index])
+        }
+    }
+    
+    func removeRightAnswer(_ scene: PhaseScene){
+        scene.rightAnswerShowed = false
+        for rightAnswerEqLabel in scene.rightAnswerEqLabel {
+            scene.removeChildren(in: [rightAnswerEqLabel])
+        }
+        scene.removeChildren(in: [scene.rightAnswerEqBackground])
+    }
+    
 }
 
 
