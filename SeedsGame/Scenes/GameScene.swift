@@ -14,10 +14,10 @@ class GameScene: SKScene {
 	var topBackground = SKSpriteNode(imageNamed: "Fundo Provisorio")
 	
     var phaseMap: [Int : [(String, Float)]] = [
-        1: [("x=3+2", 5), ("2x=4", 2), /*("x+2=3", 1), ("9-x=4", 5), ("x+6=15", 9), ("90-x=50", 40), ("5=-x+4", -1), ("20=x-40", 60), ("8+x=17",9), ("x+3=-12", -15)*/],
-        2: [("10+x=-30", -40), /*("x+2=-4", -3), ("17-x=3", 7), ("30x-120=0", 4), ("2x+3x=15x-30", 3), ("14+2x=3+2", -4.5), ("5x-12=3", 3), ("3x+1=x-3", -2), ("5x+5=3x+7", 1), ("6x+3=-9", -2)*/],
-        3: [("x=1", 1),/* ("3x-6+10=4x+4+2", -2), ("3x+4x-40=x+20",10), ("2x+6x-15+4=x+6x-6-6", -1), ("3x+2=4x-1", 3), ("3x+2=29", 9), ("x+(x+1)+(x+2)=60", 19), ("x+5x=2x+40", 10), ("2x/4-5/3=x-7/2", 11/3), ("(4x+2)/3-(5x-7)/6=(3-x)/2", -1/3)*/]
-      ]
+        1: [("9-x=4", 5), ("2x=4", 2), ("x+2=3", 1), ("9-x=4", 5), ("x+6=15", 9), ("90-x=50", 40), ("5=-x+4", -1), ("20=x-40", 60), ("8+x=17",9), ("x+3=-12", -15)],
+        2: [("10+x=-30", -40), ("x+2=-4", -6), ("17-x=3", 14), ("30x-120=0", 4), ("x=15x-28", 2), ("14+2x=6", -4), ("5x-12=3", 3), ("2x+2=60", 29), ("-x+5=x+7", -2), ("6x+3=-9", -2)],
+        3: [("4x-10=x-7", 1), ("x+4=2x+6", -2), ("7x-40=x+20",10), ("9x-20=x-12", 1), ("3x+2=4x-1", 3), ("3x+1=x+29", 15), ("3x+1=x-3", -2), ("6x=2x+40", 10), ("(4x)/2=x-7", -7), ("5x+2=(6-8x)/2", 2)]
+       ]
 	
 	//let nextPhaseButton = SKSpriteNode(color: .red, size: CGSize(width: 50, height: 50))
 	//let nextQuestionButton = SKSpriteNode(color: .green, size: CGSize(width: 50, height: 50))
@@ -27,7 +27,7 @@ class GameScene: SKScene {
 	
 	let undoButton = SKSpriteNode(imageNamed: "UndoButton")
 	let undoButtonTextureAtlas = SKTextureAtlas(named: "UndoButtonAssets")
-	let blackHole = SKSpriteNode(imageNamed: "Buraco Negro Provisorio")
+	let blackHole = SKSpriteNode(imageNamed: "BH1")
     var deliveryPlace = SKSpriteNode()
     
     var regularPoofAtlas: SKTextureAtlas = SKTextureAtlas(named: "PoofNormal")
@@ -39,7 +39,7 @@ class GameScene: SKScene {
     var purplePoofAtlas = SKTextureAtlas(named: "PoofRoxo")
     var purplePoof = SKSpriteNode(imageNamed: "nothing")
     
-    var blackHoleAtlas = SKTextureAtlas(named: "PoofDestrutivo")
+    var blackHoleAtlas = SKTextureAtlas(named: "FramesBuracoNegro")
 	
 	
 	let restartEquationButton = SKSpriteNode(imageNamed: "DestructiveButton")
@@ -64,12 +64,20 @@ class GameScene: SKScene {
             
             regularPoof.position = CGPoint(x: 400, y: 130)
             regularPoof.size = CGSize(width: 739.88, height: 252.98)
-            regularPoof.zPosition = 12
+            regularPoof.zPosition = 13
+            
+            destructivePoof.position = CGPoint(x: 400, y: 130)
+            destructivePoof.size = CGSize(width: 739.88, height: 252.98)
+            destructivePoof.zPosition = 13
 			
+            purplePoof.position = CGPoint(x: 400, y: 130)
+            purplePoof.size = CGSize(width: 739.88, height: 252.98)
+            purplePoof.zPosition = 13
 			
-			blackHole.position = CGPoint(x: frame.size.width / 2, y: 38)
-			blackHole.size = CGSize(width: 327, height: 92)
+			blackHole.position = CGPoint(x: (frame.size.width / 2)+15, y: 5)
+			blackHole.size = CGSize(width: 446.45, height: 136.79)
 			blackHole.zPosition = 12
+            
 			
 			deliveryPlace.position = CGPoint(x: (width/2)-10, y: (height/2)+150)
 			deliveryPlace.zPosition = 12
@@ -82,6 +90,8 @@ class GameScene: SKScene {
 			addChild(blackHole)
 			addChild(deliveryPlace)
             addChild(regularPoof)
+            addChild(destructivePoof)
+            addChild(purplePoof)
 			
 			bottomBackground.position = CGPoint(x: width / 2, y: frame.size.height / 4)
 			bottomBackground.zPosition = 11
@@ -136,7 +146,7 @@ class GameScene: SKScene {
                                        textureAtlas.textureNamed("Ala - Frame 1"),
 									]
 		let idleAction = SKAction.animate(with: idleFrames, timePerFrame: 0.041)
-		joinSideButton.run(idleAction)
+        joinSideButton.run(idleAction)
 	}
     
     func animateRegularPoof() {
@@ -155,34 +165,70 @@ class GameScene: SKScene {
                                        regularPoofAtlas.textureNamed("poof13"),
                                        regularPoofAtlas.textureNamed("poof14"),
                                        regularPoofAtlas.textureNamed("poof15"),
-                                       regularPoofAtlas.textureNamed("nothing")
+                                       regularPoofAtlas.textureNamed("nothingNormal")
                                     ]
         let idleAction = SKAction.animate(with: idleFrames, timePerFrame: 0.07)
         regularPoof.run(idleAction)
     }
     
     func animateDestructivePoof() {
-        let idleFrames: [SKTexture] = [regularPoofAtlas.textureNamed("poof1"),
-                                       regularPoofAtlas.textureNamed("poof2"),
-                                       regularPoofAtlas.textureNamed("poof3"),
-                                       regularPoofAtlas.textureNamed("poof4"),
-                                       regularPoofAtlas.textureNamed("poof5"),
-                                       regularPoofAtlas.textureNamed("poof6"),
-                                       regularPoofAtlas.textureNamed("poof7"),
-                                       regularPoofAtlas.textureNamed("poof8"),
-                                       regularPoofAtlas.textureNamed("poof9"),
-                                       regularPoofAtlas.textureNamed("poof10"),
-                                       regularPoofAtlas.textureNamed("poof11"),
-                                       regularPoofAtlas.textureNamed("poof12"),
-                                       regularPoofAtlas.textureNamed("poof13"),
-                                       regularPoofAtlas.textureNamed("poof14"),
-                                       regularPoofAtlas.textureNamed("poof15"),
-                                       regularPoofAtlas.textureNamed("nothing")
+        let idleFrames: [SKTexture] = [destructivePoofAtlas.textureNamed("poof1D"),
+                                       destructivePoofAtlas.textureNamed("poof2D"),
+                                       destructivePoofAtlas.textureNamed("poof3D"),
+                                       destructivePoofAtlas.textureNamed("poof4D"),
+                                       destructivePoofAtlas.textureNamed("poof5D"),
+                                       destructivePoofAtlas.textureNamed("poof6D"),
+                                       destructivePoofAtlas.textureNamed("poof7D"),
+                                       destructivePoofAtlas.textureNamed("poof8D"),
+                                       destructivePoofAtlas.textureNamed("poof9D"),
+                                       destructivePoofAtlas.textureNamed("poof10D"),
+                                       destructivePoofAtlas.textureNamed("poof11D"),
+                                       destructivePoofAtlas.textureNamed("poof12D"),
+                                       destructivePoofAtlas.textureNamed("poof13D"),
+                                       destructivePoofAtlas.textureNamed("poof14D"),
+                                       destructivePoofAtlas.textureNamed("poof15D"),
+                                       destructivePoofAtlas.textureNamed("nothingDestrutivo")
                                     ]
         let idleAction = SKAction.animate(with: idleFrames, timePerFrame: 0.07)
-        regularPoof.run(idleAction)
+        destructivePoof.run(idleAction)
     }
 	
+    func animatePurplePoof() {
+        let idleFrames: [SKTexture] = [purplePoofAtlas.textureNamed("poof1R"),
+                                       purplePoofAtlas.textureNamed("poof2R"),
+                                       purplePoofAtlas.textureNamed("poof3R"),
+                                       purplePoofAtlas.textureNamed("poof4R"),
+                                       purplePoofAtlas.textureNamed("poof5R"),
+                                       purplePoofAtlas.textureNamed("poof6R"),
+                                       purplePoofAtlas.textureNamed("poof7R"),
+                                       purplePoofAtlas.textureNamed("poof8R"),
+                                       purplePoofAtlas.textureNamed("poof9R"),
+                                       purplePoofAtlas.textureNamed("poof10R"),
+                                       purplePoofAtlas.textureNamed("poof11R"),
+                                       purplePoofAtlas.textureNamed("poof12R"),
+                                       purplePoofAtlas.textureNamed("poof13R"),
+                                       purplePoofAtlas.textureNamed("poof14R"),
+                                       purplePoofAtlas.textureNamed("poof15R"),
+                                       purplePoofAtlas.textureNamed("nothingRoxo")
+                                    ]
+        let idleAction = SKAction.animate(with: idleFrames, timePerFrame: 0.07)
+        purplePoof.run(idleAction)
+    }
+    
+    func animateBlackHole(){
+        let idleFrames: [SKTexture] = [blackHoleAtlas.textureNamed("BH1"),
+                                       blackHoleAtlas.textureNamed("BH2"),
+                                       blackHoleAtlas.textureNamed("BH3"),
+                                       blackHoleAtlas.textureNamed("BH4"),
+                                       blackHoleAtlas.textureNamed("BH5"),
+                                       blackHoleAtlas.textureNamed("BH6"),
+                                       blackHoleAtlas.textureNamed("BH7"),
+                                       blackHoleAtlas.textureNamed("BH8"),
+                                       blackHoleAtlas.textureNamed("BH9")
+                                    ]
+        let idleAction = SKAction.animate(with: idleFrames, timePerFrame: 0.1)
+        blackHole.run(.repeatForever(idleAction))
+    }
 	
 	func animateDestructiveButton() {
 		let animationFrames: [SKTexture] = [destructiveButtonTextureAtlas.textureNamed("DestructiveButton - Pressed"),
