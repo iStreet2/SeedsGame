@@ -50,10 +50,10 @@ struct PhaseViewer: View {
 						 .ignoresSafeArea()
 					 
 					 TabView(selection: $phaseIndex) {
-						 ForEach(0..<3, id: \.self) { index in
+						 ForEach(0..<3, id: \.self) { index in //0,1,2
 							 ZStack {
 								 NavigationLink {
-                                     SpriteSceneView(context: context, scene: PhaseScene(phase: index+1, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+                                     SpriteSceneView(context: context, scene: PhaseScene(phase: index+1, width:  UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)) //1,2,3
                                          
                                  } label: {
                                      if myData[0].phase < Double(index){

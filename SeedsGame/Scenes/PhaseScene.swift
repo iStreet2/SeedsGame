@@ -48,7 +48,7 @@ class PhaseScene: GameScene {
 		let eqs = phaseMap[phase]
 		
 		//Para cada cliente no mapa
-		for n in 0..<clientMap[phase]! {
+		for n in 0..<clientMap[phase]!{
 			let client = ClientModel(eqs![n].0, imageNamed: "ClientSprite", color: .clear) //CGSize(width: 135, height: 274) -> Size antigo
 			clients.append(client)
 		}

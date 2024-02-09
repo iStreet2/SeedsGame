@@ -85,13 +85,18 @@ struct EndGameView: View {
                         .buttonStyle(SquareButtonStyle(tag: .gameCenter))
                     }
                     
-                    NavigationLink {
-                        SpriteSceneView(context: context, scene: PhaseScene(phase: scene.phase+1, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
-                    } label: {
-                        Text("Proxima Fase")
+                    if scene.phase < 3{
+                        NavigationLink {
+                            SpriteSceneView(context: context, scene: PhaseScene(phase: scene.phase+1, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+                        } label: {
+                            if scene.phase == 3{
+                                Text("Fases concluidas")
+                            }else{
+                                Text("Proxima Fase")
+                            }
+                        }
+                        .buttonStyle(RectangleButtonStyle(tag: .type2))
                     }
-                    .buttonStyle(RectangleButtonStyle(tag: .type2))
-
                 }
                 .padding(.top, 25)
                 
