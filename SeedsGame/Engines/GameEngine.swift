@@ -1462,6 +1462,8 @@ import CoreData
     }
     
     func showRightAnswer(_ scene: PhaseScene, glow: Bool, correctAnswer: Float){
+        removeRightAnswer(scene)
+        
         if glow{
             //Background
             scene.rightAnswerEqBackground.texture = SKTexture(imageNamed: "rightAnswerEqBackgroundGlow")
@@ -1514,5 +1516,4 @@ import CoreData
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
     }
-    
 }
