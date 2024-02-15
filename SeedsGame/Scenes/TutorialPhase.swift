@@ -90,6 +90,7 @@ class TutorialPhase: PhaseScene {
                 if currentFala == tutorialClient.falas.count-1{
                     GameEngine.shared.setEndOfPhaseTRUE()
                     GameEngine.shared.finalSeedCreated = false
+                    GameEngine.shared.mementoStack.clear()
                 }
 				
 				
