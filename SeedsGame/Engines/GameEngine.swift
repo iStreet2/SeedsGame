@@ -584,7 +584,7 @@ import CoreData
                     //Se eu encontrar um X com um valor anterior a ele, eu adiciono um "*" entre a sacola do número e a sacola do x
                     if index != 0{
                         if  equation[index-1].isNumber{
-                            scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "*", imageNamed: "operacoes", color: .clear, width: 31.3, height: 30.73))
+                            scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "*", imageNamed: "operacoes", color: .clear, width: 44, height: 44))
                             addHitBoxAtTheEnd(scene: scene)
                         }
                     }
@@ -594,7 +594,7 @@ import CoreData
                     scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: String(char), imageNamed: "igual", color: .clear, width: 22.45, height: 30.73))
                 }
                 else {
-                    scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: String(char), imageNamed: "operacoes", color: .clear, width: 31.3, height: 30.73))
+                    scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: String(char), imageNamed: "operacoes", color: .clear, width: 44, height: 44))
                 }
             }
             //Depois de preparar o vetor, adiciono na cena
@@ -738,7 +738,7 @@ import CoreData
             //Se tiver mais de uma incognita na equação
             if scene.currentSeedBags[getMovableNodePosition(scene)].label.text! == "?" && scene.currentSeedBags[getMovableNodePosition(scene)-1].label.text! == "*"{ //se o usuário estiver mexendo o "?" e tiver algum número multiplicando ele
                 if getMovableNodePosition(scene)-2 == 0{ //Se antes do número que esta multiplicando o X nao tiver nenhum sinal, ou seja, o número estiver na posição zero
-                    scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 31.3, height: 30.73)) //Adiciono um sinal de "+" no final da equação
+                    scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 44, height: 44)) //Adiciono um sinal de "+" no final da equação
                     addHitBoxAtTheEnd(scene: scene)
                     realocateToOtherSide(getMovableNodePosition(scene)-2, scene) //Aloco o numero que esta multiplicando o x
                     realocateToOtherSide(getMovableNodePosition(scene)-1, scene) //Aloco o simbolo de multiplicação
@@ -754,7 +754,7 @@ import CoreData
                     realocateToOtherSide(getMovableNodePosition(scene)-1, scene) //realoco o sinal
                     realocateToOtherSide(getMovableNodePosition(scene), scene) //realoco o x
                 }else{
-                    scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 31.3, height: 30.73)) //Adiciono um sinal de "+" no final da equação
+                    scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 44, height: 44)) //Adiciono um sinal de "+" no final da equação
                     realocateToOtherSide(getMovableNodePosition(scene), scene) //realoco o x
                     addHitBoxAtTheEnd(scene: scene)
                 }
@@ -798,7 +798,7 @@ import CoreData
         }
         else{ //Se não houver um sinal antes, eu preciso criar um sinal de mais, criar uma hitbox, e realocar
             addHitBoxAtTheEnd(scene: scene) //adiciono uma hitbox ao final
-            scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 31.3, height: 30.73)) //adiciono ao final do vetor um sinal de mais
+            scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 44, height: 44)) //adiciono ao final do vetor um sinal de mais
             realocateToOtherSide(getMovableNodePosition(scene), scene) //Realoco o nó que esta sendo mexido
         }
     }
@@ -809,7 +809,7 @@ import CoreData
             //Se tiver mais de uma incognita na equação
             if scene.currentSeedBags[getMovableNodePosition(scene)].label.text! == "?" && scene.currentSeedBags[getMovableNodePosition(scene)-1].label.text! == "*"{ //se o usuário estiver mexendo o "?" e tiver algum número multiplicando ele
                 if scene.currentSeedBags[getMovableNodePosition(scene)-3].label.text! == "="{ //Se antes do número que esta multiplicando o X nao tiver nenhum sinal, ou seja, estiver do lado do igual, eu preciso adicionar o mais
-                    scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 31.3, height: 30.73), at: getEqual(scene: scene)) //Adiciono um valor de mais antes do igual
+                    scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 44, height: 44), at: getEqual(scene: scene)) //Adiciono um valor de mais antes do igual
                     addHitBoxAtTheEnd(scene: scene)
                     realocateToOtherSide(getMovableNodePosition(scene)-2, scene) //Aloco o numero que esta multiplicando o x
                     realocateToOtherSide(getMovableNodePosition(scene)-1, scene) //Aloco o simbolo de multiplicação
@@ -825,7 +825,7 @@ import CoreData
                     realocateToOtherSide(getMovableNodePosition(scene)-1, scene) //realoco o sinal
                     realocateToOtherSide(getMovableNodePosition(scene), scene) //realoco o x
                 }else{
-                    scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 31.3, height: 30.73), at: getEqual(scene: scene)) //Adiciono um valor de mais antes do igual
+                    scene.currentSeedBags.insert(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 44, height: 44), at: getEqual(scene: scene)) //Adiciono um valor de mais antes do igual
                     realocateToOtherSide(getMovableNodePosition(scene), scene) //realoco o x
                     addHitBoxAtTheEnd(scene: scene)
                 }
@@ -872,7 +872,7 @@ import CoreData
             }
             else{ //Se não houver um sinal antes, eu preciso criar um sinal de mais, criar uma hitbox, e realocar
                 addHitBoxAtTheEnd(scene: scene) //adiciono uma hitbox ao final
-                scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 31.3, height: 30.73)) //adiciono ao final do vetor um sinal de mais
+                scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 44, height: 44)) //adiciono ao final do vetor um sinal de mais
                 //            self.initialPosition += 1
                 realocateToOtherSide(scene.currentSeedBags.count-1,scene) //realoco o sinal que eu acabei de inserir na ultima posição
                 realocateToOtherSide(getMovableNodePosition(scene), scene) //realoco o elemento que o usuario passou
@@ -880,7 +880,7 @@ import CoreData
         }
         else{ //Se não houver um sinal antes, eu preciso criar um sinal de mais, criar uma hitbox, e realocar
             addHitBoxAtTheEnd(scene: scene) //adiciono uma hitbox ao final
-            scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 31.3, height: 30.73)) //adiciono ao final do vetor um sinal de mais
+            scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "+", imageNamed: "operacoes", color: .clear, width: 44, height: 44)) //adiciono ao final do vetor um sinal de mais
             //            self.initialPosition += 1
             realocateToOtherSide(scene.currentSeedBags.count-1,scene) //realoco o sinal que eu acabei de inserir na ultima posição
             realocateToOtherSide(getMovableNodePosition(scene), scene) //realoco o elemento que o usuario passou
