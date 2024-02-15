@@ -211,6 +211,7 @@ class PhaseScene: GameScene {
 	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 		for (index,seedBag) in currentSeedBags.enumerated(){
 			GameEngine.shared.moveSeedBag(seedBag, touches, stage: 2, initialPosition: index, scene: self, isTutorial: false)
+            GameEngine.shared.hapitc()
 		}
 		
 	}
