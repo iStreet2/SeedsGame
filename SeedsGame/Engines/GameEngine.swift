@@ -22,11 +22,11 @@ import CoreData
     let width = UIScreen.main.bounds.width
     let height = UIScreen.main.bounds.height
     
-    let seedBagWidth: Double = 50
-    let seedBagHeight: Double  = 70
+    let seedBagWidth: Double = 50*1.1
+    let seedBagHeight: Double  = 70*1.1
     
-    let hitBoxWidth: Double = 50
-    let hitBoxHeight: Double = 50
+    let hitBoxWidth: Double = 50*1.1
+    let hitBoxHeight: Double = 50*1.1
     
     var realocationPosition = 0
     
@@ -58,7 +58,7 @@ import CoreData
                                            2: SKAction.colorize(with: .black, colorBlendFactor: 0.6, duration: 1)]
     
     let initialBagPosition = CGPoint(x: 200, y: 150)
-    let bagSpacing = 45
+    let bagSpacing = 55
     
     // MARK: variáveis de controle de vida e fim de fase
     var endOfPhase: Bool = false
@@ -455,25 +455,9 @@ import CoreData
     
     func invertOperator(_ node: SeedBagModel, _ touches: Set<UITouch>, _ position: Int, _ scene: PhaseScene, isTutorial: Bool = false){
                 
-        if let touch = touches.first{
-            let location = touch.location(in: scene.self)
-            if scene.movableNode == nil{
-                if node.contains(location){
-                    //Inverto o sinal na label do laço
-                    if node.label.text == "+"{
-                        scene.currentSeedBags[position].label.text = "-"
-                    }else if node.label.text == "-"{
-                        scene.currentSeedBags[position].label.text = "+"
-                    }else if node.label.text == "*"{
-                        scene.currentSeedBags[position].label.text = "/"
-                    }else if node.label.text == "/"{
-                        scene.currentSeedBags[position].label.text = "*"
-                    }
-                    //Atualizo na tela
-                    showEquation(scene: scene, isTutorial: isTutorial)
-                }
-            }
-        }
+        node.invertOperator(node, touches, position, scene)
+        showEquation(scene: scene, isTutorial: isTutorial)
+              
         
     }
     
@@ -561,7 +545,7 @@ import CoreData
                     //Se eu encontrar um X com um valor anterior a ele, eu adiciono um "*" entre a sacola do número e a sacola do x
                     if index != 0{
                         if  equation[index-1].isNumber{
-                            scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "*", imageNamed: "operacoes", color: .clear, width: 31.3, height: 30.73))
+                            scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: "*", imageNamed: "operacoes", color: .clear, width: 44, height: 44))
                             addHitBoxAtTheEnd(scene: scene)
                         }
                     }
@@ -575,7 +559,7 @@ import CoreData
                     scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: ")", imageNamed: "parenteses dir", color: .clear, width: 31.3, height: 44.44))
                 }
                 else {
-                    scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: String(char), imageNamed: "operacoes", color: .clear, width: 31.3, height: 30.73))
+                    scene.currentSeedBags.append(SeedBagModel(numero: 0, incognita: false, isOperator: true, operatorr: String(char), imageNamed: "operacoes", color: .clear, width: 44, height: 44))
                 }
             }
             //Depois de preparar o vetor, adiciono na cena
@@ -1415,6 +1399,7 @@ import CoreData
                     finalSeedTransformed = true
                     scene.currentSeedBags[0].texture = SKTexture(imageNamed: "GalacticSeedBag")
                     scene.animatePurplePoof()
+                    hapitc()
                 }
             }
         }
@@ -1523,6 +1508,11 @@ import CoreData
             scene.removeChildren(in: [rightAnswerEqLabel])
         }
         scene.removeChildren(in: [scene.rightAnswerEqBackground])
+    }
+    
+    func hapitc(){
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
     }
     
 }

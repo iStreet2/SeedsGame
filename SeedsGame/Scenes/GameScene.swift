@@ -14,10 +14,10 @@ class GameScene: SKScene {
 	var topBackground = SKSpriteNode(imageNamed: "Fundo Provisorio")
 	
     var phaseMap: [Int : [(String, Float)]] = [
-        1: [("3x=(3/3)+3", 5), ("2x=4", 2), ("x+2=3", 1), ("9-x=4", 5), ("x+6=15", 9), ("90-x=50", 40), ("5=-x+4", -1), ("20=x-40", 60), ("8+x=17",9), ("x+3=-12", -15)],
+        1: [("9-x=4", 5), ("2x=4", 2), ("x+2=3", 1), ("9-x=4", 5), ("x+6=15", 9), ("90-x=50", 40), ("5=-x+4", -1), ("20=x-40", 60), ("8+x=17",9), ("x+3=-12", -15)],
         2: [("10+x=-30", -40), ("x+2=-4", -6), ("17-x=3", 14), ("30x-120=0", 4), ("x=15x-28", 2), ("14+2x=6", -4), ("5x-12=3", 3), ("2x+2=60", 29), ("-x+5=x+7", -2), ("6x+3=-9", -2)],
         3: [("4x-10=x-7", 1), ("x+4=2x+6", -2), ("7x-40=x+20",10), ("9x-20=x-12", 1), ("3x+2=4x-1", 3), ("3x+1=x+29", 15), ("3x+1=x-3", -2), ("6x=2x+40", 10), ("(4x)/2=x-7", -7), ("5x+2=(6-8x)/2", 2)]
-       ]
+    ]
 	
 	//let nextPhaseButton = SKSpriteNode(color: .red, size: CGSize(width: 50, height: 50))
 	//let nextQuestionButton = SKSpriteNode(color: .green, size: CGSize(width: 50, height: 50))

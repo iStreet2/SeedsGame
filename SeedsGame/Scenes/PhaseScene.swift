@@ -98,8 +98,10 @@ class PhaseScene: GameScene {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        let hapticAction = HapticAction(1, 1)
-        GameEngine.shared.receiveAction(hapticAction,self)
+//        let hapticAction = HapticAction(1, 1)
+//        GameEngine.shared.receiveAction(hapticAction,self)
+//        
+        
         
         guard let touch = touches.first else { return }
         
@@ -116,6 +118,7 @@ class PhaseScene: GameScene {
                 GameEngine.shared.removeRightAnswer(self)
                 GameEngine.shared.nextQuestion(scene: self, isTutorial: false)
             }
+            GameEngine.shared.hapitc()
         }
         
         if openedEquation && !GameEngine.shared.finalSeedCreated{
@@ -133,6 +136,7 @@ class PhaseScene: GameScene {
                 if oldEquation != currentEqLabel.text{
                     animateRegularPoof()
                 }
+                GameEngine.shared.hapitc()
             }
         }
         
@@ -142,6 +146,7 @@ class PhaseScene: GameScene {
                 GameEngine.shared.moveFirstClientToFront(self)
                 GameEngine.shared.addSeedBags(scene: self)
                 GameEngine.shared.addHitBoxesFromEquation(scene: self)
+                GameEngine.shared.hapitc()
             }
         }
         
@@ -150,6 +155,7 @@ class PhaseScene: GameScene {
             animateDestructiveButton()
             animateDestructivePoof()
             GameEngine.shared.finalSeedCreated = false
+            GameEngine.shared.hapitc()
         }
         
         if undoButton.contains(touch.location(in: self)) {
@@ -162,6 +168,7 @@ class PhaseScene: GameScene {
             }
             animateUndoButton()
             animateDestructivePoof()
+            GameEngine.shared.hapitc()
         }
         
         //movimento do sprite de semente
@@ -173,9 +180,11 @@ class PhaseScene: GameScene {
                             if GameEngine.shared.isIncognitaEspecifc(index: index, self) && GameEngine.shared.moreThanOneIncognita(self){ //Se o que eu estiver tentando mexer for uma incognita e tiver mais de uma incognita na equacao
                                 if !seedBag.label.text!.isNumber{ //E se nao for um numero
                                     GameEngine.shared.moveSeedBag(seedBag, touches, stage: 0,initialPosition: index, scene: self, isTutorial: false)
+                                    GameEngine.shared.hapitc()
                                 }
                             }else{
                                 GameEngine.shared.moveSeedBag(seedBag, touches, stage: 0,initialPosition: index, scene: self, isTutorial: false)
+                                GameEngine.shared.hapitc()
                             }
                         }
                     }
@@ -183,7 +192,8 @@ class PhaseScene: GameScene {
             }
             
             if GameEngine.shared.operators.contains(seedBag.label.text!){ //Se for um operador, inverto o operador
-                seedBag.invertOperator(seedBag,touches, index, self)
+                GameEngine.shared.invertOperator(seedBag,touches, index, self)
+                GameEngine.shared.hapitc()
             }
             
         }
