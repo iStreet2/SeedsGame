@@ -16,6 +16,8 @@ struct ConfigurationView: View {
     @ObservedObject var myDataController: MyDataController
     @FetchRequest(sortDescriptors: []) var myData: FetchedResults<MyData>
 	
+    @Environment(\.openURL) var openURL
+    
 	@Environment(\.dismiss) private var dismiss
 	@State var isMusic = true
 	
@@ -53,6 +55,7 @@ struct ConfigurationView: View {
 								.padding()
                             
 							Button("SOBRE NÓS"){
+                                openURL(URL(string: "https://www.instagram.com/srbhas.app/")!)
 							}
 							.buttonStyle(RectangleButtonStyle(tag: .type2))
 							

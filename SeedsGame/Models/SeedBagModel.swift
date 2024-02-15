@@ -51,7 +51,7 @@ class SeedBagModel: SKSpriteNode {
 			let location = touch.location(in: scene.self)
 			if node.contains(location) {
 				scene.currentSeedBags[position].label.text = inverseMap[node.label.text!]
-				scene.currentSeedBags[position].setLabelPosition()
+				scene.currentSeedBags[position].resetLabelPosition()
 			}
 		}
 	}
@@ -71,6 +71,17 @@ class SeedBagModel: SKSpriteNode {
 			self.label.position.y = self.label.position.y - 7
 		}
 	}
+    
+    func resetLabelPosition() {
+        if self.isOperator && self.label.text == "*"{
+            self.label.position.y = self.label.position.y + 7
+            self.label.position.y = self.label.position.y - 15
+        }
+        else if self.isOperator && self.label.text == "/"{
+            self.label.position.y = self.label.position.y + 15
+            self.label.position.y = self.label.position.y - 7
+        }
+    }
 	
 	required init?(coder aDecoder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")

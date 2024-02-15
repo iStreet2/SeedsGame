@@ -14,7 +14,7 @@ class GameScene: SKScene {
 	var topBackground = SKSpriteNode(imageNamed: "Fundo Provisorio")
 	
     var phaseMap: [Int : [(String, Float)]] = [
-        1: [("9-x=4", 5), ("2x=4", 2), ("x+2=3", 1), ("9-x=4", 5), ("x+6=15", 9), ("90-x=50", 40), ("5=-x+4", -1), ("20=x-40", 60), ("8+x=17",9), ("x+3=-12", -15)],
+        1: [("3x=(3/3)+3", 5), ("2x=4", 2), ("x+2=3", 1), ("9-x=4", 5), ("x+6=15", 9), ("90-x=50", 40), ("5=-x+4", -1), ("20=x-40", 60), ("8+x=17",9), ("x+3=-12", -15)],
         2: [("10+x=-30", -40), ("x+2=-4", -6), ("17-x=3", 14), ("30x-120=0", 4), ("x=15x-28", 2), ("14+2x=6", -4), ("5x-12=3", 3), ("2x+2=60", 29), ("-x+5=x+7", -2), ("6x+3=-9", -2)],
         3: [("4x-10=x-7", 1), ("x+4=2x+6", -2), ("7x-40=x+20",10), ("9x-20=x-12", 1), ("3x+2=4x-1", 3), ("3x+1=x+29", 15), ("3x+1=x-3", -2), ("6x=2x+40", 10), ("(4x)/2=x-7", -7), ("5x+2=(6-8x)/2", 2)]
        ]
@@ -44,6 +44,8 @@ class GameScene: SKScene {
 	
 	let restartEquationButton = SKSpriteNode(imageNamed: "DestructiveButton")
 	var destructiveButtonTextureAtlas: SKTextureAtlas = SKTextureAtlas(named: "DestructiveButtonAssets")
+    
+    var increaseButtonSize = 1.2
 	
 	
 	func startup() {
@@ -58,8 +60,8 @@ class GameScene: SKScene {
 			//nextQuestionButton.position = CGPoint(x: frame.size.width - 200, y: 50)
 			//nextQuestionButton.zPosition = 12
 			
-			joinSideButton.position = CGPoint(x: frame.size.width - 80, y: frame.size.height / 3)
-			joinSideButton.size = CGSize(width: 209.73, height: 160.24)
+			joinSideButton.position = CGPoint(x: frame.size.width - 50, y: frame.size.height / 3)
+			joinSideButton.size = CGSize(width: 209.73*increaseButtonSize, height: 160.24*increaseButtonSize)
 			joinSideButton.zPosition = 12
             
             regularPoof.position = CGPoint(x: 400, y: 130)
@@ -101,13 +103,13 @@ class GameScene: SKScene {
 			topBackground.zPosition = -1
 			addChild(topBackground)
 			
-			restartEquationButton.position = CGPoint(x: 10, y: 50)
-			restartEquationButton.size = CGSize(width: 170.74, height: 63.19)
+			restartEquationButton.position = CGPoint(x: 20, y: 50)
+			restartEquationButton.size = CGSize(width: 170.74*increaseButtonSize, height: 63.19*increaseButtonSize)
 			restartEquationButton.zPosition = 12
 			addChild(restartEquationButton)
 			
-			undoButton.position = CGPoint(x: 15, y: 140)
-			undoButton.size = CGSize(width: 167.66, height: 94.78)
+			undoButton.position = CGPoint(x: 25, y: 140)
+			undoButton.size = CGSize(width: 167.66*increaseButtonSize, height: 94.78*increaseButtonSize)
 			undoButton.zPosition = 12
 			addChild(undoButton)
 
@@ -227,9 +229,13 @@ class GameScene: SKScene {
                                        blackHoleAtlas.textureNamed("BH9")
                                     ]
         let idleAction = SKAction.animate(with: idleFrames, timePerFrame: 0.1)
-        blackHole.run(.repeatForever(idleAction))
+        blackHole.run(.repeatForever(idleAction), withKey: "blackHole")
     }
-	
+    
+    func stopAnimateBlackHole(){
+        blackHole.removeAction(forKey: "blackHole")
+    }
+    
 	func animateDestructiveButton() {
 		let animationFrames: [SKTexture] = [destructiveButtonTextureAtlas.textureNamed("DestructiveButton - Pressed"),
 											destructiveButtonTextureAtlas.textureNamed("DestructiveButton")]

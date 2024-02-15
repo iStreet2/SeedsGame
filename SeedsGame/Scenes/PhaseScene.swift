@@ -136,11 +136,13 @@ class PhaseScene: GameScene {
             }
         }
         
-        if eqLabelBackground.contains(touch.location(in: self)) {
-            openedEquation = true
-            GameEngine.shared.moveFirstClientToFront(self)
-            GameEngine.shared.addSeedBags(scene: self)
-            GameEngine.shared.addHitBoxesFromEquation(scene: self)
+        if !openedEquation{
+            if eqLabelBackground.contains(touch.location(in: self)) {
+                openedEquation = true
+                GameEngine.shared.moveFirstClientToFront(self)
+                GameEngine.shared.addSeedBags(scene: self)
+                GameEngine.shared.addHitBoxesFromEquation(scene: self)
+            }
         }
         
         if restartEquationButton.contains(touch.location(in: self)) {
@@ -168,13 +170,20 @@ class PhaseScene: GameScene {
                 if !GameEngine.shared.operators.contains(seedBag.label.text!){ //Se não for um operador
                     if seedBag.label.text! != "="{ //Se não for um igual
                         if seedBag.label.text! != "0"{ //Se não for zero
-									GameEngine.shared.moveSeedBag(seedBag, touches, stage: 0,initialPosition: index, scene: self, isTutorial: false)
+                            if GameEngine.shared.isIncognitaEspecifc(index: index, self) && GameEngine.shared.moreThanOneIncognita(self){ //Se o que eu estiver tentando mexer for uma incognita e tiver mais de uma incognita na equacao
+                                if !seedBag.label.text!.isNumber{ //E se nao for um numero
+                                    GameEngine.shared.moveSeedBag(seedBag, touches, stage: 0,initialPosition: index, scene: self, isTutorial: false)
+                                }
+                            }else{
+                                GameEngine.shared.moveSeedBag(seedBag, touches, stage: 0,initialPosition: index, scene: self, isTutorial: false)
+                            }
                         }
                     }
                 }
             }
+            
             if GameEngine.shared.operators.contains(seedBag.label.text!){ //Se for um operador, inverto o operador
-                GameEngine.shared.invertOperator(seedBag,touches, index, self)
+                seedBag.invertOperator(seedBag,touches, index, self)
             }
             
         }
