@@ -31,7 +31,7 @@ class ClientModel: SKSpriteNode {
 		
 		
 		// 10 clientes + Rose
-		let randomTexture = 11/* Int.random(in: 1...11)*/
+		let randomTexture = Int.random(in: 1...11)
 		self.clientSpriteID = randomTexture
 		let texture = SKTexture(imageNamed: clientSprites[randomTexture]!)
 		
