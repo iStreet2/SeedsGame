@@ -305,7 +305,7 @@ import CoreData
     }
     
     // Função para mexer seeBagModels
-    func moveSeedBag(_ node: SeedBagModel, _ touches: Set<UITouch>, stage: Int, initialPosition: Int, scene: PhaseScene, isTutorial: Bool){
+    func moveSeedBag(_ node: SeedBagModel, _ touches: Set<UITouch>, stage: Int, initialPosition: Int, scene: PhaseScene, isTutorial: Bool) -> Bool{
         
         if stage == 0{
             if let touch = touches.first{
@@ -319,12 +319,17 @@ import CoreData
                         scene.movableNode!.position = location
                         scene.movableNode!.zPosition = 12
                     }
+                    return true
+                }else{
+                    return false
                 }
             }
+            
         }else if stage == 1{
             if let touch = touches.first {
                 if scene.movableNode != nil{
                     scene.movableNode!.position = touch.location(in: scene.self)
+                    return true
                 }
             }
         }else if stage == 2{ //TOUCHES ENDED!!!!!
@@ -368,10 +373,11 @@ import CoreData
                         resetPosition(scene: scene)
                         scene.movableNode = nil
                     }
+                    return true
                 }
             }
         }
-        
+        return false
     }
     
     
@@ -453,11 +459,11 @@ import CoreData
     }
     
     
-    func invertOperator(_ node: SeedBagModel, _ touches: Set<UITouch>, _ position: Int, _ scene: PhaseScene, isTutorial: Bool = false){
+    func invertOperator(_ node: SeedBagModel, _ touches: Set<UITouch>, _ position: Int, _ scene: PhaseScene, isTutorial: Bool = false) -> Bool{
                 
         node.invertOperator(node, touches, position, scene)
         showEquation(scene: scene, isTutorial: isTutorial)
-              
+        return true
         
     }
     
