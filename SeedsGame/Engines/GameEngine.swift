@@ -501,7 +501,7 @@ import CoreData
         }
         
         //Adicionar no vetor novamente os nos dos quadrados
-        for _ in scene.currentSeedBags{
+        for _ in 0...10{
             let node = SKShapeNode(rectOf: CGSize(width: hitBoxWidth, height: hitBoxHeight))
             scene.hitBoxes.append(node)
         }
@@ -516,23 +516,23 @@ import CoreData
     
     //Adiciona uma hitBox a mais no final da equação
     func addHitBoxAtTheEnd(scene: PhaseScene){
-        let node = SKShapeNode(rectOf: CGSize(width: hitBoxWidth, height: hitBoxHeight)) //Crio mais uma hitbox
-        node.position = CGPoint(x: initialBagPosition.x+CGFloat((bagSpacing*scene.hitBoxes.count)), y: initialBagPosition.y)//Defino a posição dele com base na posição da ultima hitBox
-        node.zPosition = 11
-        node.strokeColor = .clear //Defino a cor dele de vermelho
-        scene.hitBoxes.append(node) //Adiciono ela no vetor de hitBoxes
-        scene.addChild(node) //Adiciono ela na cena
+//        let node = SKShapeNode(rectOf: CGSize(width: hitBoxWidth, height: hitBoxHeight)) //Crio mais uma hitbox
+//        node.position = CGPoint(x: initialBagPosition.x+CGFloat((bagSpacing*scene.hitBoxes.count)), y: initialBagPosition.y)//Defino a posição dele com base na posição da ultima hitBox
+//        node.zPosition = 11
+//        node.strokeColor = .clear //Defino a cor dele de vermelho
+//        scene.hitBoxes.append(node) //Adiciono ela no vetor de hitBoxes
+//        scene.addChild(node) //Adiciono ela na cena
         
     }
     
     func removeHitBoxAtTheEnd(scene: PhaseScene){
-        scene.removeChildren(in: [scene.hitBoxes[scene.hitBoxes.count-1]]) //Removo da cena a hitBox do final
-        scene.hitBoxes.removeLast() //Removo do vetor a hitbox do final
+//        scene.removeChildren(in: [scene.hitBoxes[scene.hitBoxes.count-1]]) //Removo da cena a hitBox do final
+//        scene.hitBoxes.removeLast() //Removo do vetor a hitbox do final
     }
     
     func removeFirstHitBox(scene: PhaseScene){
-        scene.removeChildren(in: [scene.hitBoxes[0]]) //Removo da cena a hitbox do começo
-        scene.hitBoxes.removeFirst() //removo do vetor
+//        scene.removeChildren(in: [scene.hitBoxes[0]]) //Removo da cena a hitbox do começo
+//        scene.hitBoxes.removeFirst() //removo do vetor
     }
     
     func addSeedBags(scene: PhaseScene, isTutorial: Bool = false){
