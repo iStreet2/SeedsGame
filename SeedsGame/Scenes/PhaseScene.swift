@@ -206,7 +206,6 @@ class PhaseScene: GameScene {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for (index,seedBag) in currentSeedBags.enumerated(){
             if GameEngine.shared.moveSeedBag(seedBag, touches, stage: 1, initialPosition: index, scene: self, isTutorial: false){
-                
             }
         }
 	}
