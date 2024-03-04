@@ -41,6 +41,7 @@ struct SpriteSceneView: View {
 						
 						Button("") {
 							GameEngine.shared.setGameIsPausedTRUE()
+                            scene.stopAnimateBlackHole()
 						}.buttonStyle(SquareButtonStyle(tag: .pause))
 						
 					}
@@ -49,10 +50,18 @@ struct SpriteSceneView: View {
 				
 				VStack(spacing: 0) {
 					if GameEngine.shared.gameOver{
-						ZStack{
-							Color.black.opacity(0.5)
-                            EndGameView(context: context, scene: scene, tag: .failed, points: userEngine.score)
-						}
+                        if GameEngine.shared.gaveGalacticSeedsToRose{
+                            ZStack{
+                                Color.black.opacity(0.5)
+                                EndGameView(context: context, scene: scene, tag: .uncoverd, points: userEngine.score)
+                            }
+                        }else{
+                            ZStack{
+                                Color.black.opacity(0.5)
+                                EndGameView(context: context, scene: scene, tag: .failed, points: userEngine.score)
+                            }
+                        }
+                        
 					}
 					else if GameEngine.shared.endOfPhase {
 						ZStack {
@@ -70,7 +79,7 @@ struct SpriteSceneView: View {
 					else if GameEngine.shared.gameIsPaused {
 						ZStack {
 							Color.black.opacity(0.5)
-							PauseView(context: context)
+                            PauseView(context: context, scene: scene)
 						}
 					}
 				}
@@ -83,6 +92,7 @@ struct SpriteSceneView: View {
             GameEngine.shared.setGameIsPausedFALSE()
             GameEngine.shared.setEndOGPhaseFALSE()
             GameEngine.shared.userEngine = self.userEngine
+            scene.animateBlackHole()
             userEngine.resetUser()
         }
 		.navigationBarBackButtonHidden()

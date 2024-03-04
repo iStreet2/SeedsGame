@@ -102,6 +102,9 @@ struct MenuView: View {
 			} .background(Image("Fundo"))
 		}
 		.navigationBarBackButtonHidden()
+        .onAppear{
+            GameEngine.shared.gameOver = false
+        }
 	}
 }
 

@@ -63,6 +63,7 @@ class TutorialPhase: PhaseScene {
 		guard let touch = touches.first else { return }
 		
 		if eqLabelBackground.contains(touch.location(in: self)) {
+            GameEngine.shared.hapitc()
 			if !isPlaying && currentFala < tutorialClient.falas.count - 1 {
 
 				currentFala += 1
@@ -90,6 +91,7 @@ class TutorialPhase: PhaseScene {
                 if currentFala == tutorialClient.falas.count-1{
                     GameEngine.shared.setEndOfPhaseTRUE()
                     GameEngine.shared.finalSeedCreated = false
+                    GameEngine.shared.mementoStack.clear()
                 }
 				
 				
@@ -99,9 +101,9 @@ class TutorialPhase: PhaseScene {
 //			}
 		}
 		
-		// Alavanca só funciona quando o pintinho chegou na fala 11
-		if joinSideButton.contains(touch.location(in: self)) {
-			
+		// Alavanca só funciona quando o pintinho chegou na fala 11, E SE NAO TEM A SEMENTE FINAL CRIADA
+		if joinSideButton.contains(touch.location(in: self)) && !GameEngine.shared.finalSeedCreated {
+            GameEngine.shared.hapitc()
 			if isPlaying {
 				let opAction = OperationAction(eq: self.tutorialClient.eq)
 				GameEngine.shared.mementoStack.push(self.tutorialClient.eq)
@@ -125,6 +127,7 @@ class TutorialPhase: PhaseScene {
 		
 		
 		if undoButton.contains(touch.location(in: self)) {
+            GameEngine.shared.hapitc()
 			if isPlaying {
 				if GameEngine.shared.mementoStack.top() != "" {
 					self.tutorialClient.eq = GameEngine.shared.mementoStack.pop()
@@ -138,6 +141,7 @@ class TutorialPhase: PhaseScene {
 		}
 		
 		if restartEquationButton.contains(touch.location(in: self)) {
+            GameEngine.shared.hapitc()
 			if isPlaying {
 				GameEngine.shared.tutorialResetCurrentEquation(scene: self, isTutorial: true)
 			}
@@ -153,12 +157,14 @@ class TutorialPhase: PhaseScene {
 						if seedBag.label.text! != "="{ //Se não for um igual
 							if seedBag.label.text! != "0"{ //Se não for zero
 								GameEngine.shared.tutorialMoveSeedBag(seedBag, touches, stage: 0,initialPosition: index, scene: self, isTutorial: true)
+                                GameEngine.shared.hapitc()
 							}
 						}
 					}
 				}
 				if GameEngine.shared.operators.contains(seedBag.label.text!){ //Se for um operador, inverto o operador
 					GameEngine.shared.tutorialInvertOperator(seedBag,touches, index, self, isTutorial: true)
+                    GameEngine.shared.hapitc()
 				}
 				
 			}
@@ -176,6 +182,7 @@ class TutorialPhase: PhaseScene {
 	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 		for (index,seedBag) in currentSeedBags.enumerated(){
 			GameEngine.shared.tutorialMoveSeedBag(seedBag, touches, stage: 2, initialPosition: index, scene: self, isTutorial: true)
+            GameEngine.shared.hapitc()
 		}
 		
 	}

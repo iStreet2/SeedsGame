@@ -17,8 +17,11 @@ struct PauseView: View {
     
     @State var isMusic: Bool = true
     
-    init(context: NSManagedObjectContext) {
+    var scene: PhaseScene
+    
+    init(context: NSManagedObjectContext, scene: PhaseScene) {
         self.myDataController = MyDataController(context: context)
+        self.scene = scene
         self.isMusic = true
     }
 	
@@ -28,6 +31,7 @@ struct PauseView: View {
 				Text("PAUSADO")
 					.font(.custom("troika", size: 48))
 					.padding(.bottom, 50)
+                    .foregroundStyle(.fontDarkBrown)
 				HStack(spacing: 150) {
 					NavigationLink {
 						MenuView(context: context)
@@ -38,9 +42,10 @@ struct PauseView: View {
 					
 					
 					
-//					Button("") {
-//						GameEngine.shared.setGameIsPausedFALSE()
-//					} .buttonStyle(SquareButtonStyle(tag: .play))
+					Button("") {
+						GameEngine.shared.setGameIsPausedFALSE()
+                        scene.animateBlackHole()
+					} .buttonStyle(SquareButtonStyle(tag: .play))
 				}
 				Toggle("", isOn: $isMusic)
 					.toggleStyle(MusicToggleStyle(context: context))
@@ -52,5 +57,5 @@ struct PauseView: View {
 }
 
 #Preview {
-    PauseView(context: DataController().container.viewContext)
+    PauseView(context: DataController().container.viewContext, scene: PhaseScene(phase: 0, width: 10, height: 10))
 }
